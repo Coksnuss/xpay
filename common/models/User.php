@@ -7,19 +7,26 @@ use yii\helpers\Security;
 use yii\web\IdentityInterface;
 
 /**
- * User model
+ * This is the model class for table "user".
  *
  * @property integer $id
- * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
+ * @property string $first_name
+ * @property string $last_name
  * @property string $email
  * @property string $auth_key
+ * @property string $password_hash
+ * @property string $password_reset_token
+ * @property string $api_token
  * @property integer $role
  * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
+ * @property string $last_login_time
+ * @property string $last_login_ip
+ * @property string $created_at
+ * @property string $updated_at
  * @property string $password write-only password
+ *
+ * @property Account[] $accounts
+ * @property ShopBlacklist[] $shopBlacklists
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -36,27 +43,43 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'timestamp' => [
                 'class' => 'yii\behaviors\TimestampBehavior',
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
-                ],
+                'value' => new \yii\db\Expression('NOW()'),
             ],
         ];
     }
 
     /**
-      * @inheritdoc
-      */
+     * @inheritdoc
+     */
      public function rules()
      {
-         return [
-             ['status', 'default', 'value' => self::STATUS_ACTIVE],
-             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+        return [
+            ['auth_key', 'unique'],
 
-             ['role', 'default', 'value' => self::ROLE_USER],
-             ['role', 'in', 'range' => [self::ROLE_USER]],
+            ['role', 'default', 'value' => self::ROLE_USER],
+            ['role', 'in', 'range' => [self::ROLE_USER]],
+
+            ['status', 'default', 'value' => self::STATUS_ACTIVE],
+            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
          ];
      }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAccounts()
+    {
+        return $this->hasMany(Account::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getShopBlacklists()
+    {
+        return $this->hasMany(ShopBlacklist::className(), ['user_id' => 'id']);
+    }
 
     /**
      * @inheritdoc
@@ -72,39 +95,6 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findIdentityByAccessToken($token, $type = null)
     {
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param  string      $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
-    }
-
-    /**
-     * Finds user by password reset token
-     *
-     * @param  string      $token password reset token
-     * @return static|null
-     */
-    public static function findByPasswordResetToken($token)
-    {
-        $expire = \Yii::$app->params['user.passwordResetTokenExpire'];
-        $parts = explode('_', $token);
-        $timestamp = (int) end($parts);
-        if ($timestamp + $expire < time()) {
-            // token expired
-            return null;
-        }
-
-        return static::findOne([
-            'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
-        ]);
     }
 
     /**
@@ -129,6 +119,39 @@ class User extends ActiveRecord implements IdentityInterface
     public function validateAuthKey($authKey)
     {
         return $this->getAuthKey() === $authKey;
+    }
+
+    /**
+     * Finds user by email
+     *
+     * @param  string      $email
+     * @return static|null
+     */
+    public static function findByEmail($email)
+    {
+        return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
+    }
+
+    /**
+     * Finds user by password reset token
+     *
+     * @param  string      $token password reset token
+     * @return static|null
+     */
+    public static function findByPasswordResetToken($token)
+    {
+        $expire = \Yii::$app->params['user.passwordResetTokenExpire'];
+        $parts = explode('_', $token);
+        $timestamp = (int) end($parts);
+        if ($timestamp + $expire < time()) {
+            // token expired
+            return null;
+        }
+
+        return static::findOne([
+            'password_reset_token' => $token,
+            'status' => self::STATUS_ACTIVE,
+        ]);
     }
 
     /**

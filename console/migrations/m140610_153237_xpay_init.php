@@ -11,15 +11,17 @@ class m140610_153237_xpay_init extends \yii\db\Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%customer}}', [
+        $this->createTable('{{%user}}', [
             'id'                   => Schema::TYPE_PK,
             'first_name'           => Schema::TYPE_STRING   . ' NOT NULL',
             'last_name'            => Schema::TYPE_STRING   . ' NOT NULL',
             'email'                => Schema::TYPE_STRING   . ' NOT NULL',
-            'password'             => Schema::TYPE_STRING   . ' NOT NULL',
-            'password_reset_token' => Schema::TYPE_STRING   . '(32)',
+            'auth_key'             => Schema::TYPE_STRING . '(32) NOT NULL',
+            'password_hash'        => Schema::TYPE_STRING   . ' NOT NULL',
+            'password_reset_token' => Schema::TYPE_STRING,
             'api_token'            => Schema::TYPE_STRING   . '(32) NOT NULL',
             'role'                 => Schema::TYPE_SMALLINT . ' NOT NULL DEFAULT 10',
+            'status'               => Schema::TYPE_SMALLINT . ' NOT NULL DEFAULT 10',
             'last_login_time'      => Schema::TYPE_DATETIME,
             'last_login_ip'        => Schema::TYPE_INTEGER  . ' UNSIGNED',
             'created_at'           => Schema::TYPE_DATETIME . ' NOT NULL',
@@ -28,7 +30,7 @@ class m140610_153237_xpay_init extends \yii\db\Migration
 
         $this->createTable('{{%account}}', [
             'id'          => Schema::TYPE_PK,
-            'customer_id' => Schema::TYPE_INTEGER  . ' NOT NULL',
+            'user_id'     => Schema::TYPE_INTEGER  . ' NOT NULL',
             'number'      => Schema::TYPE_INTEGER  . ' UNSIGNED NOT NULL',
             'balance'     => Schema::TYPE_DECIMAL  . '(11,2) NOT NULL',
             'created_at'  => Schema::TYPE_DATETIME . ' NOT NULL',
@@ -68,8 +70,8 @@ class m140610_153237_xpay_init extends \yii\db\Migration
         ], $tableOptions);
 
         $this->createTable('{{%shopBlacklist}}', [
-            'id' => Schema::TYPE_PK,
-            'customer_id' => Schema::TYPE_INTEGER  . ' NOT NULL',
+            'id'          => Schema::TYPE_PK,
+            'user_id'     => Schema::TYPE_INTEGER  . ' NOT NULL',
             'shop_id'     => Schema::TYPE_INTEGER  . ' NOT NULL',
             'created_at'  => Schema::TYPE_DATETIME . ' NOT NULL',
             'updated_at'  => Schema::TYPE_DATETIME . ' NOT NULL',
@@ -115,7 +117,7 @@ class m140610_153237_xpay_init extends \yii\db\Migration
 
 
         // Unique Idx
-        $this->createIndex('email_unique', '{{%customer}}', 'email', true);
+        $this->createIndex('email_unique', '{{%user}}', 'email', true);
         $this->createIndex('number_unique', '{{%account}}', 'number', true);
         $this->createIndex('transaction_id_unique', '{{%transaction}}', 'transaction_id', true);
         $this->createIndex('transaction_id_unique', '{{%checkoutRequest}}', 'transaction_id', true);
@@ -124,9 +126,9 @@ class m140610_153237_xpay_init extends \yii\db\Migration
         $this->createIndex('uuid_unique', '{{%transactionRequest}}', 'uuid', true);
 
         // Foreign key constraints
-        $this->addForeignKey('account_customer_idx',
-            '{{%account}}', 'customer_id',
-            '{{%customer}}', 'id',
+        $this->addForeignKey('account_user_idx',
+            '{{%account}}', 'user_id',
+            '{{%user}}', 'id',
             'RESTRICT', 'CASCADE');
         $this->addForeignKey('transaction_account_idx',
             '{{%transaction}}', 'account_id',
@@ -136,9 +138,9 @@ class m140610_153237_xpay_init extends \yii\db\Migration
             '{{%accountStatement}}', 'account_id',
             '{{%account}}', 'id',
             'CASCADE', 'CASCADE');
-        $this->addForeignKey('shopblacklist_customer_idx',
-            '{{%shopBlacklist}}', 'customer_id',
-            '{{%customer}}', 'id',
+        $this->addForeignKey('shopblacklist_user_idx',
+            '{{%shopBlacklist}}', 'user_id',
+            '{{%user}}', 'id',
             'CASCADE', 'CASCADE');
         $this->addForeignKey('shop_blacklist_shop_idx',
             '{{%shopBlacklist}}', 'shop_id',

@@ -14,7 +14,6 @@
 
 echo "<?php\n";
 ?>
-
 namespace <?= $generator->ns ?>;
 
 use Yii;
@@ -62,7 +61,8 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
     {
         return [
             'timestamp' => [
-                'class' => '\yii\behaviors\TimestampBehavior',
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'value' => new \yii\db\Expression('NOW()'),
             ],
         ];
     }

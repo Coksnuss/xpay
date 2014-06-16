@@ -10,6 +10,7 @@ namespace common\gii\generators\model;
  */
 class Generator extends \yii\gii\generators\model\Generator
 {
+    public $ns = 'common\models';
     public $useTablePrefix = true;
     public $includeTimestampBehavior = true;
     public $createdColumnName = 'created_at';
