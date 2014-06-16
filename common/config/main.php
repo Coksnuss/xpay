@@ -10,7 +10,7 @@ return [
             'viewPath' => '@common/mail',
             'messageConfig' => [
                 'charset' => 'UTF-8',
-                'from' => 'noreply@test.tld',
+                'from' => 'xpay@wsp.lab.sit.cased.de',
             ],
             'transport' => [
                 'class'      => 'Swift_SmtpTransport',
@@ -29,6 +29,10 @@ return [
         'altMail' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@common/mail',
+            'messageConfig' => [
+                'charset' => 'UTF-8',
+                'from' => 'ops1@wsp.lab.sit.cased.de',
+            ],
             'transport' => [
                 'class'      => 'Swift_SmtpTransport',
                 'host'       => 'mail.wsp.lab.sit.cased.de',
