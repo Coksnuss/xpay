@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "310c2b3cafb9f8d3160b12f01ceaf63e",
+    "hash": "55c40b6a24dbe57b9590c1b577b02a64",
     "packages": [
         {
             "name": "cebe/markdown",
@@ -111,17 +111,80 @@
             "time": "2013-11-30 08:25:19"
         },
         {
+            "name": "slam/tcpdf",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Slamdunk/tcpdf.git",
+                "reference": "d6a2206ab366f493680a22151429f17fd045fe04"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Slamdunk/tcpdf/zipball/d6a2206ab366f493680a22151429f17fd045fe04",
+                "reference": "d6a2206ab366f493680a22151429f17fd045fe04",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "fonts",
+                    "config",
+                    "include",
+                    "tcpdf.php",
+                    "tcpdf_parser.php",
+                    "tcpdf_import.php",
+                    "tcpdf_barcodes_1d.php",
+                    "tcpdf_barcodes_2d.php",
+                    "include/tcpdf_colors.php",
+                    "include/tcpdf_filters.php",
+                    "include/tcpdf_font_data.php",
+                    "include/tcpdf_fonts.php",
+                    "include/tcpdf_images.php",
+                    "include/tcpdf_static.php",
+                    "include/barcodes/datamatrix.php",
+                    "include/barcodes/pdf417.php",
+                    "include/barcodes/qrcode.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Nicola Asuni",
+                    "email": "info@tecnick.com",
+                    "homepage": "http://nicolaasuni.tecnick.com"
+                }
+            ],
+            "description": "TCPDF is a PHP class for generating PDF documents.",
+            "homepage": "http://www.tcpdf.org/",
+            "keywords": [
+                "PDFD32000-2008",
+                "TCPDF",
+                "barcodes",
+                "datamatrix",
+                "pdf",
+                "pdf417",
+                "qrcode"
+            ],
+            "time": "2014-05-29 18:28:56"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "41a2d6227dbb47c1ec28d1a9508c61646bbb30ee"
+                "reference": "7b048deea4ee9c49c70c40a15f4045f8dff765bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/41a2d6227dbb47c1ec28d1a9508c61646bbb30ee",
-                "reference": "41a2d6227dbb47c1ec28d1a9508c61646bbb30ee",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/7b048deea4ee9c49c70c40a15f4045f8dff765bc",
+                "reference": "7b048deea4ee9c49c70c40a15f4045f8dff765bc",
                 "shasum": ""
             },
             "require": {
@@ -162,7 +225,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2014-06-01 03:21:42"
+            "time": "2014-06-13 11:45:24"
         },
         {
             "name": "twbs/bootstrap",
@@ -170,12 +233,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "4aca4cf8661ab6e17ffd58820679a081db80ceaa"
+                "reference": "045aceef943330a84042a6f3a5c81dc79a10e7e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/4aca4cf8661ab6e17ffd58820679a081db80ceaa",
-                "reference": "4aca4cf8661ab6e17ffd58820679a081db80ceaa",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/045aceef943330a84042a6f3a5c81dc79a10e7e5",
+                "reference": "045aceef943330a84042a6f3a5c81dc79a10e7e5",
                 "shasum": ""
             },
             "replace": {
@@ -213,7 +276,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2014-06-10 07:26:20"
+            "time": "2014-06-15 17:33:15"
         },
         {
             "name": "yiisoft/jquery",
@@ -270,12 +333,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "3fa2374530fd1d2dabaf20c0a2f506965cc40a2c"
+                "reference": "42fa51b346273de20734937ce95f1f2a13802c9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/3fa2374530fd1d2dabaf20c0a2f506965cc40a2c",
-                "reference": "3fa2374530fd1d2dabaf20c0a2f506965cc40a2c",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/42fa51b346273de20734937ce95f1f2a13802c9e",
+                "reference": "42fa51b346273de20734937ce95f1f2a13802c9e",
                 "shasum": ""
             },
             "require": {
@@ -340,7 +403,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2014-06-10 14:13:56"
+            "time": "2014-06-16 20:50:44"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -348,12 +411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-bootstrap.git",
-                "reference": "844c1ec17edf735fe7f0c26648c3d03db89d48f1"
+                "reference": "71eeb90b2cb95d2b52544b4997bf692c45a551cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap/zipball/844c1ec17edf735fe7f0c26648c3d03db89d48f1",
-                "reference": "844c1ec17edf735fe7f0c26648c3d03db89d48f1",
+                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap/zipball/71eeb90b2cb95d2b52544b4997bf692c45a551cf",
+                "reference": "71eeb90b2cb95d2b52544b4997bf692c45a551cf",
                 "shasum": ""
             },
             "require": {
@@ -383,7 +446,7 @@
                 "bootstrap",
                 "yii2"
             ],
-            "time": "2014-06-09 14:20:00"
+            "time": "2014-06-14 01:54:14"
         },
         {
             "name": "yiisoft/yii2-composer",
@@ -559,12 +622,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-debug.git",
-                "reference": "80bc02b9faa20cf7f3026bd376e7951b4189b39a"
+                "reference": "ef0c5dab7ffebb1018263dbaf4dbe96a85be3187"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/80bc02b9faa20cf7f3026bd376e7951b4189b39a",
-                "reference": "80bc02b9faa20cf7f3026bd376e7951b4189b39a",
+                "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/ef0c5dab7ffebb1018263dbaf4dbe96a85be3187",
+                "reference": "ef0c5dab7ffebb1018263dbaf4dbe96a85be3187",
                 "shasum": ""
             },
             "require": {
@@ -595,7 +658,7 @@
                 "debugger",
                 "yii2"
             ],
-            "time": "2014-06-09 13:17:54"
+            "time": "2014-06-17 01:01:48"
         },
         {
             "name": "yiisoft/yii2-gii",
@@ -603,12 +666,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-gii.git",
-                "reference": "85758952444fd62d74118f920e0735df1ba67385"
+                "reference": "6a625c69af9b0fba0935ecc0511085ed3be71bdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-gii/zipball/85758952444fd62d74118f920e0735df1ba67385",
-                "reference": "85758952444fd62d74118f920e0735df1ba67385",
+                "url": "https://api.github.com/repos/yiisoft/yii2-gii/zipball/6a625c69af9b0fba0935ecc0511085ed3be71bdf",
+                "reference": "6a625c69af9b0fba0935ecc0511085ed3be71bdf",
                 "shasum": ""
             },
             "require": {
@@ -640,7 +703,7 @@
                 "gii",
                 "yii2"
             ],
-            "time": "2014-06-08 21:26:19"
+            "time": "2014-06-13 14:04:48"
         }
     ],
     "aliases": [
