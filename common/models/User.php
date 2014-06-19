@@ -155,4 +155,12 @@ class User extends \common\models\base\User implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+    
+    /**
+     * 
+     */
+    public function getPreferredCurrency()
+    {
+    	return $this->preferred_currency;
+    }
 }
