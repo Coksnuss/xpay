@@ -1,6 +1,9 @@
 <?php
 namespace common\gii\generators\model;
 
+use Yii;
+use yii\gii\CodeFile;
+
 /**
  * This generator will generate one or multiple ActiveRecord classes for the specified database table.
  *
@@ -10,7 +13,7 @@ namespace common\gii\generators\model;
  */
 class Generator extends \yii\gii\generators\model\Generator
 {
-    public $ns = 'common\models';
+    public $ns = 'common\models\base';
     public $useTablePrefix = true;
     public $includeTimestampBehavior = true;
     public $createdColumnName = 'created_at';
@@ -73,5 +76,58 @@ class Generator extends \yii\gii\generators\model\Generator
         }
 
         return $rules;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getTableNames()
+    {
+        $tableNames = parent::getTableNames();
+
+        if (($key = array_search('migration', $tableNames)) !== false) {
+            unset($tableNames[$key]);
+            return array_values($tableNames);
+        }
+
+        return $tableNames;
+    }
+
+    /**
+     * @return string The namespace for the child class which is used by the
+     * developers for non-automatically generated code.
+     */
+    public function getChildNs()
+    {
+        return \yii\helpers\StringHelper::dirname($this->ns);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function generate()
+    {
+        $files = parent::generate();
+
+        /* array_walk($files, function ($v, $k) {
+            if ($v->operation == \yii\gii\CodeFile::OP_SKIP) {
+                $v->operation = \yii\gii\CodeFile::OP_CREATE;
+            }
+        }); */
+
+        $db = $this->getDbConnection();
+        foreach ($this->getTableNames() as $tableName) {
+            $className = $this->generateClassName($tableName);
+            $params = [
+                'tableName' => $tableName,
+                'className' => $className,
+            ];
+            $files[] = new CodeFile(
+                Yii::getAlias('@' . str_replace('\\', '/', $this->getChildNs())) . '/' . $className . '.php',
+                $this->render('child_model.php', $params)
+            );
+        }
+
+        return $files;
     }
 }

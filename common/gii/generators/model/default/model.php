@@ -20,6 +20,8 @@ use Yii;
 
 /**
  * This is the model class for table "<?= $tableName ?>".
+ * Please do not add custom code to this file, as it is supposed to be overriden
+ * by the gii model generator. Custom code belongs to <?= $generator->getChildNs() . '\\' . $className ?>.
  *
 <?php foreach ($tableSchema->columns as $column): ?>
  * @property <?= "{$column->phpType} \${$column->name}\n" ?>
