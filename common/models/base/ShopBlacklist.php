@@ -4,7 +4,7 @@ namespace common\models\base;
 use Yii;
 
 /**
- * This is the model class for table "shopBlacklist".
+ * This is the model class for table "shop_blacklist".
  * Please do not add custom code to this file, as it is supposed to be overriden
  * by the gii model generator. Custom code belongs to common\models\ShopBlacklist.
  *
@@ -19,6 +19,14 @@ use Yii;
  */
 class ShopBlacklist extends \yii\db\ActiveRecord
 {
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%shop_blacklist}}';
+    }
+
     /**
      * @inheritdoc
      */

@@ -4,7 +4,7 @@ namespace common\models\base;
 use Yii;
 
 /**
- * This is the model class for table "accountStatement".
+ * This is the model class for table "account_statement".
  * Please do not add custom code to this file, as it is supposed to be overriden
  * by the gii model generator. Custom code belongs to common\models\AccountStatement.
  *
@@ -19,6 +19,14 @@ use Yii;
  */
 class AccountStatement extends \yii\db\ActiveRecord
 {
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%account_statement}}';
+    }
+
     /**
      * @inheritdoc
      */

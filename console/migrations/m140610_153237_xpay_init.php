@@ -53,7 +53,7 @@ class m140610_153237_xpay_init extends \yii\db\Migration
             'updated_at'                => Schema::TYPE_DATETIME . ' NOT NULL',
         ], $tableOptions);
 
-        $this->createTable('{{%accountStatement}}', [
+        $this->createTable('{{%account_statement}}', [
             'id'                      => Schema::TYPE_PK,
             'account_id'              => Schema::TYPE_INTEGER  . ' NOT NULL',
             'date'                    => Schema::TYPE_DATE     . ' NOT NULL',
@@ -70,7 +70,7 @@ class m140610_153237_xpay_init extends \yii\db\Migration
             'updated_at' => Schema::TYPE_DATETIME . ' NOT NULL',
         ], $tableOptions);
 
-        $this->createTable('{{%shopBlacklist}}', [
+        $this->createTable('{{%shop_blacklist}}', [
             'id'          => Schema::TYPE_PK,
             'user_id'     => Schema::TYPE_INTEGER  . ' NOT NULL',
             'shop_id'     => Schema::TYPE_INTEGER  . ' NOT NULL',
@@ -86,7 +86,7 @@ class m140610_153237_xpay_init extends \yii\db\Migration
             'updated_at'        => Schema::TYPE_DATETIME . ' NOT NULL',
         ], $tableOptions);
 
-        $this->createTable('{{%checkoutRequest}}', [
+        $this->createTable('{{%checkout_request}}', [
             'id'                      => Schema::TYPE_PK,
             'transaction_id'          => Schema::TYPE_STRING   . '(32) NOT NULL',
             'amount'                  => Schema::TYPE_DECIMAL  . '(11,2) NOT NULL',
@@ -102,7 +102,7 @@ class m140610_153237_xpay_init extends \yii\db\Migration
             'updated_at'              => Schema::TYPE_DATETIME . ' NOT NULL',
         ], $tableOptions);
 
-        $this->createTable('{{%transactionRequest}}', [
+        $this->createTable('{{%transaction_request}}', [
             'id'                      => Schema::TYPE_PK,
             'uuid'                    => Schema::TYPE_STRING   . ' NOT NULL',
             'sender_account_number'   => Schema::TYPE_INTEGER  . ' UNSIGNED NOT NULL',
@@ -121,10 +121,10 @@ class m140610_153237_xpay_init extends \yii\db\Migration
         $this->createIndex('email_unique', '{{%user}}', 'email', true);
         $this->createIndex('number_unique', '{{%account}}', 'number', true);
         $this->createIndex('transaction_id_unique', '{{%transaction}}', 'transaction_id', true);
-        $this->createIndex('transaction_id_unique', '{{%checkoutRequest}}', 'transaction_id', true);
+        $this->createIndex('transaction_id_unique', '{{%checkout_request}}', 'transaction_id', true);
         $this->createIndex('iso_4217_name_unique', '{{%currency}}', 'iso_4217_name', true);
         $this->createIndex('uuid_unique', '{{%transaction}}', 'uuid', true);
-        $this->createIndex('uuid_unique', '{{%transactionRequest}}', 'uuid', true);
+        $this->createIndex('uuid_unique', '{{%transaction_request}}', 'uuid', true);
 
         // Foreign key constraints
         $this->addForeignKey('account_user_idx',
@@ -135,16 +135,16 @@ class m140610_153237_xpay_init extends \yii\db\Migration
             '{{%transaction}}', 'account_id',
             '{{%account}}', 'id',
             'RESTRICT', 'CASCADE');
-        $this->addForeignKey('accountstatement_account_idx',
-            '{{%accountStatement}}', 'account_id',
+        $this->addForeignKey('account_statement_account_idx',
+            '{{%account_statement}}', 'account_id',
             '{{%account}}', 'id',
             'CASCADE', 'CASCADE');
-        $this->addForeignKey('shopblacklist_user_idx',
-            '{{%shopBlacklist}}', 'user_id',
+        $this->addForeignKey('shop_blacklist_user_idx',
+            '{{%shop_blacklist}}', 'user_id',
             '{{%user}}', 'id',
             'CASCADE', 'CASCADE');
         $this->addForeignKey('shop_blacklist_shop_idx',
-            '{{%shopBlacklist}}', 'shop_id',
+            '{{%shop_blacklist}}', 'shop_id',
             '{{%shop}}', 'id',
             'CASCADE', 'CASCADE');
     }

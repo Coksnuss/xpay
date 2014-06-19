@@ -35,7 +35,6 @@ use Yii;
  */
 class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
-<?php if (!$generator->useTablePrefix): ?>
     /**
      * @inheritdoc
      */
@@ -43,9 +42,8 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
     {
         return '<?= $generator->generateTableName($tableName) ?>';
     }
-
-<?php endif; ?>
 <?php if ($generator->db !== 'db'): ?>
+
     /**
      * @return \yii\db\Connection the database connection used by this AR class.
      */
@@ -53,9 +51,9 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
     {
         return Yii::$app->get('<?= $generator->db ?>');
     }
-
 <?php endif; ?>
 <?php if ($generator->includeTimestampBehavior): ?>
+
     /**
      * @inheritdoc
      */
@@ -68,8 +66,8 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
             ],
         ];
     }
-
 <?php endif; ?>
+
     /**
      * @inheritdoc
      */

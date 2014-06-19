@@ -4,7 +4,7 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "transactionRequest".
+ * This is the model class for table "transaction_request".
  *
  * Check the base class at common\models\base\TransactionRequest in order to
  * see the column names and relations.
