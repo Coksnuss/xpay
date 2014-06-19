@@ -4,6 +4,7 @@ use yii\db\Schema;
 
 class m140610_153237_xpay_init extends \yii\db\Migration
 {
+    // CREATE DATABASE `xpay` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
     public function up()
     {
         $tableOptions = null;
@@ -16,7 +17,7 @@ class m140610_153237_xpay_init extends \yii\db\Migration
             'first_name'           => Schema::TYPE_STRING   . ' NOT NULL',
             'last_name'            => Schema::TYPE_STRING   . ' NOT NULL',
             'email'                => Schema::TYPE_STRING   . ' NOT NULL',
-            'auth_key'             => Schema::TYPE_STRING . '(32) NOT NULL',
+            'auth_key'             => Schema::TYPE_STRING   . '(32) NOT NULL',
             'password_hash'        => Schema::TYPE_STRING   . ' NOT NULL',
             'password_reset_token' => Schema::TYPE_STRING,
             'api_token'            => Schema::TYPE_STRING   . '(32) NOT NULL',
@@ -89,7 +90,7 @@ class m140610_153237_xpay_init extends \yii\db\Migration
             'id'                      => Schema::TYPE_PK,
             'transaction_id'          => Schema::TYPE_STRING   . '(32) NOT NULL',
             'amount'                  => Schema::TYPE_DECIMAL  . '(11,2) NOT NULL',
-            'currency'                => Schema::TYPE_STRING   . '(3) NOT NULL', // TODO: FK??
+            'currency'                => Schema::TYPE_STRING   . '(3) NOT NULL',
             'receiver_account_number' => Schema::TYPE_INTEGER  . ' UNSIGNED NOT NULL',
             'tax'                     => Schema::TYPE_FLOAT    . '(3,2)',
             'return_url'              => Schema::TYPE_STRING   . ' NOT NULL',
@@ -107,7 +108,7 @@ class m140610_153237_xpay_init extends \yii\db\Migration
             'sender_account_number'   => Schema::TYPE_INTEGER  . ' UNSIGNED NOT NULL',
             'receiver_account_number' => Schema::TYPE_INTEGER  . ' UNSIGNED NOT NULL',
             'amount'                  => Schema::TYPE_DECIMAL  . '(11,2) NOT NULL',
-            'currency'                => Schema::TYPE_STRING   . '(3) NOT NULL', // TODO: FK??
+            'currency'                => Schema::TYPE_STRING   . '(3) NOT NULL',
             'description'             => Schema::TYPE_STRING   . ' NOT NULL',
             'type'                    => Schema::TYPE_SMALLINT . ' NOT NULL',
             'transaction_id'          => Schema::TYPE_STRING,

@@ -9,44 +9,15 @@ use yii\web\IdentityInterface;
 /**
  * This is the model class for table "user".
  *
- * @property integer $id
- * @property string $first_name
- * @property string $last_name
- * @property string $email
- * @property string $auth_key
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $api_token
- * @property integer $role
- * @property integer $status
- * @property string $last_login_time
- * @property string $last_login_ip
- * @property string $created_at
- * @property string $updated_at
- * @property string $password write-only password
- *
- * @property Account[] $accounts
- * @property ShopBlacklist[] $shopBlacklists
+ * Check the base class at common\models\base\User in order to
+ * see the column names and relations.
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends \common\models\base\User implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
     const ROLE_USER = 10;
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'timestamp' => [
-                'class' => 'yii\behaviors\TimestampBehavior',
-                'value' => new \yii\db\Expression('NOW()'),
-            ],
-        ];
-    }
 
     /**
      * @inheritdoc
@@ -63,23 +34,6 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
          ];
      }
-
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAccounts()
-    {
-        return $this->hasMany(Account::className(), ['user_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getShopBlacklists()
-    {
-        return $this->hasMany(ShopBlacklist::className(), ['user_id' => 'id']);
-    }
 
     /**
      * @inheritdoc
