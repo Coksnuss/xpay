@@ -21,6 +21,7 @@ return [
         'path' => 'dev',
         'writable' => [
             'api/runtime',
+            'api/web/assets',
             'backend/runtime',
             'backend/web/assets',
             'frontend/runtime',
@@ -34,6 +35,7 @@ return [
         'path' => 'prod',
         'writable' => [
             'api/runtime',
+            'api/web/assets',
             'backend/runtime',
             'backend/web/assets',
             'frontend/runtime',

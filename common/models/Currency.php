@@ -11,5 +11,12 @@ use Yii;
  */
 class Currency extends \common\models\base\Currency
 {
-
+    /**
+     * @return array A list containing the available currency codes in ISO 4217
+     * format.
+     */
+    public static function getAvailableCurrencyCodes()
+    {
+        return static::find()->select('iso_4217_name')->column();
+    }
 }

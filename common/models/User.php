@@ -2,7 +2,6 @@
 namespace common\models;
 
 use yii\base\NotSupportedException;
-use yii\db\ActiveRecord;
 use yii\helpers\Security;
 use yii\web\IdentityInterface;
 
@@ -48,7 +47,11 @@ class User extends \common\models\base\User implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        if ($type === \yii\filters\auth\HttpBasicAuth::className()) {
+            return static::findOne(['api_token' => $token, 'status' => self::STATUS_ACTIVE]);
+        } else {
+            throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        }
     }
 
     /**

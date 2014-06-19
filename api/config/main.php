@@ -26,11 +26,20 @@ return [
             ],
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'api/error',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
             'showScriptName'  => false,
+            'rules' => [
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'pluralize' => false,
+                    'controller' => 'checkout',
+                    'tokens' => ['{id}' => '<id:[A-Za-z0-9_.-]{32}>'],
+                ],
+            ],
         ],
     ],
     'params' => $params,

@@ -11,5 +11,20 @@ use Yii;
  */
 class Transaction extends \common\models\base\Transaction
 {
+    /**
+     * The available transaction types.
+     */
+    const TYPE_ORDER = 1;
 
+
+    /**
+     * @return array A list of transaction types indexed by the corresponding
+     * type ID.
+     */
+    public static function getTypeList()
+    {
+        return [
+            self::TYPE_ORDER => 'order',
+        ];
+    }
 }
