@@ -22,7 +22,7 @@ class CheckoutController extends \yii\rest\ActiveController
      * record. Can differ from the primary key. Non composite keys are not
      * supported.
      */
-    public $key = 'transaction_id';
+    public $key = 'checkout_id';
 
 
     /**

@@ -17,6 +17,7 @@ use Yii;
  *
  * @property User $user
  * @property AccountStatement[] $accountStatements
+ * @property CheckoutRequest[] $checkoutRequests
  * @property Transaction[] $transactions
  */
 class Account extends \yii\db\ActiveRecord
@@ -84,6 +85,14 @@ class Account extends \yii\db\ActiveRecord
     public function getAccountStatements()
     {
         return $this->hasMany(AccountStatement::className(), ['account_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCheckoutRequests()
+    {
+        return $this->hasMany(CheckoutRequest::className(), ['account_id' => 'id']);
     }
 
     /**

@@ -29,7 +29,7 @@ class CreateAction extends \yii\rest\CreateAction
 
         return [
             'response' => $model,
-            'error' => ['code' => ErrorCode::ERROR_CODE_VALIDATION, 'status' => 'Data validation failed'],
+            'error' => ['code' => ErrorCode::ERROR_CODE_VALIDATION, 'message' => implode(' ', $model->getFirstErrors())],
         ];
     }
 }

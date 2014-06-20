@@ -11,7 +11,7 @@ class ErrorHandler extends \yii\web\ErrorHandler
      */
     protected function renderException($exception)
     {
-        if (\Yii::$app->has('response')) {
+        if (Yii::$app->has('response')) {
             $response = Yii::$app->getResponse();
         } else {
             $response = new Response();

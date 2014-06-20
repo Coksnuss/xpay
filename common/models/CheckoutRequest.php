@@ -22,7 +22,8 @@ class CheckoutRequest extends \common\models\base\CheckoutRequest
     public function rules()
     {
         return ArrayHelper::merge([
-            ['transaction_id', 'filter', 'filter' => [$this, 'generateApiKeyIfNotExists']],
+            ['checkout_id', 'filter', 'filter' => [$this, 'generateApiKeyIfNotExists']],
+            ['amount', 'number', 'min' => 0],
             ['currency', 'in', 'range' => Currency::getAvailableCurrencyCodes()],
             ['receiver_account_number', 'integer', 'min' => 100000, 'max' => 500000],
             ['tax', 'number', 'min' => 0, 'max' => 1],
@@ -48,7 +49,7 @@ class CheckoutRequest extends \common\models\base\CheckoutRequest
     }
 
     /**
-     * Ensures that transaction_id is flagged as an unsafe attribute for all
+     * Ensures that checkout_id is flagged as an unsafe attribute for all
      * scenarios, i.e. it can not be set by a user.
      *
      * @return array a list of scenarios and the corresponding active attributes.
@@ -58,10 +59,10 @@ class CheckoutRequest extends \common\models\base\CheckoutRequest
         $scenarios = parent::scenarios();
 
         foreach ($scenarios as $scenario => $attributes) {
-            $key = array_search('transaction_id', $scenarios[$scenario]);
+            $key = array_search('checkout_id', $scenarios[$scenario]);
 
             if ($key !== false) {
-                $scenarios[$scenario][$key] = '!transaction_id';
+                $scenarios[$scenario][$key] = '!checkout_id';
             }
         }
 
@@ -74,7 +75,7 @@ class CheckoutRequest extends \common\models\base\CheckoutRequest
     public function fields()
     {
         return [
-            'transaction_id'          => 'transaction_id',
+            'checkout_id'             => 'checkout_id',
             'amount'                  => 'amount',
             'currency'                => 'currency',
             'receiver_account_number' => 'receiver_account_number',

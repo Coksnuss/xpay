@@ -9,7 +9,8 @@ use Yii;
  * by the gii model generator. Custom code belongs to common\models\CheckoutRequest.
  *
  * @property integer $id
- * @property string $transaction_id
+ * @property string $checkout_id
+ * @property integer $account_id
  * @property string $amount
  * @property string $currency
  * @property string $receiver_account_number
@@ -21,6 +22,8 @@ use Yii;
  * @property integer $type
  * @property string $created_at
  * @property string $updated_at
+ *
+ * @property Account $account
  */
 class CheckoutRequest extends \yii\db\ActiveRecord
 {
@@ -51,13 +54,13 @@ class CheckoutRequest extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['transaction_id', 'amount', 'currency', 'receiver_account_number', 'return_url', 'cancel_url', 'description', 'type'], 'required'],
+            [['checkout_id', 'amount', 'currency', 'receiver_account_number', 'return_url', 'cancel_url', 'description', 'type'], 'required'],
+            [['account_id', 'receiver_account_number', 'type'], 'integer'],
             [['amount', 'tax'], 'number'],
-            [['receiver_account_number', 'type'], 'integer'],
-            [['transaction_id'], 'string', 'max' => 32],
+            [['checkout_id'], 'string', 'max' => 32],
             [['currency'], 'string', 'max' => 3],
             [['return_url', 'cancel_url', 'description', 'reference'], 'string', 'max' => 255],
-            [['transaction_id'], 'unique']
+            [['checkout_id'], 'unique']
         ];
     }
 
@@ -68,7 +71,8 @@ class CheckoutRequest extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'transaction_id' => 'Transaction ID',
+            'checkout_id' => 'Checkout ID',
+            'account_id' => 'Account ID',
             'amount' => 'Amount',
             'currency' => 'Currency',
             'receiver_account_number' => 'Receiver Account Number',
@@ -81,5 +85,13 @@ class CheckoutRequest extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAccount()
+    {
+        return $this->hasOne(Account::className(), ['id' => 'account_id']);
     }
 }
