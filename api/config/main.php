@@ -26,6 +26,7 @@ return [
             ],
         ],
         'errorHandler' => [
+            'class' => 'api\rest\ErrorHandler',
             'errorAction' => 'api/error',
         ],
         'urlManager' => [

@@ -37,11 +37,15 @@ class ApiController extends \yii\web\Controller
      */
     public function actionError()
     {
+        $response = ['response' => new \stdClass()];
+
         if (($exception = Yii::$app->getErrorHandler()->exception) === null) {
-            return [
-                'errorCode' => ErrorCode::ERROR_CODE_UNKNOWN,
-                'errorMessage' => 'Unknown error',
+            $response['error'] = [
+                'code' => ErrorCode::ERROR_CODE_UNKNOWN,
+                'message' => 'Unknown error',
             ];
+
+            return $response;
         }
 
         if ($exception instanceof \yii\web\HttpException) {
@@ -56,9 +60,11 @@ class ApiController extends \yii\web\Controller
             $message = Yii::t('yii', 'An internal server error occurred.');
         }
 
-        return [
-            'errorCode' => $code,
-            'errorMessage' => $message,
+        $response['error'] = [
+            'code' => $code,
+            'message' => $message,
         ];
+
+        return $response;
     }
 }

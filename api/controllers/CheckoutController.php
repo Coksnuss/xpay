@@ -13,6 +13,16 @@ class CheckoutController extends \yii\rest\ActiveController
      * @inheritdoc
      */
     public $modelClass = 'common\models\CheckoutRequest';
+    /**
+     * @inheritdoc
+     */
+    public $serializer = 'api\rest\Serializer';
+    /**
+     * @var string The attribute name which is used as identification for the
+     * record. Can differ from the primary key. Non composite keys are not
+     * supported.
+     */
+    public $key = 'transaction_id';
 
 
     /**
@@ -40,12 +50,11 @@ class CheckoutController extends \yii\rest\ActiveController
             'view' => [
                 'class' => 'yii\rest\ViewAction',
                 'modelClass' => $this->modelClass,
-                'findModel' => [$this, 'findByTransactionId'],
+                'findModel' => [$this, 'findByUniqueKey'],
                 'checkAccess' => [$this, 'checkAccess'],
             ],
             'create' => [
-                'class' => 'api\actions\rest\CreateAction',
-                'key' => 'transaction_id',
+                'class' => 'api\rest\CreateAction',
                 'modelClass' => $this->modelClass,
                 'checkAccess' => [$this, 'checkAccess'],
                 'scenario' => $this->createScenario,
@@ -62,15 +71,15 @@ class CheckoutController extends \yii\rest\ActiveController
      * Finder method for api\actions\rest\CreationAction to find a record with
      * a key which might differ from the primary key.
      */
-    public function findByTransactionId($id, $action)
+    public function findByUniqueKey($key, $action)
     {
         $modelClass = $action->modelClass;
-        $model = $modelClass::findOne(['transaction_id' => $id]);
+        $model = $modelClass::findOne([$this->key => $key]);
 
         if (isset($model)) {
             return $model;
         } else {
-            throw new NotFoundHttpException("Object not found: $id");
+            throw new NotFoundHttpException("Object not found: $key");
         }
     }
 }
