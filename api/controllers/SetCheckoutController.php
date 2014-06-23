@@ -3,11 +3,12 @@ namespace api\controllers;
 
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 
 /**
- * Checkout controller
+ * SetCheckout controller
  */
-class CheckoutController extends \yii\rest\ActiveController
+class SetCheckoutController extends \yii\rest\ActiveController
 {
     /**
      * @inheritdoc
@@ -34,7 +35,7 @@ class CheckoutController extends \yii\rest\ActiveController
         return ArrayHelper::merge(parent::behaviors(), [
             'authenticator' => [
                 'authMethods' => [
-                    \yii\filters\auth\HttpBasicAuth::className(),
+                    // \yii\filters\auth\HttpBasicAuth::className(),
                 ],
             ],
         ]);
@@ -51,12 +52,10 @@ class CheckoutController extends \yii\rest\ActiveController
                 'class' => 'yii\rest\ViewAction',
                 'modelClass' => $this->modelClass,
                 'findModel' => [$this, 'findByUniqueKey'],
-                'checkAccess' => [$this, 'checkAccess'],
             ],
             'create' => [
-                'class' => 'api\rest\CreateAction',
+                'class' => 'api\rest\CheckoutCreateAction',
                 'modelClass' => $this->modelClass,
-                'checkAccess' => [$this, 'checkAccess'],
                 'scenario' => $this->createScenario,
             ],
             'options' => [

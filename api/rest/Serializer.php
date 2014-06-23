@@ -9,20 +9,20 @@ use api\helpers\ErrorCode;
 class Serializer extends \yii\rest\Serializer
 {
     /**
-     * Ensures that the response is an error containing a 'response' and 'error'
+     * Ensures that the result is an error containing a 'result' and 'error'
      * message.
      */
     public function serialize($data)
     {
-        if (!is_array($data) || !isset($data['response']) || !isset($data['error'])) {
+        if (!is_array($data) || !isset($data['result']) || !isset($data['error'])) {
             $data = [
-                'response' => parent::serialize($data),
-                'error' => ['code' => ErrorCode::ERROR_CODE_SUCCESS, 'status' => ''],
+                'result' => parent::serialize($data),
+                'error' => ['code' => ErrorCode::ERROR_CODE_SUCCESS, 'message' => ''],
             ];
 
             return $data;
         } else {
-            $data['response'] = parent::serialize($data['response']);
+            $data['result'] = parent::serialize($data['result']);
         }
 
         return $data;

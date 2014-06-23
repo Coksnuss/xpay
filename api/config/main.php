@@ -37,7 +37,11 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'pluralize' => false,
-                    'controller' => 'checkout',
+                    'only' => ['view', 'create', 'options'],
+                    'controller' => [
+                        'setCheckout' => 'set-checkout',
+                        'doCheckout' => 'do-checkout',
+                    ],
                     'tokens' => ['{id}' => '<id:[A-Za-z0-9_.-]{32}>'],
                 ],
             ],

@@ -1,9 +1,11 @@
 <?php
 namespace frontend\models;
 
-use common\models\User;
 use yii\base\Model;
 use Yii;
+
+use common\models\Account;
+use common\models\User;
 
 /**
  * Signup form
@@ -41,7 +43,14 @@ class SignupForm extends Model
             $user->email = $this->email;
             $user->setPassword($this->password);
             $user->generateAuthKey();
+            $user->generateApiToken();
             $user->save();
+
+            $account = new Account();
+            $account->number = Account::getNextAccountNumber();
+            $account->balance = 0;
+            $user->link('accounts', $account);
+
             return $user;
         }
 
