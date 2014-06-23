@@ -15,12 +15,12 @@ use Yii;
  * @property string $created_at
  * @property string $updated_at
  *
- * @property User $user
- * @property AccountStatement[] $accountStatements
- * @property CheckoutRequest[] $checkoutRequests
- * @property Transaction[] $transactions
+ * @property \common\models\User $user
+ * @property \common\models\AccountStatement[] $accountStatements
+ * @property \common\models\CheckoutRequest[] $checkoutRequests
+ * @property \common\models\Transaction[] $transactions
  */
-class Account extends \yii\db\ActiveRecord
+abstract class Account extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -76,7 +76,7 @@ class Account extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(\common\models\User::className(), ['id' => 'user_id']);
     }
 
     /**
@@ -84,7 +84,7 @@ class Account extends \yii\db\ActiveRecord
      */
     public function getAccountStatements()
     {
-        return $this->hasMany(AccountStatement::className(), ['account_id' => 'id']);
+        return $this->hasMany(\common\models\AccountStatement::className(), ['account_id' => 'id']);
     }
 
     /**
@@ -92,7 +92,7 @@ class Account extends \yii\db\ActiveRecord
      */
     public function getCheckoutRequests()
     {
-        return $this->hasMany(CheckoutRequest::className(), ['account_id' => 'id']);
+        return $this->hasMany(\common\models\CheckoutRequest::className(), ['account_id' => 'id']);
     }
 
     /**
@@ -100,6 +100,6 @@ class Account extends \yii\db\ActiveRecord
      */
     public function getTransactions()
     {
-        return $this->hasMany(Transaction::className(), ['account_id' => 'id']);
+        return $this->hasMany(\common\models\Transaction::className(), ['account_id' => 'id']);
     }
 }

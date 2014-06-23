@@ -21,9 +21,9 @@ use Yii;
  * @property string $created_at
  * @property string $updated_at
  *
- * @property Account $account
+ * @property \common\models\Account $account
  */
-class Transaction extends \yii\db\ActiveRecord
+abstract class Transaction extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -88,6 +88,6 @@ class Transaction extends \yii\db\ActiveRecord
      */
     public function getAccount()
     {
-        return $this->hasOne(Account::className(), ['id' => 'account_id']);
+        return $this->hasOne(\common\models\Account::className(), ['id' => 'account_id']);
     }
 }

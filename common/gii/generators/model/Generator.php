@@ -81,6 +81,24 @@ class Generator extends \yii\gii\generators\model\Generator
     /**
      * @inheritdoc
      */
+    protected function generateRelations()
+    {
+        $relations = parent::generateRelations();
+
+        // Set namespaces from base models to concrete models
+        foreach ($relations as $className => &$rel) {
+            foreach ($rel as $relClassName => &$relation) {
+                $relation[0] = preg_replace('#\(([^:]+)::className\(\)#', '(\\' . $this->getChildNs() . '\\\$1::className()', $relation[0]);
+                $relation[1] = '\\' .  $this->getChildNs() . '\\' . $relation[1];
+            }
+        }
+
+        return $relations;
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getTableNames()
     {
         $tableNames = parent::getTableNames();

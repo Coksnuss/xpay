@@ -14,7 +14,7 @@ use Yii;
  * @property string $created_at
  * @property string $updated_at
  */
-class Currency extends \yii\db\ActiveRecord
+abstract class Currency extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
