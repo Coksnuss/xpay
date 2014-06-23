@@ -27,4 +27,13 @@ class Transaction extends \common\models\base\Transaction
             self::TYPE_ORDER => 'order',
         ];
     }
+    
+    public function attributeLabels(){
+    	return ['created_at' => 'Booked at']+parent::attributeLabels();
+    }
+    
+    public $receiver;
+    public $sender;
+    public $time;
+    
 }
