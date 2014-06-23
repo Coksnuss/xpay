@@ -4,6 +4,7 @@ namespace frontend\models;
 use yii\base\Model;
 use Yii;
 
+use common\models\Currency;
 use common\models\Account;
 use common\models\User;
 
@@ -48,6 +49,7 @@ class SignupForm extends Model
 
             $account = new Account();
             $account->number = Account::getNextAccountNumber();
+            $account->preferred_currency = Currency::getIdByCode(Currency::getPrimaryCurrencyCode());
             $account->balance = 0;
             $user->link('accounts', $account);
 
