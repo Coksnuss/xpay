@@ -13,6 +13,8 @@ use Yii;
  * @property double $eur_exchange_rate
  * @property string $created_at
  * @property string $updated_at
+ *
+ * @property \common\models\Account[] $accounts
  */
 abstract class Currency extends \yii\db\ActiveRecord
 {
@@ -62,5 +64,13 @@ abstract class Currency extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAccounts()
+    {
+        return $this->hasMany(\common\models\Account::className(), ['preferred_currency' => 'id']);
     }
 }

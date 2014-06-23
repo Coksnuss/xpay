@@ -64,4 +64,12 @@ class Transaction extends \common\models\base\Transaction
 
         return parent::save($runValidation, $attributeNames);
     }
+
+    public function attributeLabels(){
+    	return ['created_at' => 'Booked at']+parent::attributeLabels();
+    }
+
+    public $receiver;
+    public $sender;
+    public $time;
 }

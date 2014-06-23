@@ -15,6 +15,7 @@ AppAsset::register($this);
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
+<?= Html::csrfMetaTags() ?>
 <head>
     <meta charset="<?= Yii::$app->charset ?>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,24 +33,24 @@ AppAsset::register($this);
                     'class' => 'navbar-inverse navbar-fixed-top',
                 ],
             ]);
+            $isGuest = Yii::$app->user->isGuest;
             $menuItems = [];
-            if (Yii::$app->user->isGuest){
-            	$menuItems[] = ['label' => 'Home', 'url' => ['/site/index']];
-            } else {
-				$menuItems[] = ['label' => 'Overview', 'url' => ['/transaction-request/index']];
-            }
+            $menuItems[] = ['label' => 'Home', 'url' => ['/site/index'], 'visible'=>$isGuest];
+            $menuItems[] = ['label' => 'Overview', 'url' => ['/transaction/index'], 'visible'=>!$isGuest];
             $menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
 			$menuItems[] = ['label' => 'Contact', 'url' => ['/site/contact']];
-            if (Yii::$app->user->isGuest) {
-                $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-                $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-            } else {
-                $menuItems[] = [
+            $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup'], 'visible'=>$isGuest];
+            $menuItems[] = ['label' => 'Login', 'url' => ['/site/login'], 'visible'=>$isGuest];
+            
+            if (!$isGuest) 
+			{
+				$menuItems[] = [
                     'label' => 'Logout (' . Yii::$app->user->identity->email . ')',
                     'url' => ['/site/logout'],
-                    'linkOptions' => ['data-method' => 'post']
-                ];
-            }
+                    'linkOptions' => ['data-method' => 'post'], 
+					'visible'=>!$isGuest
+           	];
+			}
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => $menuItems,
@@ -68,7 +69,7 @@ AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-        <p class="pull-left">&copy; <?= Yii::$app->params['title']." ".date('Y') ?></p>
+        <p class="pull-left">&copy; <?= Yii::$app->name." ".date('Y') ?></p>
         <p class="pull-right"><?= Yii::powered() ?></p>
         </div>
     </footer>
