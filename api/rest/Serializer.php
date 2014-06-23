@@ -9,7 +9,7 @@ use api\helpers\ErrorCode;
 class Serializer extends \yii\rest\Serializer
 {
     /**
-     * Ensures that the result is an error containing a 'result' and 'error'
+     * Ensures that the result is an array containing a 'result' and 'error'
      * message.
      */
     public function serialize($data)
