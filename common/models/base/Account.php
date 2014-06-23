@@ -14,7 +14,9 @@ use Yii;
  * @property string $balance
  * @property string $created_at
  * @property string $updated_at
+ * @property integer $preferred_currency
  *
+ * @property Currency $preferredCurrency
  * @property User $user
  * @property AccountStatement[] $accountStatements
  * @property CheckoutRequest[] $checkoutRequests
@@ -49,8 +51,8 @@ class Account extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'number', 'balance'], 'required'],
-            [['user_id', 'number'], 'integer'],
+            [['user_id', 'number', 'balance', 'preferred_currency'], 'required'],
+            [['user_id', 'number', 'preferred_currency'], 'integer'],
             [['balance'], 'number'],
             [['number'], 'unique']
         ];
@@ -68,7 +70,16 @@ class Account extends \yii\db\ActiveRecord
             'balance' => 'Balance',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'preferred_currency' => 'Preferred Currency',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPreferredCurrency()
+    {
+        return $this->hasOne(Currency::className(), ['id' => 'preferred_currency']);
     }
 
     /**
