@@ -3,6 +3,7 @@ namespace common\models;
 
 use Yii;
 use yii\helpers\Security;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "transaction".
@@ -15,8 +16,9 @@ class Transaction extends \common\models\base\Transaction
     /**
      * The available transaction types.
      */
-    const TYPE_ORDER = 1;
-
+    const TYPE_ORDER = 1; // Bezahlung
+    const TYPE_RECEIPT = 2; // Eingang von Geld, alternativ Einzahlung = DEPOSIT oder Gutschrift = CREDIT
+    const TYPE_REDEMPTION = 3; // Rückbuchung
 
     /**
      * @inheritdoc
@@ -37,7 +39,9 @@ class Transaction extends \common\models\base\Transaction
     public static function getTypeList()
     {
         return [
-            self::TYPE_ORDER => 'order',
+            self::TYPE_ORDER => 'order', 
+            self::TYPE_RECEIPT=>'receipt', 
+            self::TYPE_REDEMPTION => 'redemption'
         ];
     }
 
@@ -72,4 +76,30 @@ class Transaction extends \common\models\base\Transaction
     public $receiver;
     public $sender;
     public $time;
+    /**
+     * 
+     * @return Ambigous <multitype:, multitype:string >
+     */
+    public function getType()
+    {
+    	return $this->getTypeList()[$this->type];
+    }
+	
+    /**
+     * 
+     * @return string Amount as String with preferred currency
+     */
+	public function getAmount(){
+		$preferredCurrency = $this->account->preferredCurrency;
+		$amountString = (($preferredCurrency->iso_4217_name !== 'EUR')?$this->foreign_currency_amount:$this->amount)." ".$preferredCurrency->iso_4217_name;
+    	switch($this->getType()){
+    		case 'order': 	$amountString = '- '.$amountString;
+    						$amountString = Html::tag('div',$amountString,['class'=>'amount-string amount-negativ']);
+    						break;
+    		default:		$amountString = '+ '.$amountString;
+    						$amountString = Html::tag('div',$amountString,['class'=>'amount-string']);
+    						break;
+    	}
+    	return $amountString;
+    }
 }
