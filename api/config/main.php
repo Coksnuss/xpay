@@ -36,13 +36,19 @@ return [
             'rules' => [
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'pluralize' => false,
                     'only' => ['view', 'create', 'options'],
                     'controller' => [
                         'setCheckout' => 'set-checkout',
                         'doCheckout' => 'do-checkout',
                     ],
                     'tokens' => ['{id}' => '<id:[A-Za-z0-9_.-]{32}>'],
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'only' => ['create', 'options'],
+                    'controller' => [
+                        'doTransaction' => 'do-transaction',
+                    ],
                 ],
             ],
         ],
