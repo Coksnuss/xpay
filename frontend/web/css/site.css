@@ -89,3 +89,13 @@ a.desc:after {
     padding: 10px 20px;
     margin: 0 0 15px 0;
 }
+
+.amount-string {
+	font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+	font-style: normal;
+    font-weight: normal;
+}
+
+.amount-negativ {
+	color: red;
+}

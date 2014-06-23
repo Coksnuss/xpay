@@ -5,6 +5,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use frontend\widgets\Alert;
+use common\models\Account;
 
 /**
  * @var \yii\web\View $this
@@ -35,21 +36,26 @@ AppAsset::register($this);
             ]);
             $isGuest = Yii::$app->user->isGuest;
             $menuItems = [];
-            $menuItems[] = ['label' => 'Home', 'url' => ['/site/index'], 'visible'=>$isGuest];
+            //$menuItems[] = ['label' => 'Home', 'url' => ['/site/index'], 'visible'=>$isGuest];
             $menuItems[] = ['label' => 'Overview', 'url' => ['/transaction/index'], 'visible'=>!$isGuest];
-            $menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
-			$menuItems[] = ['label' => 'Contact', 'url' => ['/site/contact']];
+            //$menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
+			//$menuItems[] = ['label' => 'Contact', 'url' => ['/site/contact']];
             $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup'], 'visible'=>$isGuest];
             $menuItems[] = ['label' => 'Login', 'url' => ['/site/login'], 'visible'=>$isGuest];
             
             if (!$isGuest) 
 			{
 				$menuItems[] = [
+                    'label' => 'Profile',
+                    'url' => ['/account/view','id'=>Account::findOne(['user_id'=>Yii::$app->user->identity->id])->id],
+					'visible'=>!$isGuest
+				];
+				$menuItems[] = [
                     'label' => 'Logout (' . Yii::$app->user->identity->email . ')',
                     'url' => ['/site/logout'],
                     'linkOptions' => ['data-method' => 'post'], 
 					'visible'=>!$isGuest
-           	];
+           		];
 			}
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
@@ -69,7 +75,11 @@ AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-        <p class="pull-left">&copy; <?= Yii::$app->name." ".date('Y') ?></p>
+        <p class="pull-left">
+        	&copy; <?= Yii::$app->name." ".date('Y') ?>
+        	&#124; <?= Html::a('About',['site/about']) ?>
+        	&#124; <?= Html::a('Contact',['site/contact']) ?>
+        </p>
         <p class="pull-right"><?= Yii::powered() ?></p>
         </div>
     </footer>
