@@ -83,7 +83,19 @@ class DoCheckoutController extends \yii\rest\ActiveController
             ];
         }
 
-        return $model->performTransaction();
+        $transaction = $model->performTransaction();
+
+        if ($transaction->hasErrors()) {
+            return [
+                'result' => $transaction,
+                'error' => [
+                    'code' => ErrorCode::ERROR_CODE_VALIDATION,
+                    'message' => implode(' ', $transaction->getFirstErrors()),
+                ],
+            ];
+        }
+
+        return $transaction;
     }
 
     /**
