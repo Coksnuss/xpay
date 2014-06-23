@@ -37,7 +37,7 @@ class ApiController extends \yii\web\Controller
      */
     public function actionError()
     {
-        $response = ['response' => new \stdClass()];
+        $response = ['result' => new \stdClass()];
 
         if (($exception = Yii::$app->getErrorHandler()->exception) === null) {
             $response['error'] = [
@@ -56,6 +56,8 @@ class ApiController extends \yii\web\Controller
 
         if ($exception instanceof \yii\base\UserException) {
             $message = $exception->getMessage();
+        } else if ($exception instanceof \yii\base\Exception) {
+            $message = $exception->getName();
         } else {
             $message = Yii::t('yii', 'An internal server error occurred.');
         }

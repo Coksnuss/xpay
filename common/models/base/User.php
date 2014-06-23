@@ -22,12 +22,11 @@ use Yii;
  * @property string $last_login_ip
  * @property string $created_at
  * @property string $updated_at
- * @property string $preferred_currency
  *
- * @property Account[] $accounts
- * @property ShopBlacklist[] $shopBlacklists
+ * @property \common\models\Account[] $accounts
+ * @property \common\models\ShopBlacklist[] $shopBlacklists
  */
-class User extends \yii\db\ActiveRecord
+abstract class User extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -61,7 +60,6 @@ class User extends \yii\db\ActiveRecord
             [['last_login_time'], 'safe'],
             [['first_name', 'last_name', 'email', 'password_hash', 'password_reset_token'], 'string', 'max' => 255],
             [['auth_key', 'api_token'], 'string', 'max' => 32],
-            [['preferred_currency'], 'string', 'max' => 3],
             [['email'], 'unique']
         ];
     }
@@ -86,7 +84,6 @@ class User extends \yii\db\ActiveRecord
             'last_login_ip' => 'Last Login Ip',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'preferred_currency' => 'Preferred Currency',
         ];
     }
 
@@ -95,7 +92,7 @@ class User extends \yii\db\ActiveRecord
      */
     public function getAccounts()
     {
-        return $this->hasMany(Account::className(), ['user_id' => 'id']);
+        return $this->hasMany(\common\models\Account::className(), ['user_id' => 'id']);
     }
 
     /**
@@ -103,6 +100,6 @@ class User extends \yii\db\ActiveRecord
      */
     public function getShopBlacklists()
     {
-        return $this->hasMany(ShopBlacklist::className(), ['user_id' => 'id']);
+        return $this->hasMany(\common\models\ShopBlacklist::className(), ['user_id' => 'id']);
     }
 }

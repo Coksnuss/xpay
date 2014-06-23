@@ -14,9 +14,9 @@ use Yii;
  * @property string $created_at
  * @property string $updated_at
  *
- * @property ShopBlacklist[] $shopBlacklists
+ * @property \common\models\ShopBlacklist[] $shopBlacklists
  */
-class Shop extends \yii\db\ActiveRecord
+abstract class Shop extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -69,6 +69,6 @@ class Shop extends \yii\db\ActiveRecord
      */
     public function getShopBlacklists()
     {
-        return $this->hasMany(ShopBlacklist::className(), ['shop_id' => 'id']);
+        return $this->hasMany(\common\models\ShopBlacklist::className(), ['shop_id' => 'id']);
     }
 }

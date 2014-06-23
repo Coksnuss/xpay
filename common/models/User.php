@@ -155,9 +155,17 @@ class User extends \common\models\base\User implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
-    
+
     /**
-     * 
+     * Generates a new API Token to be used for API requests.
+     */
+    public function generateApiToken()
+    {
+        $this->api_token = Security::generateRandomKey();
+    }
+
+    /**
+     *
      */
     public function getPreferredCurrency()
     {

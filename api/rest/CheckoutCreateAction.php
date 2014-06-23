@@ -11,7 +11,7 @@ use api\helpers\ErrorCode;
  * key, other than the primary key of a record.
  * Also see CheckoutController::$key.
  */
-class CreateAction extends \yii\rest\CreateAction
+class CheckoutCreateAction extends \yii\rest\CreateAction
 {
     /**
      * @inheritdoc
@@ -28,7 +28,7 @@ class CreateAction extends \yii\rest\CreateAction
         }
 
         return [
-            'response' => $model,
+            'result' => $model,
             'error' => ['code' => ErrorCode::ERROR_CODE_VALIDATION, 'message' => implode(' ', $model->getFirstErrors())],
         ];
     }

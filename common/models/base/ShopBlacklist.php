@@ -14,10 +14,10 @@ use Yii;
  * @property string $created_at
  * @property string $updated_at
  *
- * @property Shop $shop
- * @property User $user
+ * @property \common\models\Shop $shop
+ * @property \common\models\User $user
  */
-class ShopBlacklist extends \yii\db\ActiveRecord
+abstract class ShopBlacklist extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -70,7 +70,7 @@ class ShopBlacklist extends \yii\db\ActiveRecord
      */
     public function getShop()
     {
-        return $this->hasOne(Shop::className(), ['id' => 'shop_id']);
+        return $this->hasOne(\common\models\Shop::className(), ['id' => 'shop_id']);
     }
 
     /**
@@ -78,6 +78,6 @@ class ShopBlacklist extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(\common\models\User::className(), ['id' => 'user_id']);
     }
 }
