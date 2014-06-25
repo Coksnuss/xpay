@@ -8,6 +8,8 @@ use common\models\base\AccountSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+
 
 /**
  * AccountController implements the CRUD actions for Account model.
@@ -17,7 +19,18 @@ class AccountController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
+        	'access' => [
+                'class' => AccessControl::className(),
+                //'only' => ['index','view'],
+                'rules' => [
+                    [
+                        'actions' => ['index','view'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        	'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],

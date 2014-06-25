@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use frontend\models\OverviewTransactionSearch;
+use yii\filters\AccessControl;
 
 /**
  * TransactionController implements the CRUD actions for Transaction model.
@@ -18,6 +19,17 @@ class TransactionController extends Controller
     public function behaviors()
     {
         return [
+        	'access' => [
+                'class' => AccessControl::className(),
+                //'only' => ['index','view'],
+                'rules' => [
+                    [
+                        'actions' => ['index','view'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -100,18 +112,18 @@ class TransactionController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
-        $model = new Transaction();
+//     public function actionCreate()
+//     {
+//         $model = new Transaction();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
+//         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//             return $this->redirect(['view', 'id' => $model->id]);
+//         } else {
+//             return $this->render('create', [
+//                 'model' => $model,
+//             ]);
+//         }
+//     }
 
     /**
      * Updates an existing Transaction model.
@@ -119,18 +131,18 @@ class TransactionController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
+//     public function actionUpdate($id)
+//     {
+//         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
+//         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//             return $this->redirect(['view', 'id' => $model->id]);
+//         } else {
+//             return $this->render('update', [
+//                 'model' => $model,
+//             ]);
+//         }
+//     }
 
     /**
      * Deletes an existing Transaction model.
@@ -138,12 +150,12 @@ class TransactionController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
+//     public function actionDelete($id)
+//     {
+//         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
-    }
+//         return $this->redirect(['index']);
+//     }
 
     /**
      * Finds the Transaction model based on its primary key value.
