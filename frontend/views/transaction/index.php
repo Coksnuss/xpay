@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="transaction-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <div class="right"><?php echo $model->getBalanceLabel();?></div><br>
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
     <p>
         <?=""//Html::a('Create Transaction', ['create'], ['class' => 'btn btn-success']) ?>
@@ -33,16 +34,27 @@ $this->params['breadcrumbs'][] = $this->title;
             //'uuid',
             //'account_id',
             'associated_account_number',
-    		'description',
+    		['attribute'=>'description',
+				'options'=>['width'=>'40%'],
+			],
             ['attribute'=>'amount',
     		'format'=>'raw',
 				'value'=>function($model){
-					return $model->getAmount();
+					return $model->getAmountString();
 			}],
-            // 'type',
+			['attribute'=>'type',
+    		'format'=>'raw',
+				'value'=>function($model){
+					return $model->getType();
+			}],
             // 'foreign_currency_amount',
             // 'foreign_currency_id',
-            'created_at',
+            ['attribute'=>'created_at',
+    		'format'=>'raw',
+            	'value'=>function($model){
+					return Html::tag('div',$model->created_at,['class'=>'right monospace']);
+			}
+			],
             // 'updated_at',
 
             ['class' => 'yii\grid\ActionColumn', 'template'=>'{view}']

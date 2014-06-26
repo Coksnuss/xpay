@@ -89,16 +89,14 @@ class Transaction extends \common\models\base\Transaction
      * 
      * @return string Amount as String with preferred currency
      */
-	public function getAmount(){
+	public function getAmountString(){
 		$preferredCurrency = $this->account->preferredCurrency;
-		$amountString = (($preferredCurrency->iso_4217_name !== 'EUR')?$this->foreign_currency_amount:$this->amount)." ".$preferredCurrency->iso_4217_name;
-    	switch($this->getType()){
-    		case 'order': 	$amountString = '- '.$amountString;
-    						$amountString = Html::tag('div',$amountString,['class'=>'amount-string amount-negativ']);
-    						break;
-    		default:		$amountString = '+ '.$amountString;
-    						$amountString = Html::tag('div',$amountString,['class'=>'amount-string']);
-    						break;
+		$value = (($preferredCurrency->iso_4217_name !== 'EUR')?$this->foreign_currency_amount:$this->amount);
+		$amountString = $value." ".$preferredCurrency->iso_4217_name;
+    	if ($value<0){
+    		$amountString = Html::tag('div',$amountString,['class'=>'monospace amount-negativ right']);
+    	}else{
+    		$amountString = Html::tag('div',$amountString,['class'=>'monospace right']);
     	}
     	return $amountString;
     }

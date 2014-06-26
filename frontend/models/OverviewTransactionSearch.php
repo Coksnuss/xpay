@@ -24,7 +24,15 @@ class OverviewTransactionSearch extends \common\models\TransactionSearch
     	$dataProvider = new ActiveDataProvider([
     			'query' => $query,
     			]);
-    	
+    	$dataProvider->setSort([
+    			'attributes' => [
+    			'description',
+    			'associated_account_number',
+    			'amount',
+    			'created_at',
+    			'type'
+    			]
+    			]);
     	$query->andFilterWhere(['account_id'=>Yii::$app->user->identity->id]);
     	
     	if (!($this->load($params) && $this->validate())) {
