@@ -24,7 +24,7 @@ class AccountController extends Controller
                 //'only' => ['index','view'],
                 'rules' => [
                     [
-                        'actions' => ['index','view'],
+                        'actions' => ['index','view','update'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],

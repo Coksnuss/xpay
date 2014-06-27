@@ -3,6 +3,7 @@ namespace common\models;
 
 use Yii;
 use yii\base\Exception;
+use yii\bootstrap\Button;
 
 /**
  * This is the model class for table "account".
@@ -96,5 +97,24 @@ class Account extends \common\models\base\Account
             $this->balance += $transaction->amount;
             $this->save();
         }
+    }
+    
+    public function getBalanceLabel(){
+    	
+    	$preferredCurrency = $this->preferredCurrency;
+		$value = $this->balance;
+		$balanceString = $value." ".$preferredCurrency->iso_4217_name;
+    	if ($value<0){
+    		return Button::widget([
+		    	'label' => $balanceString,
+		    	'options' => ['class' => 'btn-danger monospace','width'=>250,'disabled'=>true]]);
+    	}else{
+    		return Button::widget([
+		    	'label' => $balanceString,
+		    	'options' => ['class' => 'btn-primary monospace','width'=>250,'disabled'=>true]]);
+    	}
+    	
+    	
+    	return $balanceString;
     }
 }

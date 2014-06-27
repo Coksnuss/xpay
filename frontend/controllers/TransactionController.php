@@ -45,7 +45,8 @@ class TransactionController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new OverviewTransactionSearch();
+        $model = Account::findOne(['user_id'=>Yii::$app->user->identity->id]);
+    	$searchModel = new OverviewTransactionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         
             	/*
@@ -82,16 +83,8 @@ class TransactionController extends Controller
             	$sql .= 'WHERE ';
             	$sql .= 't1.transaction_id = t2.transaction_id) as x2';*/
 
-        $dataProvider->setSort([
-        		'attributes' => [
-        		'description',
-        		'associated_account_number',
-        		'amount',
-        		'created_at'
-        		]
-        		]);
         return $this->render('index', [ 'searchModel' => $searchModel,
-        		'dataProvider' => $dataProvider,
+        		'dataProvider' => $dataProvider, 'model' => $model,
         		]);
     }
 
