@@ -25,6 +25,7 @@ class CheckoutRequest extends \common\models\base\CheckoutRequest
         return ArrayHelper::merge([
             ['checkout_id', 'filter', 'filter' => [$this, 'generateApiKeyIfNotExists']],
             ['amount', 'number', 'min' => 0],
+            ['currency', 'default', 'value' => Currency::getPrimaryCurrencyCode()],
             ['currency', 'in', 'range' => Currency::getAvailableCurrencyCodes()],
             ['receiver_account_number', 'integer', 'min' => Account::GLOBAL_ACCOUNT_NUMBER_START, 'max' => Account::GLOBAL_ACCOUNT_NUMBER_END],
             ['receiver_account_number', 'checkIfAccountValidIfInternal'],

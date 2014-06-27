@@ -34,6 +34,7 @@ return [
             'enableStrictParsing' => true,
             'showScriptName'  => false,
             'rules' => [
+                '' => 'site',
                 [
                     'class' => 'yii\rest\UrlRule',
                     'only' => ['view', 'create', 'options'],
