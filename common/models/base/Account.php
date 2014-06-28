@@ -12,6 +12,9 @@ use Yii;
  * @property integer $user_id
  * @property string $number
  * @property string $balance
+ * @property integer $iban
+ * @property integer $bic
+ * @property integer $status
  * @property string $created_at
  * @property string $updated_at
  * @property integer $preferred_currency
@@ -52,7 +55,7 @@ abstract class Account extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'number', 'balance', 'preferred_currency'], 'required'],
-            [['user_id', 'number', 'preferred_currency'], 'integer'],
+            [['user_id', 'number', 'iban', 'bic', 'status', 'preferred_currency'], 'integer'],
             [['balance'], 'number'],
             [['number'], 'unique']
         ];
@@ -68,6 +71,9 @@ abstract class Account extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'number' => 'Number',
             'balance' => 'Balance',
+            'iban' => 'Iban',
+            'bic' => 'Bic',
+            'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'preferred_currency' => 'Preferred Currency',

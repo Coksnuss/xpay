@@ -219,7 +219,7 @@ Im folgenden werden die möglichen Error Codes die als Antwort auf einen Request
 </table>
 
 
-## doCheckout<a name="set-checkout"></a>
+## doCheckout<a name="do-checkout"></a>
 - **Endpunkt:** http://api.xpay.wsp.lab.sit.cased.de/doCheckout
 - **HTTP Verb:** POST
 - **Beschreibung:** Schließt eine durch den Kunden bestätigte Zahlungsabwicklung ab. Nur gültig innerhalb von 24 nach Anforderung der Zahlungsabwicklung.

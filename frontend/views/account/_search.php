@@ -23,7 +23,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'balance') ?>
 
-    <?= $form->field($model, 'created_at') ?>
+    <?= $form->field($model, 'iban') ?>
+
+    <?php // echo $form->field($model, 'bic') ?>
+
+    <?php // echo $form->field($model, 'status') ?>
+
+    <?php // echo $form->field($model, 'created_at') ?>
 
     <?php // echo $form->field($model, 'updated_at') ?>
 

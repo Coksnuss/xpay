@@ -29,7 +29,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'user_id',
             'number',
             'balance',
-            'created_at',
+            'iban',
+            // 'bic',
+            // 'status',
+            // 'created_at',
             // 'updated_at',
             // 'preferred_currency',
 
