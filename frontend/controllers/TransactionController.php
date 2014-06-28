@@ -48,41 +48,6 @@ class TransactionController extends Controller
         $model = Account::findOne(['user_id'=>Yii::$app->user->identity->id]);
     	$searchModel = new OverviewTransactionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
-            	/*
-            	 * $sql = 'SELECT * ';
-            	$sql .= 'FROM ';
-            	$sql .= '(';
-            	$sql .= 'SELECT t1.transaction_id as transaction_id, ';
-            	$sql .= 't1.associated_account_number as receiver, ';
-            	$sql .= 't1.created_at as time, ';
-            	$sql .= 't2.associated_account_number as sender, ';
-            	$sql .= 't1.type as type,t1.amount as amount ';
-            	$sql .= 'FROM ';
-            	$sql .= '(SELECT * FROM transaction AS t WHERE t.type = 1 AND t.account_id = 1) as t1 ';
-            	$sql .= 'INNER JOIN ';
-            	$sql .= '(SELECT * FROM transaction AS t WHERE t.type = 2 AND t.account_id <> 1) as t2 ';
-            	$sql .= 'WHERE ';
-            	$sql .= 't1.transaction_id = t2.transaction_id';
-            	$sql .= ') as x1 ';
-            	$sql .= 'UNION ALL ';
-            	$sql .= 'SELECT * ';
-            	$sql .= 'FROM ';
-            	$sql .= '(';
-            	$sql .= 'SELECT ';
-            	$sql .= 't1.transaction_id as transaction_id, ';
-            	$sql .= 't2.associated_account_number as receiver, ';
-            	$sql .= 't1.created_at as time, ';
-            	$sql .= 't1.associated_account_number as sender, ';
-            	$sql .= 't1.type as type, ';
-            	$sql .= 't1.amount as amount ';
-            	$sql .= 'FROM ';
-            	$sql .= '(SELECT * FROM transaction AS t WHERE t.type = 2 AND t.account_id = 1) as t1 ';
-            	$sql .= 'INNER JOIN ';
-            	$sql .= '(SELECT * FROM transaction AS t WHERE t.type = 1 AND t.account_id <> 1) as t2 ';
-            	$sql .= 'WHERE ';
-            	$sql .= 't1.transaction_id = t2.transaction_id) as x2';*/
-
         return $this->render('index', [ 'searchModel' => $searchModel,
         		'dataProvider' => $dataProvider, 'model' => $model,
         		]);
