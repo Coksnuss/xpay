@@ -92,14 +92,25 @@ class AccountController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+		if ($model->load(Yii::$app->request->post()) && $model->save()){
+        	return $this->redirect(['../user/view', 'id' => $model->user_id]); 
         } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
         }
+    }
+    
+    public function actionTransfer($id)
+    {
+    	$model = $this->findModel($id);
+    	if ($model->load(Yii::$app->request->post()) && $model->saveWithTransfer($id)){
+    		return $this->redirect(['../user/view', 'id' => $model->user_id]);
+    	} else {
+    		return $this->render('update', [
+    				'model' => $model,
+    				]);
+    	}
     }
 
     /**
@@ -113,6 +124,24 @@ class AccountController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+    
+    public function actionDeactivate($id)
+    {
+    	$model = $this->findModel($id);
+    	$model->status = 0;
+    	$model->save();
+    	
+    	return $this->redirect(['../user/view','id'=>$model->user_id]);
+    }
+    
+    public function actionActivate($id)
+    {
+    	$model = $this->findModel($id);
+    	$model->status = 1;
+    	$model->save();
+    	 
+    	return $this->redirect(['../user/view','id'=>$model->user_id]);
     }
 
     /**

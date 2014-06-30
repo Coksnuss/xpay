@@ -22,7 +22,7 @@ class Account extends \common\models\base\Account
     const INTERNAL_ACCOUNT_NUMBER_START = 100000;
     const INTERNAL_ACCOUNT_NUMBER_END   = 199999;
 
-
+	public $amount;
     /**
      * Checks whether a given account number belongs to our service.
      * This method does not verify the existence of the corresponding account!
@@ -99,22 +99,39 @@ class Account extends \common\models\base\Account
         }
     }
     
-    public function getBalanceLabel(){
+    public function getBalanceLabel($type=true){
     	
     	$preferredCurrency = $this->preferredCurrency;
 		$value = $this->balance;
 		$balanceString = $value." ".$preferredCurrency->iso_4217_name;
-    	if ($value<0){
-    		return Button::widget([
-		    	'label' => $balanceString,
-		    	'options' => ['class' => 'btn-danger monospace','width'=>250,'disabled'=>true]]);
-    	}else{
-    		return Button::widget([
-		    	'label' => $balanceString,
-		    	'options' => ['class' => 'btn-primary monospace','width'=>250,'disabled'=>true]]);
+    	if($type){
+    		if ($value<0){
+    			return Button::widget([
+			    	'label' => $balanceString,
+			    	'options' => ['class' => 'btn-danger monospace','width'=>250,'disabled'=>true]]);
+    		}else{
+    			return Button::widget([
+			    	'label' => $balanceString,
+			    	'options' => ['class' => 'btn-primary monospace','width'=>250,'disabled'=>true]]);
+    		}
     	}
     	
     	
     	return $balanceString;
+    }
+    
+    public function attributeLabels(){
+    	return ['iban'=>'IBAN', 'bic'=>'BIC','amount'=>'Amount to Transfer']+parent::attributeLabels();
+    }
+    
+    public function rules()
+    {
+    	return [[['iban', 'bic'], 'required'],
+            [['amount'], 'number','min'=>0.0]]+parent::rules();
+    }
+    
+    public function saveWithTransfer($id){
+    	$this->balance += $this->amount;
+    	return parent::save();
     }
 }

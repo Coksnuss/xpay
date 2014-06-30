@@ -12,22 +12,15 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
-
-    <?= $form->field($model, 'number')->textInput(['maxlength' => 11]) ?>
-
-    <?= $form->field($model, 'balance')->textInput(['maxlength' => 11]) ?>
-
-    <?= $form->field($model, 'preferred_currency')->textInput() ?>
-
     <?= $form->field($model, 'iban')->textInput() ?>
 
     <?= $form->field($model, 'bic')->textInput() ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
-
+    <?= $form->field($model, 'amount')->textInput() ?>
+    
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton('Update', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Update & Transfer', ['action'=>'transfer','class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

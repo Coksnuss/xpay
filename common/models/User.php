@@ -17,6 +17,10 @@ class User extends \common\models\base\User implements IdentityInterface
     const STATUS_ACTIVE = 10;
 
     const ROLE_USER = 10;
+    
+    public $current_password;
+    public $new_password;
+    public $confirm_password;
 
     /**
      * @inheritdoc
@@ -170,5 +174,13 @@ class User extends \common\models\base\User implements IdentityInterface
     public function getPreferredCurrency()
     {
     	return $this->preferred_currency;
+    }
+    
+    /**
+     * 
+     */
+    public function attributeLabels()
+    {
+    	return ['last_login_ip'=>'Last Login IP']+parent::attributeLabels();
     }
 }

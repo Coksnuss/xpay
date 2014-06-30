@@ -46,8 +46,8 @@ AppAsset::register($this);
             if (!$isGuest) 
 			{
 				$menuItems[] = [
-                    'label' => 'Profile',
-                    'url' => ['/account/view','id'=>Account::findOne(['user_id'=>Yii::$app->user->identity->id])->id],
+                    'label' => 'Settings',
+                    'url' => ['/user/view','id'=>Account::findOne(['user_id'=>Yii::$app->user->identity->id])->id],
 					'visible'=>!$isGuest
 				];
 				$menuItems[] = [
