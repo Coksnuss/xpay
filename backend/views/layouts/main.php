@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
+use yii\helpers\BaseUrl;
 
 /**
  * @var \yii\web\View $this
@@ -64,8 +65,18 @@ AppAsset::register($this);
         <div class="container">
         <p class="pull-left">
         	&copy; <?= Yii::$app->name." ".date('Y') ?>
-        	&#124; <?= Html::a('About',['site/about']) ?>
-        	&#124; <?= Html::a('Contact',['site/contact']) ?>
+        	&#124; 
+        	<?php 
+            	$url = BaseUrl::base(true); 
+            	$urlArray = explode('backend.', $url, 2);
+            	echo Html::a('About', $urlArray[0].$urlArray[1].'/site/about');
+            ?>
+        	&#124;
+        	<?php 
+            	$url = BaseUrl::base(true); 
+            	$urlArray = explode('backend.', $url, 2);
+            	echo Html::a('Contact', $urlArray[0].$urlArray[1].'/site/contact');
+            ?>
         </p>
         <p class="pull-right"><?= Yii::powered() ?></p>
         </div>
