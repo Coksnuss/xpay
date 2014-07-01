@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use common\models\Account;
 use frontend\models\DeleteForm;
 use yii\filters\AccessControl;
+use frontend\models\EditPasswordForm;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -62,13 +63,13 @@ class UserController extends Controller
      */
     public function actionUpdate()
     {
-        $userModel = $this->findModel(Yii::$app->user->identity->id);
-        
-        if ($userModel->load(Yii::$app->request->post()) && $userModel->save()) {
-            return $this->redirect(['view', 'id' => Yii::$app->user->identity->id]);
+        $model = new EditPasswordForm();
+        $model->user = User::findOne(['id'=>Yii::$app->user->identity->id]);
+    	
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view']);
         } else {
-            return $this->render('update', [
-                'userModel' => $userModel,
+            return $this->render('update', ['model'=>$model,
             ]);
         }
     }

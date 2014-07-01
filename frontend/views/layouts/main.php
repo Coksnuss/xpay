@@ -49,9 +49,9 @@ AppAsset::register($this);
                     'label' => 'Settings',
 					//'label' => 'Dropdown',
 		            'items' => [
-		                 ['label' => 'General', 'url' => ['/user/view','id'=>Account::findOne(['user_id'=>Yii::$app->user->identity->id])->id]],
-		                 ['label' => 'User Settings', 'url' => ['/user/update','id'=>Account::findOne(['user_id'=>Yii::$app->user->identity->id])->id]],
-		                 ['label' => 'Account Settings', 'url' => ['/account/update','id'=>Account::findOne(['user_id'=>Yii::$app->user->identity->id])->id]],
+		                 ['label' => 'General', 'url' => ['/user/view']],
+		                 ['label' => 'User Settings', 'url' => ['/user/update']],
+		                 ['label' => 'Account Settings', 'url' => ['/account/update']],
 		            ],
                     //'url' => ['/user/view','id'=>Account::findOne(['user_id'=>Yii::$app->user->identity->id])->id],
 					'visible'=>!$isGuest

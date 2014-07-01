@@ -17,10 +17,6 @@ class User extends \common\models\base\User implements IdentityInterface
     const STATUS_ACTIVE = 10;
 
     const ROLE_USER = 10;
-    
-    public $current_password;
-    public $new_password;
-    public $confirm_password;
 
     /**
      * @inheritdoc

@@ -16,9 +16,9 @@ use yii\bootstrap\ActiveForm;
     'fieldConfig' => [
         'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
         'horizontalCssClasses' => [
-            'label' => 'col-sm-1',
-            'offset' => 'col-sm-offset-1',
-            'wrapper' => 'col-sm-4',
+            'label' => 'col-sm-3',
+            'offset' => 'col-sm-offset-2',
+            'wrapper' => 'col-sm-6',
             'error' => '',
             'hint' => '',
         ],

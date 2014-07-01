@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $userModel common\models\User */
 
-$this->title = 'Update User: ' . ' ' . $userModel->email;
+$this->title = 'Update User: ' . ' ' . $model->user->email;
 $this->params['breadcrumbs'][] = ['label' => 'Settings', 'url' => ['view']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -13,8 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
-        'model' => $userModel,
+    <?= $this->render('_form', ['model'=>$model,
     ]) ?>
 
 </div>
