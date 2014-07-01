@@ -7,7 +7,6 @@ use yii\widgets\DetailView;
 /* @var $userModel common\models\User */
 
 $this->title = 'Settings';
-//$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
@@ -15,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update User Settings', ['update', 'id' => $userModel->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Update User Settings', ['update'], ['class' => 'btn btn-primary']) ?>
         <?php /*= Html::a('Delete', ['delete', 'id' => $userModel->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -35,10 +34,12 @@ $this->params['breadcrumbs'][] = $this->title;
             //'updated_at',
         ],
     ]) ?>
+    
     <p>
-    <?= Html::a('Update Account Settings', ['../account/update', 'id' => $accountModel->id], ['class' => 'btn btn-primary']) ?>
-    <?=Html::a('Charge Amount', ['../account/transfer','id'=>$accountModel->id], ['class' => 'btn btn-warning']) ?>
-    </p>    
+    <?= Html::a('Update Account Settings', ['../account/update'], ['class' => 'btn btn-primary']) ?>
+    <?=Html::a('Charge Amount', ['../account/transfer'], ['class' => 'btn btn-warning']) ?>
+    </p> 
+       
     <?= DetailView::widget([
         'model' => $accountModel,
         'attributes' => [
@@ -49,14 +50,14 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
             'iban',
             'bic',
-            //'status',
+            'status',
             //'created_at',
             //'updated_at',
             //'preferred_currency',
         ],
     ]) ?>
 	<p>
-        <?= Html::a('Delete Account', ['predelete', 'id' => $userModel->id], [
+        <?= Html::a('Delete Account', ['predelete'], [
             'class' => 'btn btn-danger',
             'data' => [
                 //'confirm' => 'Are you sure you want to delete this item?',
@@ -64,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ])?>
         <?php if ($accountModel->status == 1):?>
-        <?= Html::a('Deactivate Account', ['../account/deactivate', 'id' => $accountModel->id], [
+        <?= Html::a('Deactivate Account', ['../account/deactivate'], [
             'class' => 'btn btn-danger',
             'data' => [
                 //'confirm' => 'Are you sure you want to delete this item?',
@@ -72,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ])?>
         <?php else:?>
-        <?= Html::a('Activate Account', ['../account/activate', 'id' => $accountModel->id], [
+        <?= Html::a('Activate Account', ['../account/activate'], [
             'class' => 'btn btn-success',
             'data' => [
                 //'confirm' => 'Are you sure you want to delete this item?',

@@ -16,7 +16,11 @@ use frontend\models\TransferForm;
  */
 class AccountController extends Controller
 {
-    public function behaviors()
+    /**
+     * (non-PHPdoc)
+     * @see \yii\base\Component::behaviors()
+     */
+	public function behaviors()
     {
         return [
         	'access' => [
@@ -40,111 +44,84 @@ class AccountController extends Controller
     }
 
     /**
-     * Lists all Account models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new AccountSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single Account model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new Account model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Account();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
      * Updates an existing Account model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate()
     {
-        $model = $this->findModel($id);
-		if ($model->load(Yii::$app->request->post()) && $model->save()){
-        	return $this->redirect(['../user/view', 'id' => $model->user_id]); 
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
-    
-    public function actionTransfer($id)
-    {
-    	$model = $this->findModel($id);
-    	$form = new TransferForm();
-    	$form->load(['TransferForm'=>['iban'=>$model->iban,'bic'=>$model->bic]]);
-    	if ($form->load(Yii::$app->request->post()) && $form->transfer($model)){
-    		return $this->redirect(['../transaction/index']);
-    	} else {
-    		return $this->render('transfer', [
-    				'model' => $form,
-    				]);
+        $model = $this->findModel(Yii::$app->user->identity->id);
+    	if (isset($model)){
+	    	if ($model->load(Yii::$app->request->post()) && $model->save()){
+	        	return $this->redirect(['../user/view', 'id' => $model->user_id]); 
+	        } else {
+	            return $this->render('update', [
+	                'model' => $model,
+	            ]);
+	        }
+		}else{
+    		return $this->redirect(['error']);
     	}
     }
-
+    
     /**
-     * Deletes an existing Account model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
+     * 
+     * @param int $id
+     * @return Ambigous <\yii\web\Response, \yii\web\static, \yii\web\Response>|string
      */
-    public function actionDelete($id)
+    public function actionTransfer()
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+    	$model = $this->findModel(Yii::$app->user->identity->id);
+    	if (isset($model)){
+	    	$form = new TransferForm();
+	    	$form->load(['TransferForm'=>['iban'=>$model->iban,'bic'=>$model->bic]]);
+	    	if ($form->load(Yii::$app->request->post()) && $form->transfer($model)){
+	    		return $this->redirect(['../user/view','id'=>Yii::$app->user->identity->id]);
+	    	} else {
+	    		return $this->render('transfer', [
+	    				'model' => $form,
+	    				]);
+    		}
+    	}else{
+    		return $this->redirect(['error']);
+    	}
     }
     
-    public function actionDeactivate($id)
+    /**
+     * Deactivates the account
+     * 
+     * @param int $id
+     * @return Ambigous <\yii\web\Response, \yii\web\static, \yii\web\Response>
+     */
+    public function actionDeactivate()
     {
-    	$model = $this->findModel($id);
-    	$model->status = 0;
-    	$model->save();
-    	
-    	return $this->redirect(['../user/view','id'=>$model->user_id]);
+    	$model = $this->findModel(Yii::$app->user->identity->id);
+    	if (isset($model)){
+	    	$model->status = 0;
+	    	$model->save();
+    		return $this->redirect(['../user/view','id'=>$model->user_id]);
+    	}else{
+    		return $this->redirect(['error']);
+    	}
     }
     
-    public function actionActivate($id)
+    /**
+     * Activates the account
+     * 
+     * @param int $id
+     * @return Ambigous <\yii\web\Response, \yii\web\static, \yii\web\Response>
+     */
+    public function actionActivate()
     {
-    	$model = $this->findModel($id);
-    	$model->status = 1;
-    	$model->save();
-    	 
-    	return $this->redirect(['../user/view','id'=>$model->user_id]);
+    	$model = $this->findModel(Yii::$app->user->identity->id);
+    	if (isset($model)){
+	    	$model->status = 1;
+	    	$model->save();
+    		return $this->redirect(['../user/view','id'=>$model->user_id]);
+    	}else{
+    		return $this->redirect(['error']);
+    	}
     }
 
     /**
@@ -156,10 +133,22 @@ class AccountController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Account::findOne($id)) !== null) {
+        if (($model = Account::findOne(['user_id'=>$id])) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+    	return [
+	    	'error' => [
+	    		'class' => 'yii\web\ErrorAction',
+	    	],
+    	];
     }
 }

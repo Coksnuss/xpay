@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\User */
 
 $this->title = 'Charge Amount';
-$this->params['breadcrumbs'][] = ['label' => 'Overview', 'url' => ['../transaction/index']];
+$this->params['breadcrumbs'][] = ['label' => 'Settings', 'url' => ['../user/view']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="account-update">

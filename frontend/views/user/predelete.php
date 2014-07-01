@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $deleteModel common\models\User */
 
 $this->title = 'Delete';
-$this->params['breadcrumbs'][] = ['label' => 'Settings', 'url' => ['../user/view','id'=>$id]];
+$this->params['breadcrumbs'][] = ['label' => 'Settings', 'url' => ['../user/view']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-update">
@@ -19,10 +19,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $form->field($deleteModel, 'iban')->textInput(['maxlength' => 32]) ?>
 	<?= $form->field($deleteModel, 'bic')->textInput(['maxlength' => 32]) ?>
     <p>
-    If you do not enter a reference account to transfer the remaining amount to, we will spend the money on beer.
+    If you do not provide a bank account for the remaining amount, we will spend the money on beer.
     </p>
     <div class="form-group">
-        <?= Html::a('Delete Account', ['delete', 'id' => $id], [
+        <?= Html::a('Delete Account', ['delete'], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
