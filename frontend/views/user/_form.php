@@ -1,25 +1,35 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form yii\bootstrap\ActiveForm */
 ?>
 
 
 <div class="user-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin([
+    'layout' => 'horizontal',
+    'fieldConfig' => [
+        'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
+        'horizontalCssClasses' => [
+            'label' => 'col-sm-1',
+            'offset' => 'col-sm-offset-1',
+            'wrapper' => 'col-sm-4',
+            'error' => '',
+            'hint' => '',
+        ],
+    ],
+]); ?>
 
     <?= $form->field($model, 'current_password')->passwordInput(['maxlength' => 32]) ?>
 	<?= $form->field($model, 'new_password')->passwordInput(['maxlength' => 32]) ?>
     <?= $form->field($model, 'confirm_password')->passwordInput(['maxlength' => 32]) ?>
     
-    <div class="form-group">
-        <?= Html::submitButton('Update', ['class' => 'btn btn-primary']) ?>
-    </div>
+    <?= Html::submitButton('Update', ['class' => 'btn btn-primary']) ?>
 
     <?php ActiveForm::end(); ?>
 

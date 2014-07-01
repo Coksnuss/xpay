@@ -54,7 +54,7 @@ class AccountController extends Controller
         $model = $this->findModel(Yii::$app->user->identity->id);
     	if (isset($model)){
 	    	if ($model->load(Yii::$app->request->post()) && $model->save()){
-	        	return $this->redirect(['../user/view', 'id' => $model->user_id]); 
+	        	return $this->redirect(['../user/view']); 
 	        } else {
 	            return $this->render('update', [
 	                'model' => $model,
@@ -77,7 +77,7 @@ class AccountController extends Controller
 	    	$form = new TransferForm();
 	    	$form->load(['TransferForm'=>['iban'=>$model->iban,'bic'=>$model->bic]]);
 	    	if ($form->load(Yii::$app->request->post()) && $form->transfer($model)){
-	    		return $this->redirect(['../user/view','id'=>Yii::$app->user->identity->id]);
+	    		return $this->redirect(['../user/view']);
 	    	} else {
 	    		return $this->render('transfer', [
 	    				'model' => $form,
@@ -100,7 +100,7 @@ class AccountController extends Controller
     	if (isset($model)){
 	    	$model->status = 0;
 	    	$model->save();
-    		return $this->redirect(['../user/view','id'=>$model->user_id]);
+    		return $this->redirect(['../user/view']);
     	}else{
     		return $this->redirect(['error']);
     	}
@@ -118,7 +118,7 @@ class AccountController extends Controller
     	if (isset($model)){
 	    	$model->status = 1;
 	    	$model->save();
-    		return $this->redirect(['../user/view','id'=>$model->user_id]);
+    		return $this->redirect(['../user/view']);
     	}else{
     		return $this->redirect(['error']);
     	}

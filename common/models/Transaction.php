@@ -90,10 +90,8 @@ class Transaction extends \common\models\base\Transaction
      * @return string Amount as String with preferred currency
      */
 	public function getAmountString(){
-		$preferredCurrency = $this->account->preferredCurrency;
-		$value = (($preferredCurrency->iso_4217_name !== 'EUR')?$this->foreign_currency_amount:$this->amount);
-		$amountString = $value." ".$preferredCurrency->iso_4217_name;
-    	if ($value<0){
+		$amountString = $this->amount." "."EUR";
+    	if ($this->amount<0){
     		$amountString = Html::tag('div',$amountString,['class'=>'monospace amount-negativ right']);
     	}else{
     		$amountString = Html::tag('div',$amountString,['class'=>'monospace right']);

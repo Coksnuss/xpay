@@ -100,6 +100,14 @@ a.desc:after {
 	color: red;
 }
 
+.status-activated {
+    color: green;
+}
+
+.status-deactivated {
+    color: red;
+}
+
 .right {
 	float:right;
 }

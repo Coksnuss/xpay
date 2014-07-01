@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $deleteModel common\models\User */
@@ -14,7 +14,19 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php $form = ActiveForm::begin(); ?>
+	<?php $form = ActiveForm::begin([
+	    'layout' => 'horizontal',
+	    'fieldConfig' => [
+	        'template' => "{label}\n{beginWrapper}\n{input}\n{hint}\n{error}\n{endWrapper}",
+	        'horizontalCssClasses' => [
+	            'label' => 'col-sm-1',
+	            'offset' => 'col-sm-offset-1',
+	            'wrapper' => 'col-sm-4',
+	            'error' => '',
+	            'hint' => '',
+	        ],
+	    ],
+	]); ?>
 
     <?= $form->field($deleteModel, 'iban')->textInput(['maxlength' => 32]) ?>
 	<?= $form->field($deleteModel, 'bic')->textInput(['maxlength' => 32]) ?>

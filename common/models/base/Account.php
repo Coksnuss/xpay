@@ -1,51 +1,37 @@
 <?php
+
 namespace common\models\base;
 
 use Yii;
 
 /**
  * This is the model class for table "account".
- * Please do not add custom code to this file, as it is supposed to be overriden
- * by the gii model generator. Custom code belongs to common\models\Account.
  *
  * @property integer $id
  * @property integer $user_id
  * @property string $number
  * @property string $balance
- * @property integer $iban
- * @property integer $bic
+ * @property string $iban
+ * @property string $bic
  * @property integer $status
  * @property string $created_at
  * @property string $updated_at
  * @property integer $preferred_currency
  *
- * @property \common\models\Currency $preferredCurrency
- * @property \common\models\User $user
- * @property \common\models\AccountStatement[] $accountStatements
- * @property \common\models\CheckoutRequest[] $checkoutRequests
- * @property \common\models\Transaction[] $transactions
+ * @property Currency $preferredCurrency
+ * @property User $user
+ * @property AccountStatement[] $accountStatements
+ * @property CheckoutRequest[] $checkoutRequests
+ * @property Transaction[] $transactions
  */
-abstract class Account extends \yii\db\ActiveRecord
+class Account extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%account}}';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'timestamp' => [
-                'class' => 'yii\behaviors\TimestampBehavior',
-                'value' => new \yii\db\Expression('NOW()'),
-            ],
-        ];
+        return 'account';
     }
 
     /**
@@ -54,9 +40,11 @@ abstract class Account extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'number', 'balance', 'preferred_currency'], 'required'],
-            [['user_id', 'number', 'iban', 'bic', 'status', 'preferred_currency'], 'integer'],
+            [['user_id', 'number', 'balance', 'created_at', 'updated_at', 'preferred_currency'], 'required'],
+            [['user_id', 'number', 'status', 'preferred_currency'], 'integer'],
             [['balance'], 'number'],
+            [['created_at', 'updated_at'], 'safe'],
+            [['iban', 'bic'], 'string', 'max' => 34],
             [['number'], 'unique']
         ];
     }
@@ -85,7 +73,7 @@ abstract class Account extends \yii\db\ActiveRecord
      */
     public function getPreferredCurrency()
     {
-        return $this->hasOne(\common\models\Currency::className(), ['id' => 'preferred_currency']);
+        return $this->hasOne(Currency::className(), ['id' => 'preferred_currency']);
     }
 
     /**
@@ -93,7 +81,7 @@ abstract class Account extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(\common\models\User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     /**
@@ -101,7 +89,7 @@ abstract class Account extends \yii\db\ActiveRecord
      */
     public function getAccountStatements()
     {
-        return $this->hasMany(\common\models\AccountStatement::className(), ['account_id' => 'id']);
+        return $this->hasMany(AccountStatement::className(), ['account_id' => 'id']);
     }
 
     /**
@@ -109,7 +97,7 @@ abstract class Account extends \yii\db\ActiveRecord
      */
     public function getCheckoutRequests()
     {
-        return $this->hasMany(\common\models\CheckoutRequest::className(), ['account_id' => 'id']);
+        return $this->hasMany(CheckoutRequest::className(), ['account_id' => 'id']);
     }
 
     /**
@@ -117,6 +105,6 @@ abstract class Account extends \yii\db\ActiveRecord
      */
     public function getTransactions()
     {
-        return $this->hasMany(\common\models\Transaction::className(), ['account_id' => 'id']);
+        return $this->hasMany(Transaction::className(), ['account_id' => 'id']);
     }
 }

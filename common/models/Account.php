@@ -4,6 +4,7 @@ namespace common\models;
 use Yii;
 use yii\base\Exception;
 use yii\bootstrap\Button;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "account".
@@ -101,9 +102,9 @@ class Account extends \common\models\base\Account
     
     public function getBalanceLabel($type=true){
     	
-    	$preferredCurrency = $this->preferredCurrency;
+    	//$preferredCurrency = Currency::findOne($condition);
 		$value = $this->balance;
-		$balanceString = $value." ".$preferredCurrency->iso_4217_name;
+		$balanceString = $value." "."EUR";
     	if($type){
     		if ($value<0){
     			return Button::widget([
@@ -118,6 +119,22 @@ class Account extends \common\models\base\Account
     	
     	
     	return $balanceString;
+    }
+    
+    public function getStatusLabel($type=true){
+    	 
+    	//$preferredCurrency = Currency::findOne($condition);
+    	$statusString = ($this->status)?"Active":"Deactivated";
+    	if($type){
+    		if ($this->status){
+    			return Html::tag('div',$statusString,['class'=>'status-activated']);
+    		}else{
+    			return Html::tag('div',$statusString,['class'=>'status-deactivated']);
+    		}
+    	}
+    	 
+    	 
+    	return $statusString;
     }
     
     public function attributeLabels(){
