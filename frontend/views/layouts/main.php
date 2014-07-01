@@ -47,7 +47,13 @@ AppAsset::register($this);
 			{
 				$menuItems[] = [
                     'label' => 'Settings',
-                    'url' => ['/user/view','id'=>Account::findOne(['user_id'=>Yii::$app->user->identity->id])->id],
+					//'label' => 'Dropdown',
+		            'items' => [
+		                 ['label' => 'General', 'url' => ['/user/view','id'=>Account::findOne(['user_id'=>Yii::$app->user->identity->id])->id]],
+		                 ['label' => 'User Settings', 'url' => ['/user/update','id'=>Account::findOne(['user_id'=>Yii::$app->user->identity->id])->id]],
+		                 ['label' => 'Account Settings', 'url' => ['/account/update','id'=>Account::findOne(['user_id'=>Yii::$app->user->identity->id])->id]],
+		            ],
+                    //'url' => ['/user/view','id'=>Account::findOne(['user_id'=>Yii::$app->user->identity->id])->id],
 					'visible'=>!$isGuest
 				];
 				$menuItems[] = [

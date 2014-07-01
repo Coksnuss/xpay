@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\Account;
 use frontend\models\DeleteForm;
+use yii\filters\AccessControl;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -19,7 +20,17 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['view','update','predelete'],
+                'rules' => [
+                    [
+                        'actions' => ['view','update','predelete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
@@ -111,6 +122,12 @@ class UserController extends Controller
         return $this->goHome();
     }
     
+    /**
+     * Set up predelete page to enter iban and bic to transfer remaining amount to.
+     * 
+     * @param integer $id
+     * @return mixed
+     */
     public function actionPredelete($id){
     	$deleteForm = new DeleteForm();
 

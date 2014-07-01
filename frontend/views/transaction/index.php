@@ -16,10 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="transaction-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <div class="right"><?php echo $model->getBalanceLabel();?></div><br>
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
     <p>
-        <?=""//Html::a('Create Transaction', ['create'], ['class' => 'btn btn-success']) ?>
+        <div class="right"><?php echo "Account Balance: ".$model->getBalanceLabel();?></div>
     </p>
 
 <br>

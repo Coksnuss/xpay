@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $userModel common\models\User */
 
 $this->title = 'Settings';
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
@@ -37,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
     <p>
     <?= Html::a('Update Account Settings', ['../account/update', 'id' => $accountModel->id], ['class' => 'btn btn-primary']) ?>
+    <?=Html::a('Charge Amount', ['../account/transfer','id'=>$accountModel->id], ['class' => 'btn btn-warning']) ?>
     </p>    
     <?= DetailView::widget([
         'model' => $accountModel,

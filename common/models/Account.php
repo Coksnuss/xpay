@@ -126,12 +126,6 @@ class Account extends \common\models\base\Account
     
     public function rules()
     {
-    	return [[['iban', 'bic'], 'required'],
-            [['amount'], 'number','min'=>0.0]]+parent::rules();
-    }
-    
-    public function saveWithTransfer($id){
-    	$this->balance += $this->amount;
-    	return parent::save();
+    	return [[['iban', 'bic'], 'required']]+parent::rules();
     }
 }

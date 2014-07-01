@@ -16,11 +16,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'bic')->textInput() ?>
 
-    <?= $form->field($model, 'amount')->textInput() ?>
-    
     <div class="form-group">
         <?= Html::submitButton('Update', ['class' => 'btn btn-primary']) ?>
-        <?= Html::submitButton('Update & Transfer', ['action'=>'transfer','class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -25,4 +25,12 @@ class DeleteForm extends Model
     {
         return true;
     }
+    
+    /**
+     * (non-PHPdoc)
+     * @see \yii\base\Model::attributeLabels()
+     */
+    public function attributeLabels(){
+    	return ['iban'=>'IBAN', 'bic'=>'BIC']+parent::attributeLabels();
+    }
 }

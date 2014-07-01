@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use frontend\models\TransferForm;
 
 /**
  * AccountController implements the CRUD actions for Account model.
@@ -20,10 +21,10 @@ class AccountController extends Controller
         return [
         	'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index','view','update','create'],
+                'only' => ['update','transfer'],
                 'rules' => [
                     [
-                        'actions' => ['index','view','update','create'],
+                        'actions' => ['update','transfer'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -104,11 +105,13 @@ class AccountController extends Controller
     public function actionTransfer($id)
     {
     	$model = $this->findModel($id);
-    	if ($model->load(Yii::$app->request->post()) && $model->saveWithTransfer($id)){
-    		return $this->redirect(['../user/view', 'id' => $model->user_id]);
+    	$form = new TransferForm();
+    	$form->load(['TransferForm'=>['iban'=>$model->iban,'bic'=>$model->bic]]);
+    	if ($form->load(Yii::$app->request->post()) && $form->transfer($model)){
+    		return $this->redirect(['../transaction/index']);
     	} else {
-    		return $this->render('update', [
-    				'model' => $model,
+    		return $this->render('transfer', [
+    				'model' => $form,
     				]);
     	}
     }

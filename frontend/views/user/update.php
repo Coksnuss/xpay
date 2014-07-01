@@ -6,9 +6,8 @@ use yii\helpers\Html;
 /* @var $userModel common\models\User */
 
 $this->title = 'Update User: ' . ' ' . $userModel->email;
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $userModel->id, 'url' => ['view', 'id' => $userModel->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => 'Settings', 'url' => ['view', 'id' => $userModel->id]];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-update">
 
