@@ -3,6 +3,9 @@ return [
 	'name' => 'xPay',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'user' => [
+            'class' => 'common\components\ExtendedUser',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],

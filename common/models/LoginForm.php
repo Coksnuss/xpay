@@ -11,7 +11,6 @@ class LoginForm extends Model
 {
     public $email;
     public $password;
-    public $rememberMe = true;
 
     private $_user = false;
 
@@ -23,8 +22,6 @@ class LoginForm extends Model
         return [
             // email and password are both required
             [['email', 'password'], 'required'],
-            // rememberMe must be a boolean value
-            ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
         ];
@@ -49,10 +46,19 @@ class LoginForm extends Model
      *
      * @return boolean whether the user is logged in successfully
      */
-    public function login()
+    public function login($checkAdminStatus = false)
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
+        	if($checkAdminStatus) {
+        		if(Yii::$app->user->getIsAdmin($this->email)){
+        			return Yii::$app->user->login($this->getUser());
+        		} else {
+        			$this->addError('email', 'You do not have the rights to access this page.');
+        			return false;
+        		}
+        	} else {
+        		return Yii::$app->user->login($this->getUser());
+        	}
         } else {
             return false;
         }

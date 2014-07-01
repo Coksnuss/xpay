@@ -26,18 +26,19 @@ AppAsset::register($this);
     <div class="wrap">
         <?php
             NavBar::begin([
-                'brandLabel' => 'My Company',
+                'brandLabel' => Yii::$app->params['title'],
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',
                 ],
             ]);
-            $menuItems = [
-                ['label' => 'Home', 'url' => ['/site/index']],
-            ];
             if (Yii::$app->user->isGuest) {
                 $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
             } else {
+				$menuItems[] = [
+					'label' => 'Exchange Rate', 
+					'url' => ['/site/exchange-rate']
+				];
                 $menuItems[] = [
                     'label' => 'Logout (' . Yii::$app->user->identity->email . ')',
                     'url' => ['/site/logout'],
@@ -61,7 +62,11 @@ AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">
+        	&copy; <?= Yii::$app->name." ".date('Y') ?>
+        	&#124; <?= Html::a('About',['site/about']) ?>
+        	&#124; <?= Html::a('Contact',['site/contact']) ?>
+        </p>
         <p class="pull-right"><?= Yii::powered() ?></p>
         </div>
     </footer>
