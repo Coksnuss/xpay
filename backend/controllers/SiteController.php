@@ -6,6 +6,8 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use common\models\LoginForm;
 use yii\filters\VerbFilter;
+use backend\models\ExchangeRateForm;
+use common\models\Currency;
 
 /**
  * Site controller
@@ -26,7 +28,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'exchange-rate'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -60,13 +62,13 @@ class SiteController extends Controller
 
     public function actionLogin()
     {
-        if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
+        if (!\Yii::$app->user->isGuest && Yii::$app->user->getIsAdmin()) {
+            return $this->redirect(['/site/exchange-rate']);
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        if ($model->load(Yii::$app->request->post()) && $model->login(true)) {
+            return $this->redirect(['/site/exchange-rate']);
         } else {
             return $this->render('login', [
                 'model' => $model,
@@ -79,5 +81,19 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+    
+    public function actionExchangeRate()
+    {
+    	$model = new ExchangeRateForm();
+    	$currencyModel = Currency::findOne(['iso_4217_name'=>'USD']);
+    	$model->rate = $currencyModel->eur_exchange_rate;
+    	if ($model->load(Yii::$app->request->post()) && $model->setExchangeRate()) {
+    		$this->redirect(['/site/exchange-rate']);
+    	} else {
+    		return $this->render('exchange', [
+    			'model' => $model,
+    		]);
+    	}
     }
 }

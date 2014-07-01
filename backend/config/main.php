@@ -15,7 +15,8 @@ return [
     'components' => [
         'user' => [
             'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
+            'authTimeout' => 1200,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

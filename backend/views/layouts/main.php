@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
+use yii\helpers\BaseUrl;
 
 /**
  * @var \yii\web\View $this
@@ -26,18 +27,19 @@ AppAsset::register($this);
     <div class="wrap">
         <?php
             NavBar::begin([
-                'brandLabel' => 'My Company',
+                'brandLabel' => Yii::$app->params['title'],
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',
                 ],
             ]);
-            $menuItems = [
-                ['label' => 'Home', 'url' => ['/site/index']],
-            ];
             if (Yii::$app->user->isGuest) {
                 $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
             } else {
+				$menuItems[] = [
+					'label' => 'Exchange Rate', 
+					'url' => ['/site/exchange-rate']
+				];
                 $menuItems[] = [
                     'label' => 'Logout (' . Yii::$app->user->identity->email . ')',
                     'url' => ['/site/logout'],
@@ -61,7 +63,21 @@ AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">
+        	&copy; <?= Yii::$app->name." ".date('Y') ?>
+        	&#124; 
+        	<?php 
+            	$url = BaseUrl::base(true); 
+            	$urlArray = explode('backend.', $url, 2);
+            	echo Html::a('About', $urlArray[0].$urlArray[1].'/site/about');
+            ?>
+        	&#124;
+        	<?php 
+            	$url = BaseUrl::base(true); 
+            	$urlArray = explode('backend.', $url, 2);
+            	echo Html::a('Contact', $urlArray[0].$urlArray[1].'/site/contact');
+            ?>
+        </p>
         <p class="pull-right"><?= Yii::powered() ?></p>
         </div>
     </footer>
