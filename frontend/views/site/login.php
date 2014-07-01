@@ -12,6 +12,14 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
+    
+    <?php if(Yii::$app->session->hasFlash('autoLogout')):?>
+	    <div class="has-error">
+	    	<div class="help-block">
+	    		<?php echo Yii::$app->session->getFlash('autoLogout'); ?>
+	    	</div>
+	    </div>
+	<?php endif; ?>
 
     <p>Please fill out the following fields to login:</p>
 
