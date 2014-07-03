@@ -47,7 +47,8 @@ abstract class ShopBlacklist extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'shop_id'], 'required'],
-            [['user_id', 'shop_id'], 'integer']
+            [['user_id', 'shop_id'], 'integer'],
+            [['user_id', 'shop_id'], 'unique', 'targetAttribute' => ['user_id', 'shop_id'], 'message' => 'The combination of User ID and Shop ID has already been taken.']
         ];
     }
 

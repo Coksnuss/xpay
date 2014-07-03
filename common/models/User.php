@@ -35,6 +35,15 @@ class User extends \common\models\base\User implements IdentityInterface
      }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBlacklistedShops()
+    {
+        return $this->hasMany(\common\models\Shop::className(), ['id' => 'shop_id'])
+            ->viaTable('shop_blacklist', ['user_id' => 'id']);
+    }
+
+    /**
      * @inheritdoc
      */
     public static function findIdentity($id)
@@ -171,9 +180,9 @@ class User extends \common\models\base\User implements IdentityInterface
     {
     	return $this->preferred_currency;
     }
-    
+
     /**
-     * 
+     *
      */
     public function attributeLabels()
     {
