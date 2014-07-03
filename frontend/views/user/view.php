@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use common\models\Shop;
 
 /* @var $this yii\web\View */
 /* @var $userModel common\models\User */
@@ -52,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'bic',
             ['attribute'=>'status',
 				'format'=>'raw',
-				'value'=>$accountModel->getStatusLabel(true),
+				'value'=>$accountModel->getStatusLabel(true)
 			],
             //'created_at',
             //'updated_at',
@@ -60,10 +61,31 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
     <p>
-    <?= Html::a('Update Blacklist Settings', ['../shop-blacklist/manage'], ['class' => 'btn btn-primary']) ?>
+    <?php echo Html::a('Update Blacklist Settings', ['../shop-blacklist/manage'], ['class' => 'btn btn-primary']) ?>
     </p> 
-	HIER FEHLT NOCH DIE VIEW DER BLACKLIST
+    <?php if (count(Shop::find()->all())>0):?>
+    <?= DetailView::widget([
+        'model' => $blacklistForm,
+        'attributes' => [
+            ['attribute'=>'shop1',
+				'format'=>'raw',
+				'value'=>$blacklistForm->getStatus(1),
+				'visible'=>count(Shop::find()->all())>=1,
+			],
+            ['attribute'=>'shop2',
+				'format'=>'raw',
+				'value'=>$blacklistForm->getStatus(2),
+				'visible'=>count(Shop::find()->all())>=2,
+			],
+			['attribute'=>'shop3',
+				'format'=>'raw',
+				'value'=>$blacklistForm->getStatus(3),
+				'visible'=>count(Shop::find()->all())>=3,
+			],
+        ],
+    ]) ?>
 	<p>
+	<?php endif;?>
         <?= Html::a('Delete Account', ['predelete'], [
             'class' => 'btn btn-danger',
             'data' => [

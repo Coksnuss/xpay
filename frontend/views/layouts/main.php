@@ -52,6 +52,7 @@ AppAsset::register($this);
 		                 ['label' => 'General', 'url' => ['/user/view']],
 		                 ['label' => 'User Settings', 'url' => ['/user/update']],
 		                 ['label' => 'Account Settings', 'url' => ['/account/update']],
+		                 ['label' => 'Blacklist Settings', 'url' => ['/shop-blacklist/manage']],
 		            ],
                     //'url' => ['/user/view','id'=>Account::findOne(['user_id'=>Yii::$app->user->identity->id])->id],
 					'visible'=>!$isGuest
