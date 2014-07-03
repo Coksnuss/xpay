@@ -59,6 +59,10 @@ $this->params['breadcrumbs'][] = $this->title;
             //'preferred_currency',
         ],
     ]) ?>
+    <p>
+    <?= Html::a('Update Blacklist Settings', ['../shop-blacklist/manage'], ['class' => 'btn btn-primary']) ?>
+    </p> 
+	HIER FEHLT NOCH DIE VIEW DER BLACKLIST
 	<p>
         <?= Html::a('Delete Account', ['predelete'], [
             'class' => 'btn btn-danger',

@@ -49,7 +49,6 @@ class UserController extends Controller
     {
     	$userModel = $this->findModel(Yii::$app->user->identity->id);
     	$accountModel = Account::findOne(['user_id'=>Yii::$app->user->identity->id]);
-    	
     	return $this->render('view', [
             'userModel' => $userModel,'accountModel'=>$accountModel,
         ]);
