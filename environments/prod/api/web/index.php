@@ -14,4 +14,5 @@ $config = yii\helpers\ArrayHelper::merge(
 );
 
 $application = new yii\web\Application($config);
+$application->attachBehavior('https', \common\components\HTTPSBehavior::className());
 $application->run();
