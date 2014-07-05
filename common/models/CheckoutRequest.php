@@ -3,7 +3,6 @@ namespace common\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Security;
 
 use common\models\Account;
 use common\models\Currency;
@@ -46,7 +45,7 @@ class CheckoutRequest extends \common\models\base\CheckoutRequest
     public function generateApiKeyIfNotExists($key)
     {
         if ($key === null) {
-            return Security::generateRandomKey();
+            return Yii::$app->security->generateRandomKey();
         }
 
         return $key;

@@ -2,7 +2,6 @@
 namespace common\models;
 
 use Yii;
-use yii\helpers\Security;
 use yii\helpers\Html;
 
 /**
@@ -62,7 +61,7 @@ class Transaction extends \common\models\base\Transaction
      */
     public function generateTransactionId()
     {
-        $this->transaction_id = Security::generateRandomKey();
+        $this->transaction_id = Yii::$app->security->generateRandomKey();
     }
 
     /**
