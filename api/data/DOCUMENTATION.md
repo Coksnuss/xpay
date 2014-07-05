@@ -11,28 +11,40 @@ Nachfolgend dargestellt sind die üblichen Prozesse beim durchführen eines
 Bezahlvorgangs durchgeführt werden:
 ![Ablaufdiagramm](/img/workflow.png)
 
-Nachfolgend werden die einzelnen Schritte noch einmal genauer erläutert. Dabei
-hebt das folgende Farbschemata hervor:
+Nachfolgend werden die einzelnen Schritte noch einmal genauer erläutert.
+Viele Schritte laufen transparent für den Nutzer unserer Schnittstelle ab, daher
+wurde gesondert vorgehoben welche zwei Parteien bei dem jeweiligen Schritt
+miteinander interagieren, falls zutreffend.
 
-* Rot: Payment Service -> Shop
-* Gelb: Shop -> Payment Service
-* Lila: PS -> PS
-
-1. Der `setCheckout` Request informiert xPay über eine anstehende
+1. <b>Shop -> Payment Service:</b><br>
+   Der `setCheckout` Request informiert xPay über eine anstehende
    Zahlungsabwicklung. Hierbei wird unter anderem der gewünschte Betrag
    übermittelt.
-2. xPay sendet daraufhin an den Shop eine `checkout_id` welche die eben
+2. <b>Payment Service -> Shop:</b><br>
+   xPay sendet daraufhin an den Shop eine `checkout_id` welche die eben
    angefragte Zahlungsabwicklung bestätigt und eindeutig kennzeichnet.
 3. Der Shop leitet nun mit Hilfe der `checkout_id` den Kunden auf unsere Seite
    um, der dann die Zahlung bestätigen muss.
-4. (Irrelevant für Shop Entwickler)
+4. Unser Dienst kümmert sich um die Abwicklung der Zahlungsbestätigung
 5. Nach erfolgter Zahlung wird der Kunde wieder zurück zum Shop geschickt. Die
    Weiterleitungsadresse muss im ersten Schritt angegeben werden. Für den Fall
    dass die Zahlung fehlschlägt, kann auf eine andere Adresse weitergeleitet
    werden.
-6. Nachdem der Kunde die Zahlung zunächst bestätigt hat, muss die tatsächliche
-   Ausführung vom Shop über eine `doCheckout` Anfrage final abgeschlossen werden.
-7. (Irrelevant für Shop Entwickler)
+6. <b>Shop -> Payment Service:</b><br>
+   Nachdem der Kunde die Zahlung zunächst bestätigt hat, muss die tatsächliche
+   Ausführung vom Shop über eine `doCheckout` Anfrage final abgeschlossen
+   werden.
+7. <b>Payment Service -> Payment Service:</b><br>
+   Für den Fall dass der Zahlungsempfänger (=Auftraggeber) sein eigenes Konto
+   nicht bei unserem Dienst hat, involvieren wir für die Zahlung den
+   entsprechenden Dienstleister.
+8. <b>Payment Service -> Payment Service:</b><br>
+   xPay wertet die Antwort des anderen Dienstleisters aus. Insbesondere stellt
+   unser Dienst in diesem Schritt fest ob die Zahlung erfolgreich war.
+9. <b>Payment Service -> Shop:</b><br>
+   Sofern die Zahlung erfolgt ist, liefern wir eine TransaktionsID zurück. Diese
+   wird im Falle einer Rückbuchung benötigt und dient außerdem als Referenz für
+   die erfolgte Zahlung.
 
 ## API Anfragen & HTTP-Header
 Die API unterstützt zwei primäre Antwortformate: **XML** und **JSON**. Jede
@@ -46,14 +58,26 @@ Webserver nicht erkannt werden können. Falls dies nicht automatisch durch die
 verwendete Bibliothek geschieht muss der Header wie folgt angegeben werden:
 `Content-Type: application/x-www-form-urlencoded`.
 
-TODO: Auth Header für doTransaction Request beschreiben.
+### Für Betreiber eines Payment Systems...
+... ist bei Aufruf von `doTransaction` außerdem ein Authentifizierungs Header
+mitzusenden. Zunächst muss dazu ein Konto bei
+[xPay](https://xpay.wsp.lab.sit.cased.de) angelegt werden, und anschließend die
+Freischaltung (mündlich, via E-Mail oder über PN in Moodle) für die Nutzung der
+Methode beantragt werden. Nach erfolgter Freischaltung kann in der
+Benutzerübersicht ein API Key generiert werden. Der Aufruf der Schnittstelle
+muss über eine
+[HTTP Basic Authentication](http://de.wikipedia.org/wiki/HTTP-Authentifizierung#Basic_Authentication)
+erfolgen, bei der als Benutzername der API Key angegeben werden muss. Das
+Passwort Feld wird ignoriert und darf einen beliebigen Wert enthalten. Als Realm
+muss der Wert <b>api</b> angegeben werden.
 
 ## Datentypen
 Zur Validierung der Eingabedaten ist es notwendig, die Datentypen korrekt zu verwenden:
 
-* **string:** Zeichenkette
-* **integer:** Natürliche Zahl
-* **double:** Reelle Zahl
+* **string:** Text mit maximal 255 Zeichen.
+* **integer:** Eine ganze, positive Zahl, ohne Nachkommastellen.
+* **double:** Gleitkommazahl mit bis zu zwei Nachkommastellen. Enthält die Zahl
+mehr als zwei Nachkommestellen wird eine kaufmännische Rundung vorgenommen.
 
 ## Antwort
 Eine Antwort besteht aus zwei Teilen:
@@ -81,11 +105,11 @@ Im folgenden werden die möglichen Error Codes die als Antwort auf einen Request
             Die Validierung der Eingabedaten ist fehlgeschlagen. Genauere Informationen sind der expliziten Nachricht zu entnehmen.
         </td>
     </tr>
-    
+
 </table>
 
 ## setCheckout<a name="set-checkout"></a>
-- **Endpunkt:** http://api.xpay.wsp.lab.sit.cased.de/setCheckout
+- **Endpunkt:** https://api.xpay.wsp.lab.sit.cased.de/setCheckout
 - **HTTP Verb:** POST
 - **Beschreibung:** Legt eine Anforderung an eine Zahlungsabwicklung an. Es wird
   eine eindeutige `checkout_id` generiert welche 24 Stunden ab Beginn der
@@ -112,7 +136,7 @@ Im folgenden werden die möglichen Error Codes die als Antwort auf einen Request
             In diesem Fall muss als Referenz die entsprechende transaction_id
             angegeben werden.
         </td>
-    </tr>  
+    </tr>
     <tr>
         <td>receiver_account_number</td>
         <td>required</td>
@@ -215,12 +239,12 @@ Im folgenden werden die möglichen Error Codes die als Antwort auf einen Request
         <td>
            Identifikationsnummer für angeforderte Zahlungsabwicklung
         </td>
-    </tr>    
+    </tr>
 </table>
 
 
 ## doCheckout<a name="do-checkout"></a>
-- **Endpunkt:** http://api.xpay.wsp.lab.sit.cased.de/doCheckout
+- **Endpunkt:** https://api.xpay.wsp.lab.sit.cased.de/doCheckout
 - **HTTP Verb:** POST
 - **Beschreibung:** Schließt eine durch den Kunden bestätigte Zahlungsabwicklung ab. Nur gültig innerhalb von 24 nach Anforderung der Zahlungsabwicklung.
 ### Eingabe
@@ -238,7 +262,7 @@ Im folgenden werden die möglichen Error Codes die als Antwort auf einen Request
         <td>
            checkout_id, die bei <strong>setCheckout</strong> zurückgegeben wurde.
         </td>
-    </tr>  
+    </tr>
 </table>
 ### Rückgabe
 <table class="table">
@@ -260,5 +284,97 @@ Im folgenden werden die möglichen Error Codes die als Antwort auf einen Request
         <td>
             Der in der angeforderten Zahlungsabwicklung ausgewiesen Betrag.
         </td>
-    </tr>      
+    </tr>
+</table>
+
+
+## doTransaction<a name="do-transaction"></a>
+- **Endpunkt:** https://api.xpay.wsp.lab.sit.cased.de/doTransaction
+- **HTTP Verb:** POST
+- **Beschreibung:** Führt eine Einzahlung auf einem Konto aus.
+### Eingabe
+<table class="table">
+    <tr>
+        <th>Parameter</th>
+        <th>Req./Opt.</th>
+        <th>Datentyp</th>
+        <th>Beschreibung</th>
+    </tr>
+    <tr>
+        <td>uuid</td>
+        <td>required</td>
+        <td>string</td>
+        <td>
+           Eine zufällig, jedoch eindeutig auf die Einzahlung bezogene, UUID im
+           allgemein gültigen Format (siehe z.B. http://www.uuidgenerator.net).
+           Diese dient dazu eine Einzahlung nicht versehentlich mehrfach
+           auszuführen.
+        </td>
+    </tr>
+    <tr>
+        <td>sender_account_number</td>
+        <td>required</td>
+        <td>integer</td>
+        <td>
+           Die Kontonummer desjenigen von dem der angegebene Betrag ausgeht.
+        </td>
+    </tr>
+    <tr>
+        <td>receiver_account_number</td>
+        <td>required</td>
+        <td>integer</td>
+        <td>
+           Die Kontonummer des Empfängers, dessen Konto bei xPay liegt.
+        </td>
+    </tr>
+    <tr>
+        <td>amount</td>
+        <td>required</td>
+        <td>double</td>
+        <td>
+           Der einzuzahlende Wert. Darf nicht negativ sein!
+        </td>
+    </tr>
+    <tr>
+        <td>currency</td>
+        <td>optional</td>
+        <td>string</td>
+        <td>
+            <strong>Achtung: </strong> Der Zahlungsbetrag muss in EUR angegeben
+            sein! Durch die schwankenen Umrechnungskurse müssen alle
+            Einzahlungen in der Hauptwährung durchgeführt werden. Dadurch wird
+            sichergestellt dass Sender und Empfänger den gleichen Betrag
+            abgebucht (bzw. zugebucht) bekommen.
+        </td>
+    </tr>
+    <tr>
+        <td>description</td>
+        <td>required</td>
+        <td>string</td>
+        <td>
+            Der Einzahlungsgrund bzw. Verwendungszweck.
+        </td>
+    </tr>
+</table>
+### Rückgabe
+<table class="table">
+    <tr>
+        <th>Parameter</th>
+        <th>Datentyp</th>
+        <th>Beschreibung</th>
+    </tr>
+    <tr>
+        <td>transaction_id</td>
+        <td>integer</td>
+        <td>
+           Identifikationsnummer für die Einzahlung.
+        </td>
+    </tr>
+    <tr>
+        <td>amount</td>
+        <td>double</td>
+        <td>
+            Der in der angeforderten Zahlungsabwicklung ausgewiesene Betrag.
+        </td>
+    </tr>
 </table>

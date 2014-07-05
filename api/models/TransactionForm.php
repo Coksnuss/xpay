@@ -31,9 +31,11 @@ class TransactionForm extends \yii\base\Model
             ['sender_account_number', 'checkIfAccountExternal'],
             ['receiver_account_number', 'checkIfAccountValidAndInternal'],
             ['amount', 'number', 'min' => 0],
-            ['currency', 'in', 'range' => Currency::getAvailableCurrencyCodes()],
+            ['currency', 'default', 'value' => Currency::getPrimaryCurrencyCode()],
+            ['currency', 'in', 'range' => [Currency::getPrimaryCurrencyCode()]],
             ['description', 'string', 'min' => 3],
-            ['type', 'in', 'range' => array_keys(Transaction::getTypeList())],
+            ['type', 'default', 'value' => Transaction::TYPE_RECEIPT],
+            ['type', 'in', 'range' => [Transaction::TYPE_RECEIPT]],
         ];
     }
 

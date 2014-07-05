@@ -33,14 +33,26 @@ class Transaction extends \common\models\base\Transaction
     }
 
     /**
+     * Finds a transaction by its transaction ID.
+     *
+     * @param string $transactionId The transaction ID.
+     * @return static|null The corresponding Model, or null if it does not
+     * exist.
+     */
+    public static function findByTransactionId($transactionId)
+    {
+        return static::findOne(['transaction_id' => $transactionId]);
+    }
+
+    /**
      * @return array A list of transaction types indexed by the corresponding
      * type ID.
      */
     public static function getTypeList()
     {
         return [
-            self::TYPE_ORDER => 'order', 
-            self::TYPE_RECEIPT=>'receipt', 
+            self::TYPE_ORDER => 'order',
+            self::TYPE_RECEIPT=>'receipt',
             self::TYPE_REDEMPTION => 'redemption'
         ];
     }
@@ -77,16 +89,16 @@ class Transaction extends \common\models\base\Transaction
     public $sender;
     public $time;
     /**
-     * 
+     *
      * @return Ambigous <multitype:, multitype:string >
      */
     public function getType()
     {
     	return $this->getTypeList()[$this->type];
     }
-	
+
     /**
-     * 
+     *
      * @return string Amount as String with preferred currency
      */
 	public function getAmountString(){

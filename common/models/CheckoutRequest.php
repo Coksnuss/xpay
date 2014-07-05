@@ -32,7 +32,8 @@ class CheckoutRequest extends \common\models\base\CheckoutRequest
             ['tax', 'number', 'min' => 0, 'max' => 1],
             [['return_url', 'return_url'], 'url'],
             ['description', 'string', 'min' => 3],
-            ['type', 'in', 'range' => array_keys(Transaction::getTypeList())],
+            ['type', 'in', 'range' => [Transaction::TYPE_ORDER, Transaction::TYPE_REDEMPTION]],
+            ['reference', 'checkReference'],
         ], parent::rules());
     }
 
@@ -64,6 +65,22 @@ class CheckoutRequest extends \common\models\base\CheckoutRequest
             Account::lookup($this->$attribute) === null
         ) {
             $this->addError($attribute, 'Unknown receiver.');
+        }
+    }
+
+    /**
+     * Validator which checks if the reference contains a valid transaction_id
+     * in case that the checkout type a redemption.
+     *
+     * @param string $attribute The attribute name which holds the account number.
+     * @param array $params Not used.
+     */
+    public function checkReference($attribute, $params)
+    {
+        if ($this->type == Transaction::TYPE_REDEMPTION &&
+            Transaction::findByTransactionId($this->$attribute) === null
+        ) {
+            $this->addError($attribute, 'Reference must contain a valid transaction ID.');
         }
     }
 
