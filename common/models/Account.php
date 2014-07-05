@@ -124,7 +124,7 @@ class Account extends \common\models\base\Account
     public function getStatusLabel($type=true){
     	 
     	//$preferredCurrency = Currency::findOne($condition);
-    	$statusString = ($this->status)?"Active":"Deactivated";
+    	$statusString = ($this->status)?"ACTIVE":"DEACTIVATED";
     	if($type){
     		if ($this->status){
     			return Html::tag('div',$statusString,['class'=>'status-activated']);

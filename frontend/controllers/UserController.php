@@ -12,6 +12,7 @@ use common\models\Account;
 use frontend\models\DeleteForm;
 use yii\filters\AccessControl;
 use frontend\models\EditPasswordForm;
+use frontend\models\BlacklistForm;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -49,8 +50,10 @@ class UserController extends Controller
     {
     	$userModel = $this->findModel(Yii::$app->user->identity->id);
     	$accountModel = Account::findOne(['user_id'=>Yii::$app->user->identity->id]);
+    	$blacklistForm = new BlacklistForm();
+    	$blacklistForm->setUser();
     	return $this->render('view', [
-            'userModel' => $userModel,'accountModel'=>$accountModel,
+            'userModel' => $userModel,'accountModel'=>$accountModel,'blacklistForm'=>$blacklistForm,
         ]);
     }
 

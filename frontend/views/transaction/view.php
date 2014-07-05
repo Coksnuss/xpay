@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>$model->getType(),
 			],
             ['attribute'=>'amount','format'=>'raw',
-				'value'=>Html::tag('div',$model->getAmount(),['class'=>'amount-string']),
+				'value'=>Html::tag('div',$model->getAmountString(false),['class'=>'amount-string']),
 			],
             //'foreign_currency_id',
             'created_at',

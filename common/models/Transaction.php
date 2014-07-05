@@ -101,12 +101,12 @@ class Transaction extends \common\models\base\Transaction
      *
      * @return string Amount as String with preferred currency
      */
-	public function getAmountString(){
+	public function getAmountString($right=true){
 		$amountString = $this->amount." "."EUR";
     	if ($this->amount<0){
-    		$amountString = Html::tag('div',$amountString,['class'=>'monospace amount-negativ right']);
+    		$amountString = Html::tag('div',$amountString,['class'=>'monospace amount-negativ'.(($right)?' right':'')]);
     	}else{
-    		$amountString = Html::tag('div',$amountString,['class'=>'monospace right']);
+    		$amountString = Html::tag('div',$amountString,['class'=>'monospace'.(($right)?' right':'')]);
     	}
     	return $amountString;
     }
