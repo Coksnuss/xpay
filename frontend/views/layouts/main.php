@@ -75,10 +75,38 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
+        <?php 
+        	if(!Yii::$app->user->isGuest) {
+				echo '<span class="timer" id="timer">Auto-logout in 20:00</span>';
+			}
+        ?>
         <?= Alert::widget() ?>
         <?= $content ?>
         </div>
     </div>
+    
+    <script type="text/javascript">
+	    var counter = 1200;
+	    var interval;
+	    window.onload = function() {
+	    	interval = setInterval(timer, 1000);
+	    };
+	    function timer() {
+		    counter--;
+		    if(counter >= 0) {
+			    var min, sec;
+			    min = Math.floor(counter/60);
+			    if(min < 10)
+			    min = "0" + min;
+			    sec = counter % 60;
+			    if(sec < 10)
+			    sec = "0" + sec;
+			    $("#timer").html("Auto-logout in " + min + ":" + sec);
+			} else {
+			    clearInterval(interval);
+		    }
+	    } 
+    </script>
 
     <footer class="footer">
         <div class="container">

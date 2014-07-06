@@ -89,3 +89,10 @@ a.desc:after {
     padding: 10px 20px;
     margin: 0 0 15px 0;
 }
+
+.timer {
+	background-color: #f5f5f5;
+	border-radius: 4px;
+	float: right;
+	padding: 6px;
+}

@@ -111,3 +111,10 @@ a.desc:after {
 .right {
 	float:right;
 }
+
+.timer {
+	background-color: #f5f5f5;
+	border-radius: 4px;
+	float: right;
+	padding: 6px;
+}
