@@ -85,6 +85,10 @@ Eine Antwort besteht aus zwei Teilen:
 * **result:** Ergebnis des Requests mit Eingabe- und Rückgabe-Daten
 * **error:** Fehler Code und Nachricht
 
+Außerdem sollte <strong>immer</strong> der HTTP Status Code ausgelesen werden.
+Nur Antworten mit einem Status Code von 200 können als erfolgreich angesehen
+werden.
+
 ## Fehler
 Im folgenden werden die möglichen Error Codes die als Antwort auf einen Request gesendet werden, beschrieben.
 
