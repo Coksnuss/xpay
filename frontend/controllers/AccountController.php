@@ -25,10 +25,10 @@ class AccountController extends Controller
         return [
         	'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['update','transfer'],
+                'only' => ['update','transfer','activate','deactivate'],
                 'rules' => [
                     [
-                        'actions' => ['update','transfer'],
+                        'actions' => ['update','transfer','activate','deactivate'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],

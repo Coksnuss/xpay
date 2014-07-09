@@ -12,6 +12,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\models\User;
 
 /**
  * Site controller
@@ -87,7 +88,11 @@ class SiteController extends Controller
 
     public function actionLogout()
     {
-        Yii::$app->user->logout();
+        $model = User::findOne(['id'=>Yii::$app->user->identity->id]);
+        $model->last_login_time = date('Y-m-d H:i:s');
+        $model->last_login_ip = Yii::$app->request->userIP;
+        $model->save(false);
+    	Yii::$app->user->logout();
 
         return $this->goHome();
     }
