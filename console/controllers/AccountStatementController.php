@@ -47,7 +47,6 @@ class AccountStatementController extends \yii\console\Controller
             },
         ])->orderBy(['{{account}}.[[id]]' => SORT_ASC]);
 
-        $filepath = Yii::getAlias('@console/pdf/');
         $month = intval(date('n', strtotime('-1 month')));
         $year = intval(date('Y', strtotime('-1 month')));
 
@@ -57,7 +56,7 @@ class AccountStatementController extends \yii\console\Controller
             try
             {
                 $this->stdout(sprintf('Generate account statement PDF file for account number %06d' . PHP_EOL, $account->number));
-                $filename = sprintf('account_statement_%04d_%02d_%06d.pdf', $year, $month, $account->number);
+                $file = $account->generateAccountStatementFilePath($month, $year);
 
                 $pdf = new XPayPdf();
                 $pdf->startAccountStatement($account, $month, $year);
@@ -66,7 +65,7 @@ class AccountStatementController extends \yii\console\Controller
                     $pdf->addAccountTransaction($transaction);
                 }
                 $pdf->endAccountStatement();
-                $pdf->saveToDisk($filepath . $filename);
+                $pdf->saveToDisk($file);
             } catch(\Exception $e) {
                 $this->stderr($e->getMessage() . PHP_EOL);
             }
