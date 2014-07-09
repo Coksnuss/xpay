@@ -6,6 +6,7 @@ use yii\db\Expression;
 use yii\helpers\Console;
 
 use common\models\Account;
+use common\models\AccountStatement;
 use common\helpers\XPayPdf;
 
 /**
@@ -56,7 +57,19 @@ class AccountStatementController extends \yii\console\Controller
             try
             {
                 $this->stdout(sprintf('Generate account statement PDF file for account number %06d' . PHP_EOL, $account->number));
-                $file = $account->generateAccountStatementFilePath($month, $year);
+                $date = date('Y-m-t', mktime(0, 0, 0, $month, 1, $year));
+
+                $accountStatement = AccountStatement::findOne([
+                    'account_id' => $account->id,
+                    'date' => $date,
+                ]);
+
+                if ($accountStatement === null) {
+                    $accountStatement = new AccountStatement;
+                    $accountStatement->date = $date;
+                    $accountStatement->email_notification_send = 0;
+                    $account->link('accountStatements', $accountStatement);
+                }
 
                 $pdf = new XPayPdf();
                 $pdf->startAccountStatement($account, $month, $year);
@@ -65,7 +78,7 @@ class AccountStatementController extends \yii\console\Controller
                     $pdf->addAccountTransaction($transaction);
                 }
                 $pdf->endAccountStatement();
-                $pdf->saveToDisk($file);
+                $pdf->saveToDisk($accountStatement->filePath);
             } catch(\Exception $e) {
                 $this->stderr($e->getMessage() . PHP_EOL);
             }

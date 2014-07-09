@@ -162,20 +162,4 @@ class Account extends \common\models\base\Account
     {
     	return [[['iban', 'bic'], 'required']]+parent::rules();
     }
-
-    /**
-     * Gets the absolute path to the account statement PDF for this account for
-     * a given month and year.
-     *
-     * @param integer $month The month
-     * @param integer $year The year
-     * @return string|null The filename. Please check the file for existance
-     * before reading.
-     */
-    public function generateAccountStatementFilePath($month, $year)
-    {
-        return
-            Yii::getAlias('@console/pdf/') .
-            sprintf('account_statement_%04d_%02d_%06d.pdf', $year, $month, $this->number);
-    }
 }
