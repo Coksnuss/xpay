@@ -6,6 +6,7 @@ use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use frontend\widgets\Alert;
 use common\models\Account;
+use yii\helpers\Url;
 
 /**
  * @var \yii\web\View $this
@@ -28,7 +29,8 @@ AppAsset::register($this);
     <div class="wrap">
         <?php
             NavBar::begin([
-                'brandLabel' => Yii::$app->params['title'],
+                //'brandLabel' => Html::img(Yii::getAlias('@common/images/xpay-200x132px.png'),['width'=>30,'alt'=>Yii::$app->name]),
+                'brandLabel' => Yii::$app->name,
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',

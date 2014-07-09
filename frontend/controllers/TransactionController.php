@@ -5,11 +5,13 @@ namespace frontend\controllers;
 use Yii;
 use common\models\Transaction;
 use common\models\Account;
+use common\models\User;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use frontend\models\OverviewTransactionSearch;
 use yii\filters\AccessControl;
+use frontend\models\UserAccountStatementSearch;
 
 /**
  * TransactionController implements the CRUD actions for Transaction model.
@@ -21,7 +23,7 @@ class TransactionController extends Controller
         return [
         	'access' => [
                 'class' => AccessControl::className(),
-                //'only' => ['index','view'],
+                'only' => ['index','view'],
                 'rules' => [
                     [
                         'actions' => ['index','view'],
@@ -45,11 +47,15 @@ class TransactionController extends Controller
      */
     public function actionIndex()
     {
-        $model = Account::findOne(['user_id'=>Yii::$app->user->identity->id]);
+        $func = function($model){return $model->id;};
+    	$statements = UserAccountStatementSearch::find()->all();
+        $ids = array_map($func, $statements);
+    	$accountStatementId = max($ids);
+    	$model = Account::findOne(['user_id'=>Yii::$app->user->identity->id]);
     	$searchModel = new OverviewTransactionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('index', [ 'searchModel' => $searchModel,
-        		'dataProvider' => $dataProvider, 'model' => $model,
+        		'dataProvider' => $dataProvider, 'model' => $model, 'accountStatementId'=>$accountStatementId,
         		]);
     }
 
@@ -68,7 +74,7 @@ class TransactionController extends Controller
         }else{
         	return $this->redirect(['error']);
         }
-    }
+    }  
 
     /**
      * Finds the Transaction model based on its primary key value.
@@ -79,8 +85,8 @@ class TransactionController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Transaction::findOne($id)) !== null) {
-            return $model;
+        if (($model = Transaction::findOne($id)) !== null && $model->account_id === User::findOne(['id'=>Yii::$app->user->identity->id])->accounts[0]->id) {
+        	return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

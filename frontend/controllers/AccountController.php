@@ -99,7 +99,7 @@ class AccountController extends Controller
     	$model = $this->findModel(Yii::$app->user->identity->id);
     	if (isset($model)){
 	    	$model->status = 0;
-	    	$model->save();
+	    	$model->save(false);
     		return $this->redirect(['../user/view']);
     	}else{
     		return $this->redirect(['error']);
@@ -117,7 +117,7 @@ class AccountController extends Controller
     	$model = $this->findModel(Yii::$app->user->identity->id);
     	if (isset($model)){
 	    	$model->status = 1;
-	    	$model->save();
+	    	$model->save(false);
     		return $this->redirect(['../user/view']);
     	}else{
     		return $this->redirect(['error']);

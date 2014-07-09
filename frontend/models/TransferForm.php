@@ -26,7 +26,7 @@ class TransferForm extends Model
     public function rules()
     {
     	return [[['iban', 'bic'], 'required'],
-    	[['amount'], 'number','min'=>0.0]]+parent::rules();
+    	[['amount'], 'number','min'=>0.0, 'max'=>10000.00]]+parent::rules();
     }
 
     /**

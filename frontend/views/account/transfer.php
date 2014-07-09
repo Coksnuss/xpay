@@ -34,7 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
 	        ],
 	    ],
 	]); ?>
-	
+	<p>Maximum amount to charge in one wire transfer: 10000 EUR</p>
+    
     <?= $form->field($model, 'iban')->textInput(['maxlength' => 32,'disabled'=>true]) ?>
 	<?= $form->field($model, 'bic')->textInput(['maxlength' => 32,'disabled'=>true]) ?>
     <?= $form->field($model, 'amount')->textInput(['placeholder'=>'Type in a positiv amount']) ?>
