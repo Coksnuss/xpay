@@ -18,6 +18,7 @@ class Transaction extends \common\models\base\Transaction
     const TYPE_ORDER = 1; // Bezahlung
     const TYPE_RECEIPT = 2; // Eingang von Geld, alternativ Einzahlung = DEPOSIT oder Gutschrift = CREDIT
     const TYPE_REDEMPTION = 3; // Rückbuchung
+    const TYPE_CHARGE = 4; // Aufladung
 
     /**
      * @inheritdoc

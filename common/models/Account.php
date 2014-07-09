@@ -99,9 +99,26 @@ class Account extends \common\models\base\Account
             $this->save();
         }
     }
-    
+
+    /**
+     * Charges a customer account by the given amount.
+     *
+     * @param float $amount The amount to charge.
+     */
+    public function charge($amount)
+    {
+        $transaction = new Transaction;
+        $transaction->generateTransactionId();
+        $transaction->account_id = $this->id;
+        $transaction->associated_account_number = self::GLOBAL_ACCOUNT_NUMBER_END + 1;
+        $transaction->type = Transaction::TYPE_CHARGE;
+        $transaction->amount = $amount;
+        $transaction->description = sprintf('Kundenaufladung über IBAN: %s (BIC: %s)', $this->iban, $this->bic);
+        $this->linkTransaction($transaction);
+    }
+
     public function getBalanceLabel($type=true){
-    	
+
     	//$preferredCurrency = Currency::findOne($condition);
 		$value = $this->balance;
 		$balanceString = $value." "."EUR";
@@ -116,13 +133,13 @@ class Account extends \common\models\base\Account
 			    	'options' => ['class' => 'btn-primary monospace','width'=>250,'disabled'=>true]]);
     		}
     	}
-    	
-    	
+
+
     	return $balanceString;
     }
-    
+
     public function getStatusLabel($type=true){
-    	 
+
     	//$preferredCurrency = Currency::findOne($condition);
     	$statusString = ($this->status)?"ACTIVATED":"DEACTIVATED";
     	if($type){
@@ -132,15 +149,15 @@ class Account extends \common\models\base\Account
     			return Html::tag('div',$statusString,['class'=>'status-deactivated']);
     		}
     	}
-    	 
-    	 
+
+
     	return $statusString;
     }
-    
+
     public function attributeLabels(){
     	return ['iban'=>'IBAN', 'bic'=>'BIC','amount'=>'Amount to Transfer']+parent::attributeLabels();
     }
-    
+
     public function rules()
     {
     	return [[['iban', 'bic'], 'required']]+parent::rules();

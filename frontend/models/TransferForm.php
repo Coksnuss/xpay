@@ -4,6 +4,7 @@ namespace frontend\models;
 use yii\base\Model;
 use Yii;
 
+use common\models\Transaction;
 use common\models\Currency;
 use common\models\Account;
 use common\models\User;
@@ -16,9 +17,9 @@ class TransferForm extends Model
     public $iban;
     public $bic;
 	public $amount;
-    
+
     public $account;
-    
+
     /**
      * (non-PHPdoc)
      * @see \yii\base\Model::rules()
@@ -37,14 +38,13 @@ class TransferForm extends Model
     public function transfer($account)
     {
         if (isset($account->bic) && isset($account->iban) && $this->bic===$account->bic && $this->iban===$account->iban){
-        	$account->balance+=$this->amount;
-        	$account->save();
+            $account->charge($this->amount);
     		return true;
         }else{
         	return false;
         }
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see \yii\base\Model::attributeLabels()
