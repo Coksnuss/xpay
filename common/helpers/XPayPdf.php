@@ -67,76 +67,100 @@ class XPayPdf extends \TCPDF
         $this->writeHTML('<span style="font-size: 8px; text-align: right;">' . $page . '</span>', false);
     }
 
-    public function generateAccountStatement($account)
+    private $account;
+    private $htmlTable;
+    private $oldBalance;
+    private $date;
+    public function startAccountStatement($account, $month = null, $year = null)
     {
-        $this->AddPage();
-        $this->printAccountHeader($account);
+        static $months = [
+            1 => 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli',
+            'August', 'September', 'Oktober', 'November', 'Dezember'
+        ];
+        $month = $month === NULL ? intval(date('n', strtotime('-1 month'))) : intval($month);
+        $year = $year === NULL ? intval(date('Y', strtotime('-1 month'))) : intval($year);
 
+        $this->account = $account;
+        $this->htmlTable = '';
+        $this->oldBalance = $this->account->balance;
+        $this->date = date('t.m.Y', mktime(0, 0, 0, $month, 1, $year));
 
-        $this->writeHTML("<strong>Kontonummer 123456</strong>");
-        $this->writeHTML("<strong>Kontoauszug Juni 2014</strong>");
-        $this->writeHTML("<br>");
+        $this->htmlTable .= sprintf('<strong>Kontonummer %06u</strong><br>', $this->account->number);
+        $this->htmlTable .= sprintf('<strong>Kontoauszug %s %u</strong><br>', $months[$month], $year);
+        $this->htmlTable .= '<br>';
 
-        $html = '<table cellpadding="2" border="0">';
-        $html .= '<thead>';
-        $html .= '<tr>';
-        $html .= '<td width="20%" style="font-weight:bold;">Buchung</td>';
-        $html .= '<td width="60%" style="font-weight:bold;">Verwendungszweck</td>';
-        $html .= '<td width="20%" style="font-weight:bold; text-align: right;">Betrag (EUR)</td>';
-        $html .= '</tr>';
-        $html .= '</thead>';
-
-        for ($i = 0; $i < 80; ++$i)
-        {
-            $day = intval($i / (($i / 31) + 1)) + 1;
-            if (strlen($day) === 1) $day = '0' . $day;
-            $value = (mt_rand(0, 1) ? '-' : '+') . mt_rand(0, 999) . ',' . sprintf('%02d', mt_rand(0,99));
-
-            $html .= '<tr>';
-            $html .= "<td width=\"20%\">$day.06.2014</td>";
-            $html .= '<td width="60%">fjaklfj d sjsdlfk sdjklf jsdklfjslkfjs</td>';
-            $html .= "<td width=\"20%\" style=\"text-align: right;\">$value</td>";
-            $html .= '</tr>';
-        }
-        $html .= '<tr>';
-        $html .= "<td  width=\"20%\">&nbsp;</td>";
-        $html .= '<td  width="60%" style="font-weight: bold;">Neuer Saldo</td>';
-        $html .= "<td  width=\"20%\" style=\"text-align: right; font-weight: bold;\">1234,34</td>";
-        $html .= '</tr>';
-        $html .= "</table>";
-
-        $this->writeHTML($html);
+        $this->htmlTable .= '<table cellpadding="2" border="0">';
+        $this->htmlTable .= '<thead>';
+        $this->htmlTable .= '<tr>';
+        $this->htmlTable .= '<td width="20%" style="font-weight:bold;">Buchung</td>';
+        $this->htmlTable .= '<td width="60%" style="font-weight:bold;">Verwendungszweck</td>';
+        $this->htmlTable .= '<td width="20%" style="font-weight:bold; text-align: right;">Betrag (EUR)</td>';
+        $this->htmlTable .= '</tr>';
+        $this->htmlTable .= '</thead>';
     }
 
-    protected function printAccountHeader($account)
+    public function addAccountTransaction($transaction)
     {
+        $this->oldBalance -= $transaction->amount;
+
+        $this->htmlTable .= '<tr>';
+        $this->htmlTable .= sprintf('<td width="20%%">%s</td>', date('d.m.Y', strtotime($transaction->created_at)));
+        $this->htmlTable .= sprintf('<td width="60%%">%s</td>', \yii\helpers\Html::encode($transaction->description));
+        $this->htmlTable .= sprintf('<td width="20%%" style="text-align: right;">%.2F</td>', $transaction->amount);
+        $this->htmlTable .= '</tr>';
+    }
+
+    public function endAccountStatement()
+    {
+        $this->htmlTable .= '<tr>';
+        $this->htmlTable .= "<td width=\"20%\">&nbsp;</td>";
+        $this->htmlTable .= '<td width="60%" style="font-weight: bold;">Neuer Saldo</td>';
+        $this->htmlTable .= sprintf('<td width="20%%" style="text-align: right; font-weight: bold;">%.2F</td>', $this->account->balance);
+        $this->htmlTable .= '</tr>';
+        $this->htmlTable .= "</table>";
+
+        $this->htmlTable = $this->getAccountHeader() . $this->htmlTable;
+
+        $this->AddPage();
+        $this->writeHTML($this->htmlTable);
+    }
+
+    public function saveToDisk($filename, $overwrite = false)
+    {
+        if ($overwrite || !file_exists($filename))
+            $this->Output($filename, 'F');
+    }
+
+    protected function getAccountHeader()
+    {
+        $oldBalance = sprintf('%.2F', $this->oldBalance);
         $html = <<<EOL
 <table>
     <tr>
         <td width="15%"><span style="font-size: 10px; font-weight: bold;">Kunde</span></td>
-        <td width="15%" style="text-align: right;"><span style="font-size: 10px;">{$account->user->first_name} {$account->user->last_name}</span></td>
+        <td width="15%" style="text-align: right;"><span style="font-size: 10px;">{$this->account->user->first_name} {$this->account->user->last_name}</span></td>
         <td width="30%">&nbsp;</td>
         <td width="20%"><span style="font-size: 10px; font-weight: bold;">Datum</span></td>
-        <td width="20%" style="text-align: right;"><span style="font-size: 10px;">31.06.2014</span></td>
+        <td width="20%" style="text-align: right;"><span style="font-size: 10px;">{$this->date}</span></td>
     </tr>
     <tr>
         <td width="60%" colspan="3"></td>
         <td width="20%"><span style="font-size: 10px; font-weight: bold;">Kontonummer</span></td>
-        <td width="20%" style="text-align: right;"><span style="font-size: 10px;">{$account->number}</span></td>
+        <td width="20%" style="text-align: right;"><span style="font-size: 10px;">{$this->account->number}</span></td>
     </tr>
     <tr><td colspan="5">&nbsp;</td></tr>
     <tr style="border-top: 1px solid #f00;">
         <td width="60%" colspan="2"></td>
         <td width="20%"><span style="font-size: 10px; font-weight: bold;">Alter Saldo</span></td>
-        <td width="20%" style="text-align: right;"><span style="font-size: 10px;">300,99 EUR</span></td>
+        <td width="20%" style="text-align: right;"><span style="font-size: 10px;">{$oldBalance} EUR</span></td>
     </tr>
     <tr>
         <td width="60%" colspan="2"></td>
         <td width="20%"><span style="font-size: 10px; font-weight: bold;">Neuer Saldo</span></td>
-        <td width="20%" style="text-align: right;"><span style="font-size: 10px;">{$account->balance} EUR</span></td>
+        <td width="20%" style="text-align: right;"><span style="font-size: 10px;">{$this->account->balance} EUR</span></td>
     </tr>
 </table>
 EOL;
-        $this->writeHTML($html);
+        return $html;
     }
 }
