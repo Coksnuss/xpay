@@ -47,11 +47,11 @@ class TransactionController extends Controller
      */
     public function actionIndex()
     {
-        $func = function($model){return $model->id;};
-    	$statements = UserAccountStatementSearch::find()->all();
+       	$model = Account::findOne(['user_id'=>Yii::$app->user->identity->id]);
+    	$func = function($model){return $model->id;};
+    	$statements = UserAccountStatementSearch::findAll(['account_id'=>$model->id]);
         $ids = array_map($func, $statements);
     	$accountStatementId = max($ids);
-    	$model = Account::findOne(['user_id'=>Yii::$app->user->identity->id]);
     	$searchModel = new OverviewTransactionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('index', [ 'searchModel' => $searchModel,

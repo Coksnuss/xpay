@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <p>
-        <?= Html::a('Download Account Statement', ['../account-statement/view','id'=>$accountStatementId], ['class' => 'btn btn-success']) ?>
-    	<?= Html::a('Archive', ['../account-statement/index'], ['class' => 'btn btn-primary']) ?>
+        <?php //= Html::a('Download Account Statement', ['../account-statement/view','id'=>$accountStatementId], ['class' => 'btn btn-success']) ?>
+    	<?= Html::a('Account Statements', ['../account-statement/index'], ['class' => 'btn btn-primary']) ?>
     </p>
 </div>

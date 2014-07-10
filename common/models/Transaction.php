@@ -53,7 +53,8 @@ class Transaction extends \common\models\base\Transaction
         return [
             self::TYPE_ORDER => 'order',
             self::TYPE_RECEIPT=>'receipt',
-            self::TYPE_REDEMPTION => 'redemption'
+            self::TYPE_REDEMPTION => 'redemption',
+            self::TYPE_CHARGE=>'charge',
         ];
     }
 

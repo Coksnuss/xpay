@@ -40,6 +40,7 @@ AppAsset::register($this);
             $menuItems = [];
             //$menuItems[] = ['label' => 'Home', 'url' => ['/site/index'], 'visible'=>$isGuest];
             $menuItems[] = ['label' => 'Overview', 'url' => ['/transaction/index'], 'visible'=>!$isGuest];
+            $menuItems[] = ['label' => 'Account Statements', 'url' => ['/account-statement/index'], 'visible'=>!$isGuest];
             //$menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
 			//$menuItems[] = ['label' => 'Contact', 'url' => ['/site/contact']];
             $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup'], 'visible'=>$isGuest];

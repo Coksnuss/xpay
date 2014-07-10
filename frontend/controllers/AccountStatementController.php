@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use common\models\Account;
 
 /**
  * AccountStatementController implements the CRUD actions for AccountStatement model.
@@ -60,11 +61,18 @@ class AccountStatementController extends Controller
      */
     public function actionView($id)
     {
-        //TODO return PDF with accountStatement ! only own statements ! Check account id !
-    	
-    	return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+    	$account = Account::findOne(['user_id'=>Yii::$app->user->identity->id]);
+    	$accountStatements = $account->accountStatements;
+    	$accountStatement = null;
+    	foreach($accountStatements as $statement){
+    		if ($statement->id == $id){
+    			$accountStatement = $statement;
+    		}
+    	}
+    	if ($accountStatement !== null)
+    		return Yii::$app->getResponse()->sendFile($accountStatement->filePath);
+    	else
+    		throw new NotFoundHttpException('The requested page does not exist.');
     }
     
     /**
@@ -81,5 +89,17 @@ class AccountStatementController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+    	return [
+    	'error' => [
+    	'class' => 'yii\web\ErrorAction',
+    	],
+    	];
     }
 }
