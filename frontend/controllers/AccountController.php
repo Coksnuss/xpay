@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use frontend\models\TransferForm;
+use yii\web\BadRequestHttpException;
 
 /**
  * AccountController implements the CRUD actions for Account model.
@@ -61,7 +62,7 @@ class AccountController extends Controller
 	            ]);
 	        }
 		}else{
-    		return $this->redirect(['error']);
+    		throw new NotFoundHttpException();
     	}
     }
     
@@ -76,7 +77,7 @@ class AccountController extends Controller
     	if (isset($model)){
 	    	$form = new TransferForm();
 	    	$form->load(['TransferForm'=>['iban'=>$model->iban,'bic'=>$model->bic]]);
-	    	if ($form->load(Yii::$app->request->post()) && $form->transfer($model)){
+	    	if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->transfer($model)){
 	    		return $this->redirect(['../user/view']);
 	    	} else {
 	    		return $this->render('transfer', [
@@ -84,7 +85,7 @@ class AccountController extends Controller
 	    				]);
     		}
     	}else{
-    		return $this->redirect(['error']);
+    		throw new NotFoundHttpException();
     	}
     }
     
@@ -102,7 +103,7 @@ class AccountController extends Controller
 	    	$model->save(false);
     		return $this->redirect(['../user/view']);
     	}else{
-    		return $this->redirect(['error']);
+    		throw new NotFoundHttpException();
     	}
     }
     
@@ -120,7 +121,7 @@ class AccountController extends Controller
 	    	$model->save(false);
     		return $this->redirect(['../user/view']);
     	}else{
-    		return $this->redirect(['error']);
+    		throw new NotFoundHttpException();
     	}
     }
 

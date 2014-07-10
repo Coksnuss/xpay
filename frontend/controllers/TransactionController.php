@@ -48,15 +48,19 @@ class TransactionController extends Controller
     public function actionIndex()
     {
        	$model = Account::findOne(['user_id'=>Yii::$app->user->identity->id]);
-    	$func = function($model){return $model->id;};
-    	$statements = UserAccountStatementSearch::findAll(['account_id'=>$model->id]);
-        $ids = array_map($func, $statements);
-    	$accountStatementId = max($ids);
-    	$searchModel = new OverviewTransactionSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        return $this->render('index', [ 'searchModel' => $searchModel,
-        		'dataProvider' => $dataProvider, 'model' => $model, 'accountStatementId'=>$accountStatementId,
-        		]);
+    	if ($model->isset){
+    		$func = function($model){return $model->id;};
+	    	$statements = UserAccountStatementSearch::findAll(['account_id'=>$model->id]);
+	        $ids = array_map($func, $statements);
+	    	$accountStatementId = max($ids);
+	    	$searchModel = new OverviewTransactionSearch();
+	        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+	        return $this->render('index', [ 'searchModel' => $searchModel,
+	        		'dataProvider' => $dataProvider, 'model' => $model, 'accountStatementId'=>$accountStatementId,
+	        		]);
+	    }else{
+	    	throw new NotFoundHttpException();
+	    }
     }
 
     /**
@@ -72,7 +76,7 @@ class TransactionController extends Controller
         	    'model' => $model,
         	]);
         }else{
-        	return $this->redirect(['error']);
+        	throw new NotFoundHttpException();
         }
     }  
 
