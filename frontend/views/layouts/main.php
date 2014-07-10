@@ -44,8 +44,8 @@ AppAsset::register($this);
 			//$menuItems[] = ['label' => 'Contact', 'url' => ['/site/contact']];
             $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup'], 'visible'=>$isGuest];
             $menuItems[] = ['label' => 'Login', 'url' => ['/site/login'], 'visible'=>$isGuest];
-            
-            if (!$isGuest) 
+
+            if (!$isGuest)
 			{
 				$menuItems[] = [
                     'label' => 'Settings',
@@ -62,7 +62,7 @@ AppAsset::register($this);
 				$menuItems[] = [
                     'label' => 'Logout (' . Yii::$app->user->identity->email . ')',
                     'url' => ['/site/logout'],
-                    'linkOptions' => ['data-method' => 'post'], 
+                    'linkOptions' => ['data-method' => 'post'],
 					'visible'=>!$isGuest
            		];
 			}
@@ -77,7 +77,7 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-        <?php 
+        <?php
         	if(!Yii::$app->user->isGuest) {
 				echo '<span class="timer" id="timer">Auto-logout in 20:00</span>';
 			}
@@ -86,9 +86,9 @@ AppAsset::register($this);
         <?= $content ?>
         </div>
     </div>
-    
+
     <script type="text/javascript">
-	    var counter = 1200;
+	    var counter = <?php echo Yii::$app->user->authTimeout; ?>;
 	    var interval;
 	    window.onload = function() {
 	    	interval = setInterval(timer, 1000);
@@ -107,7 +107,7 @@ AppAsset::register($this);
 			} else {
 			    clearInterval(interval);
 		    }
-	    } 
+	    }
     </script>
 
     <footer class="footer">
