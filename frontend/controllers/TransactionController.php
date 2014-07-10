@@ -49,14 +49,10 @@ class TransactionController extends Controller
     {
        	$model = Account::findOne(['user_id'=>Yii::$app->user->identity->id]);
     	if ($model !== NULL){
-    		$func = function($model){return $model->id;};
-	    	$statements = UserAccountStatementSearch::findAll(['account_id'=>$model->id]);
-	        $ids = array_map($func, $statements);
-	    	$accountStatementId = max($ids);
-	    	$searchModel = new OverviewTransactionSearch();
+    		$searchModel = new OverviewTransactionSearch();
 	        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 	        return $this->render('index', [ 'searchModel' => $searchModel,
-	        		'dataProvider' => $dataProvider, 'model' => $model, 'accountStatementId'=>$accountStatementId,
+	        		'dataProvider' => $dataProvider, 'model' => $model,
 	        		]);
 	    }else{
 	    	throw new NotFoundHttpException();
