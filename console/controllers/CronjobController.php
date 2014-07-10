@@ -7,17 +7,27 @@ use yii\helpers\Console;
 
 use common\models\Account;
 use common\models\AccountStatement;
+use common\models\CheckoutRequest;
 use common\helpers\XPayPdf;
 
 /**
- * Generates account statements for the last month.
+ * Controller which contains several cronjobs.
  */
-class AccountStatementController extends \yii\console\Controller
+class CronjobController extends \yii\console\Controller
 {
-    public $defaultAction = 'generate';
+    /**
+     * Shows the help for this command.
+     */
+    public function actionIndex()
+    {
+        $this->run('/help', ['cronjob']);
+    }
 
     /**
-     * Generates the account statements (PDF files) for the last month, for every available user.
+     * Generates the account statements for the last month.
+     *
+     * Account statements are generated as (PDF files) for every available user
+     * and saved to disk.
      * This is supposed to be executed only once a month (at the first day).
      *
      * @param boolean $force Whether to force generation, even if this is not the first day of a month.
@@ -82,6 +92,22 @@ class AccountStatementController extends \yii\console\Controller
             } catch(\Exception $e) {
                 $this->stderr($e->getMessage() . PHP_EOL);
             }
+        }
+    }
+
+    /**
+     * Removes old checkout requests.
+     *
+     * This removes all checkout requests that were not updated within the last
+     * 24 hours.
+     */
+    public function actionCleanCheckoutRequests()
+    {
+        $requests = CheckoutRequest::find(['updated_atd' => ['and', 'idd=2']])->all();
+
+        foreach ($requests as $request)
+        {
+            echo "OK";
         }
     }
 }
