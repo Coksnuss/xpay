@@ -27,7 +27,7 @@ class AccountStatement extends \common\models\base\AccountStatement
      *
      * @param integer $month The month
      * @param integer $year The year
-     * @return string|null The filename.
+     * @return string The filename.
      */
     private static function generateFilePath($accountNumber, $month, $year)
     {

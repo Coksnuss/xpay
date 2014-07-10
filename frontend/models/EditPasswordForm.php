@@ -13,13 +13,13 @@ use common\models\User;
  */
 class EditPasswordForm extends Model
 {
-    
+
     public $current_password = "";
     public $new_password = "";
     public $confirm_password = "";
-    
+
     public $user;
-    
+
     /**
      * (non-PHPdoc)
      * @see \yii\base\Model::rules()
@@ -31,7 +31,7 @@ class EditPasswordForm extends Model
     		['current_password', 'validatePassword']]
     		+ parent::rules();
     }
-    
+
     /**
      * Validates the password.
      * This method serves as the inline validation for password.
@@ -49,11 +49,10 @@ class EditPasswordForm extends Model
     public function save(){
     	if ($this->validate()){
     		$user = User::findOne(['id'=>Yii::$app->user->identity->id]);
-    		$user->password_hash = null;
 	    	$user->setPassword($this->new_password);
 	    	return $user->save(false);
     	}
     	return false;
     }
-    
+
 }
