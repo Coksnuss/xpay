@@ -48,7 +48,7 @@ class TransactionController extends Controller
     public function actionIndex()
     {
        	$model = Account::findOne(['user_id'=>Yii::$app->user->identity->id]);
-    	if ($model->isset){
+    	if ($model !== NULL){
     		$func = function($model){return $model->id;};
 	    	$statements = UserAccountStatementSearch::findAll(['account_id'=>$model->id]);
 	        $ids = array_map($func, $statements);
@@ -78,7 +78,7 @@ class TransactionController extends Controller
         }else{
         	throw new NotFoundHttpException();
         }
-    }  
+    }
 
     /**
      * Finds the Transaction model based on its primary key value.
@@ -95,7 +95,7 @@ class TransactionController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    
+
     /**
      * @inheritdoc
      */
