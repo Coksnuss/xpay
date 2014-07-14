@@ -33,8 +33,8 @@ class AuthAction extends \yii\authclient\AuthAction
             $response = Yii::$app->libreidapi->validate_and_decrypt($_POST['response']);
         	var_dump($response);
             $response_decoded = json_decode($response);
-			var_dump(Yii::$app->libreidapi->getloginstatus($response_decoded["data"]["ticket"]));
-            var_dump(Yii::$app->libreidapi->getdata($response_decoded["data"]["ticket"], 'first_name,last_name')); die;
+		//	var_dump(Yii::$app->libreidapi->getloginstatus($response_decoded["data"]["ticket"]));
+        //    var_dump(Yii::$app->libreidapi->getdata($response_decoded["data"]["ticket"], 'first_name,last_name')); die;
         } else {
             $returnUrl = Url::to(['', $this->clientIdGetParamName => $_GET[$this->clientIdGetParamName], 'login' => 1], 'https');
             $authUrl = $client->buildAuthUrl($returnUrl);
