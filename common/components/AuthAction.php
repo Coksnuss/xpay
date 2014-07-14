@@ -31,7 +31,7 @@ class AuthAction extends \yii\authclient\AuthAction
         if (isset($_POST['response'])) {
             //$this->authSuccess($client);
             $ticket = $_POST['response'];
-var_dump($ticket);die;
+	var_dump($ticket);
 		var_dump(Yii::$app->libreidapi->getloginstatus($ticket));die;
             var_dump(Yii::$app->libreidapi->getdata($ticket, 'first_name,last_name')); die;
         } else {
