@@ -3,6 +3,11 @@ return [
 	'name' => 'xPay',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'libreidapi' => [
+            'class' => 'common\vendor\LibreIdApi',
+            'apiKey' => 'nKeVcdtWNEoCQyw3xN8Q6tM1gqUz7wYx',
+            'secretKey' => base64_decode("O+mODkHB+ZNqQ3aM7y3SCKb6o9JlQKlxQppwUav8JTiBNcmh", true),
+        ],
         'user' => [
             'class' => 'common\components\ExtendedUser',
         ],

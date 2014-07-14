@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "55c40b6a24dbe57b9590c1b577b02a64",
+    "hash": "418388201122e0d2871f6d54da907255",
     "packages": [
         {
             "name": "cebe/markdown",
@@ -407,6 +407,50 @@
                 "yii2"
             ],
             "time": "2014-07-03 12:33:09"
+        },
+        {
+            "name": "yiisoft/yii2-authclient",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii2-authclient.git",
+                "reference": "bc8f8fb441f911d1df05d51fb4c86dad600fccf1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii2-authclient/zipball/bc8f8fb441f911d1df05d51fb4c86dad600fccf1",
+                "reference": "bc8f8fb441f911d1df05d51fb4c86dad600fccf1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "yii\\authclient\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Klimov",
+                    "email": "klimov.paul@gmail.com",
+                    "role": "Core framework development"
+                }
+            ],
+            "description": "External authentication via OAuth and OpenID for the Yii framework",
+            "keywords": [
+                "OpenId",
+                "auth",
+                "oauth",
+                "yii2"
+            ],
+            "time": "2014-07-02 12:30:26"
         },
         {
             "name": "yiisoft/yii2-bootstrap",

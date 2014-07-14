@@ -62,13 +62,54 @@ class SiteController extends Controller
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
+            'auth' => [
+                'class' => 'common\components\AuthAction',
+                'successCallback' => [$this, 'successCallback'],
+            ],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        if ($action === 'auth') {
+            $this->enableCsrfValidation = false;
+        }
+
+        return true;
+    }
+
+    /**
+     * TODO: DOC
+     */
+    public function successCallback($client)
+    {
+        //$attributes = $client->getUserAttributes();
+        // user login or signup comes here
+    }
+
+    /**
+     * TODO: DOC
+     */
+    public function actionLibreIdLogin($message, $return)
+    {
+        return $this->render('libre-login', [
+            'message' => $message,
+            'returnUrl' => $return,
+        ]);
     }
 
     public function actionIndex()
     {
         return $this->render('index');
     }
+
 
     public function actionLogin()
     {
