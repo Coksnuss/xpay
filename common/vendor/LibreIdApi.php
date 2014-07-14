@@ -105,15 +105,15 @@ class LibreIdApi extends \yii\base\Object
     }
 
 
-    private function validate_and_decrypt($secret_key, $message) {
+    public function validate_and_decrypt($message) {
         $m = base64_decode($message);
         if ($m[0] != "\x01") {
             return NULL;
         }
-        if (!$this->_validate_message($secret_key, substr($m, 73), substr($m, 1, 8), substr($m, 9, 64))) {
+        if (!$this->_validate_message($this->secretKey, substr($m, 73), substr($m, 1, 8), substr($m, 9, 64))) {
         	echo NULL;
         }
-        return $this->_decrypt_message($secret_key, substr($m, 73));
+        return $this->_decrypt_message($this->secretKey, substr($m, 73));
     }
 
 

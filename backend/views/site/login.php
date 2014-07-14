@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
                 <?= $form->field($model, 'email') ?>
-                <?= $form->field($model, 'password')->passwordInput() ?>
+                <?= $form->field($model, 'password')->passwordInput(['autocomplete'=>'off']) ?>
                 <div style="color:#999;margin:1em 0">
                     If you forgot your password you can 
                     <?php 
