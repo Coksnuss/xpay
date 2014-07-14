@@ -46,22 +46,22 @@ class LoginForm extends Model
      *
      * @return boolean whether the user is logged in successfully
      */
-    public function login($checkAdminStatus = false)
+    public function login($checkAdminStatus = false, $casLogin = false)
     {
-        if ($this->validate()) {
-        	if($checkAdminStatus) {
-        		if(Yii::$app->user->getIsAdmin($this->email)){
-        			return Yii::$app->user->login($this->getUser());
-        		} else {
-        			$this->addError('email', 'You do not have the rights to access this page.');
-        			return false;
-        		}
-        	} else {
-        		return Yii::$app->user->login($this->getUser());
-        	}
-        } else {
-            return false;
-        }
+    	if(!$casLogin && !$this->validate()) {
+    		return false;
+    	} else {
+    		if($checkAdminStatus) {
+    			if(Yii::$app->user->getIsAdmin($this->email)){
+    				return Yii::$app->user->login($this->getUser());
+    			} else {
+    				$this->addError('email', 'You do not have the rights to access this page.');
+    				return false;
+    			}
+    		} else {
+    			return Yii::$app->user->login($this->getUser());
+    		}
+    	}
     }
 
     /**

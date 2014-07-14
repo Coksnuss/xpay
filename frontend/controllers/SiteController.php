@@ -93,13 +93,58 @@ class SiteController extends Controller
     /**
      * TODO: DOC
      */
-    public function actionLibreIdLogin($message, $return)
+    public function actionLibreIdLogin()
     {
-        return $this->render('libre-login', [
-            'message' => $message,
-            'returnUrl' => $return,
-        ]);
+    	if (!\Yii::$app->user->isGuest) {
+    		return $this->goHome();
+    	}
+    	
+    	//$model = new LoginForm();
+    	if(isset($_POST['response'])) {
+    		$response = json_decode(Yii::$app->libreidapi->validate_and_decrypt($_POST['response']), true);
+    		if(isset($response) && $response["status"] == "success") {
+    			$data = Yii::$app->libreidapi->getdata($response["data"]["ticket"],'email_address,first_name,last_name');
+    			if(isset($data) && $data["status"] == "success") {
+    				$model = new LoginForm();
+    				$model->email = $data["data"]["email_address"];
+    				if($model->login(false,true)) {
+    					return $this->goHome();
+    				} else {
+    					//signup
+    					$signupForm = new SignupForm();
+    					$signupForm->email = $data["data"]["email_address"];
+    					$signupForm->password = Yii::$app->security->generateRandomKey(10);
+    					if ($user = $model->signup()) {
+    						if (Yii::$app->getUser()->login($user)) {
+    							//signup successful, send email for fallback password reset
+    							$user->generatePasswordResetToken();
+    							if ($user->save()) {
+    								return \Yii::$app->mail->compose('passwordResetToken', ['user' => $user])
+    								->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot'])
+    								->setTo($this->email)
+    								->setSubject('Password reset for ' . \Yii::$app->name)
+    								->send();
+    							}
+    							return $this->goHome();
+    						}
+    					}
+    					
+    				}
+    			} else {
+    				//error getting user information
+    			}
+    		} else {
+    			//error processing response from libreId
+    		}
+    	} else {
+	        return $this->render('libre-login', [
+	            'message' => Yii::$app->libreidapi->get_login_message(Yii::$app->homeUrl."site/libre-id-login"),
+	            'returnUrl' => Yii::$app->homeUrl."site/libre-id-login",
+	        ]);
+    	}
     }
+    
+    
 
     public function actionIndex()
     {
