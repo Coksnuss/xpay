@@ -131,7 +131,7 @@ class LibreIdApi extends \yii\base\Object
 
     private function _process_response($response, $secret_key) {
     	if (!$response) {
-    		return NULL;
+    		return "{'mist':'true'}";
     	} else if (substr(base64_decode($response), 0, 1) == "\x01") {
     		return $this->validate_and_decrypt($secret_key, $response);
     	} else {
