@@ -38,7 +38,7 @@ class LibreIdApi extends \yii\base\Object
     	$message = $this->encrypt_and_mac($this->secretKey, $params);
     	$data = array('message' => $message);
     	$call_url = '/getloginstatus/'.$this->apiKey.'/';
-    	return $this->_process_response($this->_post_request($call_url, $data), $this->secretKey);
+    	return json_decode($this->_process_response($this->_post_request($call_url, $data), $this->secretKey));
     }
 
 
@@ -131,11 +131,11 @@ class LibreIdApi extends \yii\base\Object
 
     private function _process_response($response, $secret_key) {
     	if (!$response) {
-    		return "mist1";
+    		return NULL;
     	} else if (substr(base64_decode($response), 0, 1) == "\x01") {
-    		return "mist2";
+    		return $this->validate_and_decrypt($response);
     	} else {
-    		return "mist3";
+    		return base64_decode($response);
     	}
     }
 
