@@ -63,7 +63,7 @@ class LibreIdApi extends \yii\base\Object
 
     private function _decrypt_message($secret_key, $message) {
         $crypt_salt = substr($message, 0, 8);
-        $crypt_temp = hash_pbkdf2($this->_LIBREID_HASHFUNCTION, $secret_key, $crypt_salt, $this->_LIBREID_ITERATIONS, 48, true);
+        $crypt_temp = $this->pbkdf2($this->_LIBREID_HASHFUNCTION, $secret_key, $crypt_salt, $this->_LIBREID_ITERATIONS, 48, true);
         $crypt_key = substr($crypt_temp, 0, 32);
         $iv = substr($crypt_temp, 32, 16);
         $m = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $crypt_key, substr($message, 8), MCRYPT_MODE_CBC, $iv);
@@ -76,7 +76,7 @@ class LibreIdApi extends \yii\base\Object
     	$test = unpack("C*", pack("L", strlen($message) + 2));
     	$m = chr($test[2]).chr($test[1]).$message;
     	$crypt_salt = openssl_random_pseudo_bytes(8);
-    	$crypt_nonce = hash_pbkdf2($this->_LIBREID_HASHFUNCTION, $secret_key, $crypt_salt, $this->_LIBREID_ITERATIONS, 48, true);
+    	$crypt_nonce = $this->pbkdf2($this->_LIBREID_HASHFUNCTION, $secret_key, $crypt_salt, $this->_LIBREID_ITERATIONS, 48, true);
     	$crypt_key = substr($crypt_nonce, 0, 32);
     	$iv = substr($crypt_nonce, 32, 16);
     	return $crypt_salt.mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $crypt_key, $m, MCRYPT_MODE_CBC, $iv);
@@ -85,14 +85,14 @@ class LibreIdApi extends \yii\base\Object
 
     private function _sign_message($secret_key, $message) {
         $mac_salt = openssl_random_pseudo_bytes(8);
-        $mac_key = hash_pbkdf2($this->_LIBREID_HASHFUNCTION, $secret_key, $mac_salt, $this->_LIBREID_ITERATIONS, 64, true);
+        $mac_key = $this->pbkdf2($this->_LIBREID_HASHFUNCTION, $secret_key, $mac_salt, $this->_LIBREID_ITERATIONS, 64, true);
         $mac = hash_hmac($this->_LIBREID_HASHFUNCTION, $message, $mac_key, true);
         return array($mac_salt, $mac);
     }
 
 
     private function _validate_message($secret_key, $message, $mac_salt, $mac) {
-        $mac_key = hash_pbkdf2($this->_LIBREID_HASHFUNCTION, $secret_key, $mac_salt, $this->_LIBREID_ITERATIONS, 64, true);
+        $mac_key = $this->pbkdf2($this->_LIBREID_HASHFUNCTION, $secret_key, $mac_salt, $this->_LIBREID_ITERATIONS, 64, true);
         $new_mac = hash_hmac($this->_LIBREID_HASHFUNCTION, $message, $mac_key, true);
         return ($new_mac == $mac);
     }
@@ -138,6 +138,43 @@ class LibreIdApi extends \yii\base\Object
     		return base64_decode($response);
     	}
     }
-}
 
+    private function pbkdf2($algorithm, $password, $salt, $count, $key_length, $raw_output = false)
+    {
+        $algorithm = strtolower($algorithm);
+        if(!in_array($algorithm, hash_algos(), true))
+            trigger_error('PBKDF2 ERROR: Invalid hash algorithm.', E_USER_ERROR);
+        if($count <= 0 || $key_length <= 0)
+            trigger_error('PBKDF2 ERROR: Invalid parameters.', E_USER_ERROR);
+
+        if (function_exists("hash_pbkdf2")) {
+            // The output length is in NIBBLES (4-bits) if $raw_output is false!
+            if (!$raw_output) {
+                $key_length = $key_length * 2;
+            }
+            return hash_pbkdf2($algorithm, $password, $salt, $count, $key_length, $raw_output);
+        }
+
+        $hash_length = strlen(hash($algorithm, "", true));
+        $block_count = ceil($key_length / $hash_length);
+
+        $output = "";
+        for($i = 1; $i <= $block_count; $i++) {
+            // $i encoded as 4 bytes, big endian.
+            $last = $salt . pack("N", $i);
+            // first iteration
+            $last = $xorsum = hash_hmac($algorithm, $last, $password, true);
+            // perform the other $count - 1 iterations
+            for ($j = 1; $j < $count; $j++) {
+                $xorsum ^= ($last = hash_hmac($algorithm, $last, $password, true));
+            }
+            $output .= $xorsum;
+        }
+
+        if($raw_output)
+            return substr($output, 0, $key_length);
+        else
+            return bin2hex(substr($output, 0, $key_length));
+    }
+}
 ?>

@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-lg-5">
             <link rel="stylesheet" type="text/css" href="http://libreid.wsp.lab.sit.cased.de/static/lidbutton.css">
-            <form action="http://libreid.wsp.lab.sit.cased.de/api/login/<?= Yii::$app->libreidapi->apiKey ?>/" method="post">
+            <form action="https://libreid.wsp.lab.sit.cased.de/api/login/<?= Yii::$app->libreidapi->apiKey ?>/" method="post">
                 <input type="text" name="message" value="<?= $message ?>" hidden="hidden" />
                 <input type="text" name="return_url" value="<?= $returnUrl ?>" hidden="hidden" />
                 <button onclick="submit();" id="lidbutton">
