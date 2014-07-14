@@ -38,7 +38,7 @@ class LibreIdApi extends \yii\base\Object
     	$message = $this->encrypt_and_mac($this->secretKey, $params);
     	$data = array('message' => $message);
     	$call_url = '/getloginstatus/'.$this->apiKey.'/';
-    	return $this->_post_request($call_url, $data);
+    	return $this->_process_response($this->_post_request($call_url, $data), $this->secretKey);
     }
 
 
