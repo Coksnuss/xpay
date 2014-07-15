@@ -113,8 +113,8 @@ class SiteController extends Controller
     					//signup
     					$signupForm = new SignupForm();
     					$signupForm->email = $data["data"]["email_address"];
-					$signupForm->firstName = $data["data"]["first_name"];
-					$signupForm->lastName = $data["data"]["last_name"];
+						$signupForm->firstName = $data["data"]["first_name"];
+						$signupForm->lastName = $data["data"]["last_name"];
     					$signupForm->password = Yii::$app->security->generateRandomKey(10);
     					if ($user = $signupForm->signup()) {
     						if (Yii::$app->getUser()->login($user)) {
@@ -126,18 +126,18 @@ class SiteController extends Controller
     								->setTo($model->email)
     								->setSubject('Password reset for ' . \Yii::$app->name)
     								->send();
-								if($emailSend) {
-									return $this->goHome();
-								} else {
-									//error sending fallback password reset mail
-								}
+									if($emailSend) {
+										return $this->goHome();
+									} else {
+										//error sending fallback password reset mail
+									}
     							} else {
-    								//error sending fallback password reset mail
-							}
+    							//error sending fallback password reset mail
+								}	
     						}
     					} else {
 						//error signing up
-					}
+						}
     				}
     			} else {
     				//error getting user information
