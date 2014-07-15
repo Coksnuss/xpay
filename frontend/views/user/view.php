@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $userModel,
         'attributes' => [
+            'api_token:raw:API Token (für Paymentsystementwickler)',
             'email:email',
             'last_login_time',
             'last_login_ip',
@@ -35,12 +36,12 @@ $this->params['breadcrumbs'][] = $this->title;
             //'updated_at',
         ],
     ]) ?>
-    
+
     <p>
     <?= Html::a('Update Account Settings', ['../account/update'], ['class' => 'btn btn-primary']) ?>
     <?=Html::a('Charge Amount', ['../account/transfer'], ['class' => 'btn btn-warning']) ?>
-    </p> 
-       
+    </p>
+
     <?= DetailView::widget([
         'model' => $accountModel,
         'attributes' => [
@@ -62,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
     <p>
     <?php echo Html::a('Update Blacklist Settings', ['../shop-blacklist/manage'], ['class' => 'btn btn-primary']) ?>
-    </p> 
+    </p>
     <?php if (count(Shop::find()->all())>0):?>
     <?= DetailView::widget([
         'model' => $blacklistForm,
