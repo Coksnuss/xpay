@@ -44,6 +44,14 @@ class User extends \common\models\base\User implements IdentityInterface
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAccount()
+    {
+        return $this->hasOne(\common\models\Account::className(), ['user_id' => 'id']);
+    }
+
+    /**
      * @inheritdoc
      */
     public static function findIdentity($id)

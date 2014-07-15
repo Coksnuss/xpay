@@ -58,6 +58,18 @@ class Transaction extends \common\models\base\Transaction
         ];
     }
 
+    public static function getHumanReadableTypeById($id)
+    {
+        switch ($id)
+        {
+            case self::TYPE_ORDER: return 'Bestellung';
+            case self::TYPE_RECEIPT: return 'Zahlungseingang';
+            case self::TYPE_REDEMPTION: return 'Rückbuchung';
+            case self::TYPE_CHARGE: return 'Kontoaufladung';
+            default: return 'Unbekannt';
+        }
+    }
+
     /**
      * Generates a new transaction id to be used for newly inserted records.
      */

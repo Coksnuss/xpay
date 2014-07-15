@@ -17,8 +17,8 @@ AppAsset::register($this);
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
-<?= Html::csrfMetaTags() ?>
 <head>
+    <?= Html::csrfMetaTags() ?>
     <meta charset="<?= Yii::$app->charset ?>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= Html::encode($this->title) ?></title>
@@ -77,12 +77,12 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-        <?php
-        	if(!Yii::$app->user->isGuest) {
-				echo '<span class="timer" id="timer">Auto-logout in 20:00</span>';
-			}
-        ?>
         <?= Alert::widget() ?>
+        <?php
+            if(!Yii::$app->user->isGuest) {
+                echo '<span class="timer" id="timer">Auto-logout in 20:00</span>';
+            }
+        ?>
         <?= $content ?>
         </div>
     </div>
