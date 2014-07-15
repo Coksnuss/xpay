@@ -19,6 +19,7 @@ class ExchangeRateForm extends Model
 	{
 		return [
 		['rate', 'number', 'min'=>0.01],
+		['rate', 'required']
 		];
 	}
 	
