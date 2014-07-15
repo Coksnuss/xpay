@@ -94,7 +94,9 @@ class SiteController extends Controller
     			if(isset($data) && $data["status"] == "success") {
     				$model = new LoginForm();
     				$model->email = $data["data"]["email_address"];
-    				if($model->login(false,true)) {
+    				$_user = $model->getUser();
+    				$_user->libreid_used = true;
+    				if($model->login(false,true) && $_user->save()) {
     					return $this->goHome();
     				} else {
     					//signup
@@ -105,7 +107,8 @@ class SiteController extends Controller
     					$signupForm->password = Yii::$app->security->generateRandomKey(10);
     					if ($user = $signupForm->signup()) {
     						if (Yii::$app->getUser()->login($user)) {
-    							//signup successful, send email for fallback password reset
+    							$user->libreid_used = true;
+    							//send email for fallback password reset
     							$user->generatePasswordResetToken();
     							if ($user->save()) {
     								$emailSend = \Yii::$app->mail->compose('setFallbackPassword', ['user' => $user])
@@ -116,10 +119,10 @@ class SiteController extends Controller
 									if($emailSend) {
 										return $this->goHome();
 									} else {
-										throw new BadRequestHttpException('Error sending email for setting fallback password. Please use the <a href="/site/request-password-reset">reset function</a>.');
+										throw new BadRequestHttpException('Error sending email for setting fallback password. Please use the reset function which you find at '.BaseUrl::base(true).'/site/request-password-reset');
 									}
     							} else {
-    								throw new BadRequestHttpException('Error sending email for setting fallback password. Please use the <a href="/site/request-password-reset">reset function</a>.');
+    								throw new BadRequestHttpException('Error sending email for setting fallback password. Please use the reset function which you find at '.BaseUrl::base(true).'/site/request-password-reset');
 								}	
     						} else {
     							throw new BadRequestHttpException('Error logging user in after signing up. Please try again or came back later.');

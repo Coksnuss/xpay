@@ -28,10 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <form action="https://libreid.wsp.lab.sit.cased.de/api/login/<?= Yii::$app->libreidapi->apiKey ?>/" method="post">
                 <input type="text" name="message" value="<?php echo $message ?>" hidden="hidden" />
                 <input type="text" name="return_url" value="<?php echo $returnUrl ?>" hidden="hidden" />
-                <button onclick="submit();" id="lidbutton">
+                <button onclick="submit();" id="lidbutton" style="margin: 10px 0px 20px;">
                     <img src="http://libreid.wsp.lab.sit.cased.de/static/lid_logo20.png" id="lidlogo"/>Login Using LibreID
                 </button>
             </form>
         </div>
     </div>
+    <p>If the CAS is not available, use the <a href="/site/login">fallback</a>.</p>
 </div>

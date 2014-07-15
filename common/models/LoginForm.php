@@ -49,6 +49,7 @@ class LoginForm extends Model
     public function login($checkAdminStatus = false, $casLogin = false)
     {
     	if(!$casLogin && !$this->validate()) {
+    		//validate only if casLogin is false; return false if validation fails
     		return false;
     	} else {
     		if($checkAdminStatus) {
@@ -59,10 +60,16 @@ class LoginForm extends Model
     				return false;
     			}
     		} else {
-			if($this->getUser() === null) {
-				return false;
-			} else {
-				return Yii::$app->user->login($this->getUser());			}
+    			//manual validation needed here, because validation is skipped if casLogin is true
+				if($this->getUser() === null) {
+					return false;
+				} else {
+					if($this->checkFallbackNecessary($this->getUser())) {
+						return Yii::$app->user->login($this->getUser());
+					} else {
+						$this->addError('email', 'At least one of your previously used CAS Services for logging in is reachable. Please use this to log in.');
+					}	
+				}
     		}
     	}
     }
@@ -79,5 +86,42 @@ class LoginForm extends Model
         }
 
         return $this->_user;
+    } 
+    
+    /**
+     * Tests if a site is reachable
+     * 
+     * @param String $url
+     */
+    private function isSiteUp($url) {
+    	$agent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";$ch=curl_init();
+    	curl_setopt ($ch, CURLOPT_URL,$url );
+    	curl_setopt($ch, CURLOPT_USERAGENT, $agent);
+    	curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+    	curl_setopt ($ch,CURLOPT_VERBOSE,false);
+    	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+    	curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, FALSE);
+    	curl_setopt($ch,CURLOPT_SSLVERSION,3);
+    	curl_setopt($ch,CURLOPT_SSL_VERIFYHOST, FALSE);
+    	$page=curl_exec($ch);
+    	$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    	curl_close($ch);
+    	if($httpcode>=200 && $httpcode<400)
+    		return true;
+    	else 
+    		return false;
+    }
+    
+    /**
+     * Checks if the all CAS's which the user could use to login are down
+     * 
+     * @param unknown $user
+     */
+    private function checkFallbackNecessary($user) {
+    	if($user->libreid_used == true && $this->isSiteUp('https://libreid.wsp.lab.sit.cased.de/'))
+    		return false;
+    	if($user->secauth_used == true && $this->isSiteUp('https://secauth.wsp.lab.sit.cased.de/'))
+    		return false;
+    	return true;
     }
 }
