@@ -18,13 +18,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
     <p>
-        <div class="right"><?php echo "Account Balance: ".$model->getBalanceLabel();?><br></div>
+        <div class="right" ><?php echo "Account Balance: ".$model->getBalanceLabel();?><br></div>
     </p>
 
 	<br>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+    	'options' => array('style' => 'margin:40px 0px 0px;'),
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 

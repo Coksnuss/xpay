@@ -43,6 +43,10 @@ class ExtendedUser extends \yii\web\User
 			$expire = $session->get($this->authTimeoutParam);
 			if ($expire !== null && $expire < time()) {
 				$session->setFlash('autoLogout','You were logged out after 20 minutes of inactivity.');
+				$user = User::findOne(['id'=>Yii::$app->user->identity->id]);
+				$user->last_login_time = date('Y-m-d H:i:s');
+				$user->last_login_ip = Yii::$app->request->userIP;
+				$user->save(false);
 				$this->logout(false);
 			} else {
 				$session->set($this->authTimeoutParam, time() + $this->authTimeout);

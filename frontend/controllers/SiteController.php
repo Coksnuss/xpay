@@ -95,9 +95,12 @@ class SiteController extends Controller
     				$model = new LoginForm();
     				$model->email = $data["data"]["email_address"];
     				if($model->login(false,true)) {
+    					//set the service as used, just in case this went wrong on sign up
     					$_user = $model->getUser();
-    					$_user->libreid_used = true;
-    					$_user->save();
+    					if($_user->libreid_used == false) {
+    						$_user->libreid_used = true;
+    						$_user->save();
+    					}
     					return $this->goHome();
     				} else {
     					//signup
@@ -151,7 +154,12 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+    	if(Yii::$app->user->isGuest) {
+    		return $this->render('index');
+    	} else {
+	    	$user= Yii::$app->user->getIdentity();
+	        return $this->render('index', ['first_name' => $user->first_name, 'last_name' => $user->last_name, 'loginTime' => $user->last_login_time]);
+    	}
     }
 
 
@@ -163,7 +171,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->goHome();
         } else {
             return $this->render('login', [
                 'model' => $model,
