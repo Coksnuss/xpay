@@ -94,9 +94,10 @@ class SiteController extends Controller
     			if(isset($data) && $data["status"] == "success") {
     				$model = new LoginForm();
     				$model->email = $data["data"]["email_address"];
-    				$_user = $model->getUser();
-    				$_user->libreid_used = true;
-    				if($model->login(false,true) && $_user->save()) {
+    				if($model->login(false,true)) {
+    					$_user = $model->getUser();
+    					$_user->libreid_used = true;
+    					$_user->save();
     					return $this->goHome();
     				} else {
     					//signup
