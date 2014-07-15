@@ -63,10 +63,6 @@ class SiteController extends Controller
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
-            'auth' => [
-                'class' => 'common\components\AuthAction',
-                'successCallback' => [$this, 'successCallback'],
-            ],
         ];
     }
 
@@ -80,15 +76,6 @@ class SiteController extends Controller
         }
 
        return parent::beforeAction($action);
-    }
-
-    /**
-     * TODO: DOC
-     */
-    public function successCallback($client)
-    {
-        //$attributes = $client->getUserAttributes();
-        // user login or signup comes here
     }
 
     /**
@@ -129,21 +116,23 @@ class SiteController extends Controller
 									if($emailSend) {
 										return $this->goHome();
 									} else {
-										//error sending fallback password reset mail
+										throw new BadRequestHttpException('Error sending email for setting fallback password. Please use the <a href="/site/request-password-reset">reset function</a>.');
 									}
     							} else {
-    							//error sending fallback password reset mail
+    								throw new BadRequestHttpException('Error sending email for setting fallback password. Please use the <a href="/site/request-password-reset">reset function</a>.');
 								}	
+    						} else {
+    							throw new BadRequestHttpException('Error logging user in after signing up. Please try again or came back later.');
     						}
     					} else {
-						//error signing up
+						throw new BadRequestHttpException('Error signing up user. Login failed. Please try again or came back later.');
 						}
     				}
     			} else {
-    				//error getting user information
+    				throw new BadRequestHttpException('Error getting user information from LibreID. Login failed. Please try again or came back later.');
     			}
     		} else {
-    			//error processing response from libreId
+    			throw new BadRequestHttpException('Error processing response from LibreID. Login failed. Please try again or came back later.');
     		}
     	} else {
 		$url = BaseUrl::base('https');
