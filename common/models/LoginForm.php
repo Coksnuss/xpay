@@ -64,10 +64,15 @@ class LoginForm extends Model
 				if($this->getUser() === null) {
 					return false;
 				} else {
-					if($this->checkFallbackNecessary($this->getUser())) {
-						return Yii::$app->user->login($this->getUser());
+					if(!$casLogin) {
+						//only check if fallback is necessary, if fallback login page is actually used
+						if($this->checkFallbackNecessary($this->getUser())) {
+							return Yii::$app->user->login($this->getUser());
+						} else {
+							$this->addError('email', 'At least one of your previously used CAS Services for logging in is reachable. Please use this to log in.');
+						}
 					} else {
-						$this->addError('email', 'At least one of your previously used CAS Services for logging in is reachable. Please use this to log in.');
+						return Yii::$app->user->login($this->getUser());
 					}	
 				}
     		}
