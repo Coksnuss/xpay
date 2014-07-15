@@ -28,7 +28,7 @@ class LibreIdApi extends \yii\base\Object
     	$message = $this->encrypt_and_mac($this->secretKey, $params);
     	$data = array('message' => $message);
     	$call_url = '/getdata/'.$this->apiKey.'/';
-    	return json_decode($this->_process_response($this->_post_request($call_url, $data), $this->secretKey));
+    	return json_decode($this->_process_response($this->_post_request($call_url, $data), $this->secretKey),true);
     }
 
 
@@ -38,7 +38,7 @@ class LibreIdApi extends \yii\base\Object
     	$message = $this->encrypt_and_mac($this->secretKey, $params);
     	$data = array('message' => $message);
     	$call_url = '/getloginstatus/'.$this->apiKey.'/';
-    	return json_decode($this->_process_response($this->_post_request($call_url, $data), $this->secretKey));
+    	return json_decode($this->_process_response($this->_post_request($call_url, $data), $this->secretKey),true);
     }
 
 
@@ -48,7 +48,7 @@ class LibreIdApi extends \yii\base\Object
     	$message = $this->encrypt_and_mac($this->secretKey, $params);
     	$data = array('message' => $message);
     	$call_url = '/logout/'.$this->apiKey.'/';
-    	return json_decode($this->_process_response($this->_post_request($call_url, $data), $this->secretKey));
+    	return json_decode($this->_process_response($this->_post_request($call_url, $data), $this->secretKey),true);
     }
 
     //####################################################################################################################

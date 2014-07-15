@@ -59,7 +59,10 @@ class LoginForm extends Model
     				return false;
     			}
     		} else {
-    			return Yii::$app->user->login($this->getUser());
+			if($this->getUser() === null) {
+				return false;
+			} else {
+				return Yii::$app->user->login($this->getUser());			}
     		}
     	}
     }

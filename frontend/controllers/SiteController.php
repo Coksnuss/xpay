@@ -12,6 +12,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\helpers\BaseUrl;
 use common\models\User;
 
 /**
@@ -74,7 +75,7 @@ class SiteController extends Controller
      */
     public function beforeAction($action)
     {
-        if ($action->id === 'auth') {
+        if ($action->id === 'libre-id-login') {
             $this->enableCsrfValidation = false;
         }
 
@@ -99,7 +100,6 @@ class SiteController extends Controller
     		return $this->goHome();
     	}
     	
-    	//$model = new LoginForm();
     	if(isset($_POST['response'])) {
     		$response = json_decode(Yii::$app->libreidapi->validate_and_decrypt($_POST['response']), true);
     		if(isset($response) && $response["status"] == "success") {
@@ -113,22 +113,31 @@ class SiteController extends Controller
     					//signup
     					$signupForm = new SignupForm();
     					$signupForm->email = $data["data"]["email_address"];
+					$signupForm->firstName = $data["data"]["first_name"];
+					$signupForm->lastName = $data["data"]["last_name"];
     					$signupForm->password = Yii::$app->security->generateRandomKey(10);
-    					if ($user = $model->signup()) {
+    					if ($user = $signupForm->signup()) {
     						if (Yii::$app->getUser()->login($user)) {
     							//signup successful, send email for fallback password reset
     							$user->generatePasswordResetToken();
     							if ($user->save()) {
-    								return \Yii::$app->mail->compose('passwordResetToken', ['user' => $user])
+    								$emailSend = \Yii::$app->mail->compose('setFallbackPassword', ['user' => $user])
     								->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot'])
-    								->setTo($this->email)
+    								->setTo($model->email)
     								->setSubject('Password reset for ' . \Yii::$app->name)
     								->send();
-    							}
-    							return $this->goHome();
+								if($emailSend) {
+									return $this->goHome();
+								} else {
+									//error sending fallback password reset mail
+								}
+    							} else {
+    								//error sending fallback password reset mail
+							}
     						}
-    					}
-    					
+    					} else {
+						//error signing up
+					}
     				}
     			} else {
     				//error getting user information
@@ -137,9 +146,10 @@ class SiteController extends Controller
     			//error processing response from libreId
     		}
     	} else {
+		$url = BaseUrl::base('https');
 	        return $this->render('libre-login', [
-	            'message' => Yii::$app->libreidapi->get_login_message(Yii::$app->homeUrl."site/libre-id-login"),
-	            'returnUrl' => Yii::$app->homeUrl."site/libre-id-login",
+	            'message' => Yii::$app->libreidapi->get_login_message($url."/site/libre-id-login/"),
+	            'returnUrl' => $url."/site/libre-id-login/",
 	        ]);
     	}
     }

@@ -44,7 +44,7 @@ AppAsset::register($this);
             //$menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
 			//$menuItems[] = ['label' => 'Contact', 'url' => ['/site/contact']];
             $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup'], 'visible'=>$isGuest];
-            $menuItems[] = ['label' => 'Login', 'url' => ['/site/login'], 'visible'=>$isGuest];
+            $menuItems[] = ['label' => 'LibreID Login', 'url' => ['/site/libre-id-login'], 'visible'=>$isGuest];
 
             if (!$isGuest)
 			{
