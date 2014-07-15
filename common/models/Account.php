@@ -18,10 +18,10 @@ class Account extends \common\models\base\Account
      * Account number ranges.
      * Used by validators throughout the application.
      */
-    const GLOBAL_ACCOUNT_NUMBER_START   = 100000;
-    const GLOBAL_ACCOUNT_NUMBER_END     = 599999;
-    const INTERNAL_ACCOUNT_NUMBER_START = 100000;
-    const INTERNAL_ACCOUNT_NUMBER_END   = 199999;
+    const GLOBAL_ACCOUNT_NUMBER_START   = 101000000;
+    const GLOBAL_ACCOUNT_NUMBER_END     = 105999999;
+    const INTERNAL_ACCOUNT_NUMBER_START = 101000000;
+    const INTERNAL_ACCOUNT_NUMBER_END   = 101999999;
 
 	public $amount;
     /**
