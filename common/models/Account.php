@@ -107,7 +107,7 @@ class Account extends \common\models\base\Account
      */
     public function charge($amount)
     {
-        $transaction = new Transaction;
+        $transaction = new Transaction();
         $transaction->generateTransactionId();
         $transaction->account_id = $this->id;
         $transaction->associated_account_number = self::GLOBAL_ACCOUNT_NUMBER_END + 1;

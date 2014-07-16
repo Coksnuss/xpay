@@ -380,6 +380,14 @@ Im folgenden werden die möglichen Error Codes die als Antwort auf einen Request
             Der Einzahlungsgrund bzw. Verwendungszweck.
         </td>
     </tr>
+    <tr>
+        <td>Reference</td>
+        <td>optional</td>
+        <td>string</td>
+        <td>
+            Die Referenz für diese Zahlung. (Wurde ggf. bei setCheckout übermittelt)
+        </td>
+    </tr>
 </table>
 ### Rückgabe
 <table class="table">

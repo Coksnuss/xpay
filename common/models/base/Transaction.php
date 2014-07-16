@@ -18,9 +18,12 @@ use Yii;
  * @property string $foreign_currency_amount
  * @property integer $foreign_currency_id
  * @property string $description
+ * @property string $reference
+ * @property integer $transaction_user_id
  * @property string $created_at
  * @property string $updated_at
  *
+ * @property \common\models\User $transactionUser
  * @property \common\models\Account $account
  */
 abstract class Transaction extends \yii\db\ActiveRecord
@@ -53,10 +56,10 @@ abstract class Transaction extends \yii\db\ActiveRecord
     {
         return [
             [['transaction_id', 'account_id', 'associated_account_number', 'type', 'amount', 'description'], 'required'],
-            [['account_id', 'associated_account_number', 'type', 'foreign_currency_id'], 'integer'],
+            [['account_id', 'associated_account_number', 'type', 'foreign_currency_id', 'transaction_user_id'], 'integer'],
             [['amount', 'foreign_currency_amount'], 'number'],
             [['transaction_id', 'uuid'], 'string', 'max' => 32],
-            [['description'], 'string', 'max' => 255],
+            [['description', 'reference'], 'string', 'max' => 255],
             [['transaction_id'], 'unique'],
             [['uuid'], 'unique']
         ];
@@ -78,9 +81,19 @@ abstract class Transaction extends \yii\db\ActiveRecord
             'foreign_currency_amount' => 'Foreign Currency Amount',
             'foreign_currency_id' => 'Foreign Currency ID',
             'description' => 'Description',
+            'reference' => 'Reference',
+            'transaction_user_id' => 'Transaction User ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTransactionUser()
+    {
+        return $this->hasOne(\common\models\User::className(), ['id' => 'transaction_user_id']);
     }
 
     /**

@@ -137,7 +137,7 @@ class DoCheckoutForm extends \yii\base\Model
             $transaction = new Transaction();
             $transaction->generateTransactionId();
             $transaction->associated_account_number = $checkout->account->number;
-            $transaction->type = $checkout->type;
+            $transaction->type = Transaction::TYPE_RECEIPT;
             $transaction->amount = $checkout->getAmountInPrimaryCurrency();
 
             if (!$checkout->isPaidInPrimaryCurrency()) {

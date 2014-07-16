@@ -16,7 +16,7 @@ class TransactionSearch extends Transaction
     {
         return [
             [['id', 'account_id', 'associated_account_number', 'type', 'foreign_currency_id'], 'integer'],
-            [['transaction_id', 'uuid', 'description', 'created_at', 'updated_at'], 'safe'],
+            [['transaction_id', 'uuid', 'description', 'reference', 'created_at', 'updated_at'], 'safe'],
             [['amount', 'foreign_currency_amount'], 'number'],
         ];
     }

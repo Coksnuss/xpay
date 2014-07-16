@@ -45,8 +45,12 @@ $this->params['breadcrumbs'][] = $this->title;
 			['attribute'=>'type',
     		'format'=>'raw',
 				'value'=>function($model){
-					return $model->getType();
+					return $model->getHumanReadableType();
 			}],
+            [
+                'attribute' => 'reference',
+                'label' => 'Referenz',
+            ],
             // 'foreign_currency_amount',
             // 'foreign_currency_id',
             ['attribute'=>'created_at',
