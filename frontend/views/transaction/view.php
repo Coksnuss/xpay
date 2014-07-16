@@ -28,7 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>$model->account->number,
 			],
             'associated_account_number',
-            'description',
+            ['attribute'=>'description',
+    			'format'=>'raw',
+    			'value'=>Html::encode($model->description)
+			],
 			['attribute'=>'type',
 				'value'=>$model->getType(),
 			],

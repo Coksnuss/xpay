@@ -28,7 +28,10 @@ class EditPasswordForm extends Model
     {
     	return [[['current_password','new_password','confirm_password'],'required'],
     		[['confirm_password'], 'compare', 'compareAttribute'=>'new_password'],
-    		['current_password', 'validatePassword']]
+    		['current_password', 'validatePassword'],
+    		[['confirm_password','new_password'],'string','min'=>'6'],
+    		//[['confirm_password','new_password'],'match', 'pattern'=>"((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})"],
+			]
     		+ parent::rules();
     }
 
