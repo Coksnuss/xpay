@@ -162,4 +162,17 @@ class Account extends \common\models\base\Account
     {
     	return [[['iban', 'bic'], 'required']]+parent::rules();
     }
+
+    /**
+     * @return integer|null The id of the payment system that the given account
+     * number belongs to. If the account number is invalid, null is returned.
+     */
+    public static function getPaymentSystemIdByAccountNumber($number)
+    {
+        if (ctype_digit($number)
+            && strlen($number) == strlen(self::GLOBAL_ACCOUNT_NUMBER_START)
+        ) {
+            return intval($number{2});
+        }
+    }
 }

@@ -150,8 +150,15 @@ class DoCheckoutForm extends \yii\base\Model
 
             return $transaction;
         } else {
-            // TODO: Make remote doTransaction call to corresponding API
-            throw new \yii\base\NotSupportedException();
+            switch($checkout->getRemotePaymentSystemId())
+            {
+                case 5: // Goliath API does not work yet!
+                    //$model = GoliathNationalTransaction::byCheckout($checkout);
+                    //$model->performTransaction();
+                    //break;
+                case 3:
+                default: throw new \yii\base\NotSupportedException();
+            }
         }
     }
 }

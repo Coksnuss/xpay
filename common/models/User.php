@@ -196,4 +196,12 @@ class User extends \common\models\base\User implements IdentityInterface
     {
     	return ['last_login_ip'=>'Last Login IP']+parent::attributeLabels();
     }
+
+    /**
+     * @return string Full name of the user.
+     */
+    public function getName()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
 }
