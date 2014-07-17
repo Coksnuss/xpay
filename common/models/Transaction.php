@@ -59,6 +59,30 @@ class Transaction extends \common\models\base\Transaction
     }
 
     /**
+     * @return array A list of all types in a human readable format, indexed by
+     * their type ID.
+     */
+    public static function getHumanReadableTypeById($id)
+    {
+        switch ($id)
+        {
+            case self::TYPE_ORDER: return 'Bestellung';
+            case self::TYPE_RECEIPT: return 'Zahlungseingang';
+            case self::TYPE_REDEMPTION: return 'Rückbuchung';
+            case self::TYPE_CHARGE: return 'Kontoaufladung';
+            default: return 'Unbekannt';
+        }
+    }
+
+    /**
+     * @return string The type of this transaction in human readable form.
+     */
+    public function getHumanReadableType()
+    {
+        return self::getHumanReadableTypeById($this->type);
+    }
+
+    /**
      * Generates a new transaction id to be used for newly inserted records.
      */
     public function generateTransactionId()

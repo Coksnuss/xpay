@@ -1,5 +1,26 @@
 # xPay Payment Service API Dokumentation
 
+## Changelog:
+<table class="table">
+    <thead>
+        <tr>
+            <td>Datum</td>
+            <td>Änderungsbeschreibung</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Di, 15 Juli 2014</td>
+            <td>
+                Nachdem der Login bei wenigstens einem CAS (LibreID) endlich
+                klappt, können angeforderte Zahlungen jetzt auch tatsächlich
+                ausgeführt werden. Die Änderungen finden sich <a href="#rev-1">hier</a><br>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+## Einleitung
 Als Shop Entwickler sind lediglich die beiden Endpunkte
 [`setCheckout`](#set-checkout) und [`doCheckout`](#do-checkout) interessant.
 
@@ -359,6 +380,14 @@ Im folgenden werden die möglichen Error Codes die als Antwort auf einen Request
             Der Einzahlungsgrund bzw. Verwendungszweck.
         </td>
     </tr>
+    <tr>
+        <td>Reference</td>
+        <td>optional</td>
+        <td>string</td>
+        <td>
+            Die Referenz für diese Zahlung. (Wurde ggf. bei setCheckout übermittelt)
+        </td>
+    </tr>
 </table>
 ### Rückgabe
 <table class="table">
@@ -382,3 +411,21 @@ Im folgenden werden die möglichen Error Codes die als Antwort auf einen Request
         </td>
     </tr>
 </table>
+
+## Änderungen zum 15.07.2014<a name="rev-1"></a>
+Ein angelegter Checkout (via [`setCheckout`](#set-checkout)) kann jetzt von einem
+Kunden bestätigt werden. Dazu bitte an folgende URL weiterleiten:
+`https://www.xpay.wsp.lab.sit.cased.de/checkout?checkoutId=<checkoutId>`
+
+Sobald der Nutzer die Zahlung bei uns bestätigt hat wird er an die angegebene
+`return_url` weitergeleitet (sofern die Zahlung erfolgreich war).
+Die Zahlung kann jetzt schließlich durch Verendung von
+[`doCheckout`](#do-checkout) abgeschlossen werden.
+
+**Achtung:** Da die API's (soweit bekannt) der anderen Payment Shops noch nicht
+funktionieren können wir noch keine Inter-Payment Zahlungen durchführen (also zu
+einem Empfängerkonto welches nicht bei uns liegt).
+
+**Für Payment System Entwickler**: Der API Schlüssel zur Nutzung der `doCheckout`
+Methode muss jetzt nicht mehr angefordert werden sondern kann bei uns nach login
+unter `Settings > General` eingesehen werden.

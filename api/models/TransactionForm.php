@@ -1,6 +1,8 @@
 <?php
 namespace api\models;
 
+use Yii;
+
 use common\models\Account;
 use common\models\Currency;
 use common\models\Transaction;
@@ -17,6 +19,7 @@ class TransactionForm extends \yii\base\Model
     public $currency;
     public $description;
     public $type;
+    public $reference;
 
     /**
      * @inheritdoc
@@ -36,6 +39,7 @@ class TransactionForm extends \yii\base\Model
             ['description', 'string', 'min' => 3],
             ['type', 'default', 'value' => Transaction::TYPE_RECEIPT],
             ['type', 'in', 'range' => [Transaction::TYPE_RECEIPT]],
+            ['reference', 'string', 'max' => 32],
         ];
     }
 
@@ -89,6 +93,8 @@ class TransactionForm extends \yii\base\Model
         $transaction->associated_account_number = $this->sender_account_number;
         $transaction->type = $this->type;
         $transaction->amount = $this->amount;
+        $transaction->reference = $this->reference;
+        $transaction->transaction_user_id = Yii::$app->user->id;
         //$transaction->foreign_currency_amount;
         //$transaction->foreign_currency_id;
         $transaction->description = $this->description;

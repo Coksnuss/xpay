@@ -103,11 +103,19 @@ class CronjobController extends \yii\console\Controller
      */
     public function actionCleanCheckoutRequests()
     {
-        $requests = CheckoutRequest::find(['updated_atd' => ['and', 'idd=2']])->all();
+        //$requests = CheckoutRequest::findAll(['updated_at' => ['and', 'idd=2']]);
+        $requests = CheckoutRequest::find()
+            ->where(['and', 'updated_at < :yesterday'], [':yesterday' => date('Y-m-d H:i:s', strtotime('-1 day'))])
+            ->all();
 
         foreach ($requests as $request)
         {
-            echo "OK";
+            $this->stdout(sprintf('Delete checkout request from %s (Last Update: %s)...', $request->created_at, $request->updated_at));
+            if ($request->delete()) {
+                $this->stdout('OK' . PHP_EOL);
+            } else {
+                $This->stdout('Failed' . PHP_EOL);
+            }
         }
     }
 }

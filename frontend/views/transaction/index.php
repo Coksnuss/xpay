@@ -35,7 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
             //'account_id',
             'associated_account_number',
     		['attribute'=>'description',
-				'options'=>['width'=>'40%'],
+    			'format'=>'raw',
+    			'value'=>function($model){return Html::encode($model->description);},
+    			'options'=>['width'=>'40%'],
 			],
             ['attribute'=>'amount',
     		'format'=>'raw',
@@ -45,8 +47,12 @@ $this->params['breadcrumbs'][] = $this->title;
 			['attribute'=>'type',
     		'format'=>'raw',
 				'value'=>function($model){
-					return $model->getType();
+					return $model->getHumanReadableType();
 			}],
+            [
+                'attribute' => 'reference',
+                'label' => 'Reference',
+            ],
             // 'foreign_currency_amount',
             // 'foreign_currency_id',
             ['attribute'=>'created_at',

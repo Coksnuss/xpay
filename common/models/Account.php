@@ -18,10 +18,10 @@ class Account extends \common\models\base\Account
      * Account number ranges.
      * Used by validators throughout the application.
      */
-    const GLOBAL_ACCOUNT_NUMBER_START   = 100000;
-    const GLOBAL_ACCOUNT_NUMBER_END     = 599999;
-    const INTERNAL_ACCOUNT_NUMBER_START = 100000;
-    const INTERNAL_ACCOUNT_NUMBER_END   = 199999;
+    const GLOBAL_ACCOUNT_NUMBER_START   = 101000000;
+    const GLOBAL_ACCOUNT_NUMBER_END     = 105999999;
+    const INTERNAL_ACCOUNT_NUMBER_START = 101000000;
+    const INTERNAL_ACCOUNT_NUMBER_END   = 101999999;
 
 	public $amount;
     /**
@@ -107,7 +107,7 @@ class Account extends \common\models\base\Account
      */
     public function charge($amount)
     {
-        $transaction = new Transaction;
+        $transaction = new Transaction();
         $transaction->generateTransactionId();
         $transaction->account_id = $this->id;
         $transaction->associated_account_number = self::GLOBAL_ACCOUNT_NUMBER_END + 1;
@@ -161,5 +161,18 @@ class Account extends \common\models\base\Account
     public function rules()
     {
     	return [[['iban', 'bic'], 'required']]+parent::rules();
+    }
+
+    /**
+     * @return integer|null The id of the payment system that the given account
+     * number belongs to. If the account number is invalid, null is returned.
+     */
+    public static function getPaymentSystemIdByAccountNumber($number)
+    {
+        if (ctype_digit($number)
+            && strlen($number) == strlen(self::GLOBAL_ACCOUNT_NUMBER_START)
+        ) {
+            return intval($number{2});
+        }
     }
 }

@@ -178,4 +178,13 @@ class CheckoutRequest extends \common\models\base\CheckoutRequest
     {
         return Account::isInternalAccountNumber($this->receiver_account_number);
     }
+
+    /**
+     * @return integer The id of the payment system that the receiver account
+     * belongs to.
+     */
+    public function getRemotePaymentSystemId()
+    {
+        return Account::getPaymentSystemIdByAccountNumber($this->receiver_account_number);
+    }
 }
