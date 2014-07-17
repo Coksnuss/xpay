@@ -25,8 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-lg-5">
             <link rel="stylesheet" type="text/css" href="http://libreid.wsp.lab.sit.cased.de/static/lidbutton.css">
-            <form action="<?php echo $url ?>" method="get">
+            <form action="https://secauth.wsp.lab.sit.cased.de/user/signin" method="get">
                 <button onclick="submit();" id="secauthbutton">Login using SecAuth.</button>
+			<input type="text" name="service" value="https://xpay.wsp.lab.sit.cased.de" hidden="hidden" />
             </form>
         </div>
     </div>

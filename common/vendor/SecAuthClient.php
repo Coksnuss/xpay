@@ -319,7 +319,7 @@ class SecAuthClient extends \yii\base\Object {
 
 		switch($res[0]) {
 		case 200:
-			$attributes = json_decode($res[1], true);
+			$attributes = json_decode($res, true);
 			
 			$_SESSION[self::SAC]['USER_DATA'] = $attributes;
 			break;
@@ -330,8 +330,9 @@ class SecAuthClient extends \yii\base\Object {
 		return $attributes;	
 	}
 
-	private function _hasTicket() {
-		return !empty($this->getTicket());
+	public function _hasTicket() {
+		$getTicket = $this->getTicket();
+		return !empty($getTicket);
 	}
 
 	/**
@@ -345,7 +346,7 @@ class SecAuthClient extends \yii\base\Object {
 	 * Stores the given $ticket in the users session.
 	 * @param string $ticket	the service ticket
 	 */
-	private function _setTicket($ticket) {
+	public function _setTicket($ticket) {
 		if(empty($ticket)) {
 			unset($_SESSION[self::SAC]['SERVICE_TICKET']);
 			return;
