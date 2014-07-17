@@ -28,13 +28,8 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout'],
                 'rules' => [
-                    [
-                        'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
                     [
                         'actions' => ['logout'],
                         'allow' => true,
@@ -71,7 +66,8 @@ class SiteController extends Controller
      */
     public function beforeAction($action)
     {
-        if ($action->id === 'libre-id-login') {
+        if ($action->id === 'libre-id-login'
+				|| $action->id === 'secauth-login') {
             $this->enableCsrfValidation = false;
         }
 
@@ -142,7 +138,7 @@ class SiteController extends Controller
     			throw new BadRequestHttpException('Error processing response from LibreID. Login failed. Please try again or came back later.');
     		}
     	} else {
-		$url = BaseUrl::base('https');
+			$url = BaseUrl::base('https');
 	        return $this->render('libre-login', [
 	            'message' => Yii::$app->libreidapi->get_login_message($url."/site/libre-id-login/"),
 	            'returnUrl' => $url."/site/libre-id-login/",
@@ -150,7 +146,25 @@ class SiteController extends Controller
     	}
     }
     
-    
+    /**
+     * TODO: DOC
+     */
+    public function actionSecauthLogin()
+    {
+    	if (!\Yii::$app->user->isGuest) {
+    		return $this->goHome();
+    	}
+
+    	Yii::$app->secauthapi->init_client('secauth.wsp.lab.sit.cased.de');
+    	if(isset($_GET['ticket'])) {
+//     		return $this->render('about');
+			var_dump(Yii::$app->secauthapi->getAttributes());
+    	} else {
+    		return $this->render('secauth-login', [
+    			'url' => Yii::$app->secauthapi->getServerLoginURL(),
+    		]);
+    	}    	
+    }
 
     public function actionIndex()
     {

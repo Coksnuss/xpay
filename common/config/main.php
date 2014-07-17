@@ -8,6 +8,9 @@ return [
             'apiKey' => 'nKeVcdtWNEoCQyw3xN8Q6tM1gqUz7wYx',
             'secretKey' => base64_decode("O+mODkHB+ZNqQ3aM7y3SCKb6o9JlQKlxQppwUav8JTiBNcmh", true),
         ],
+        'secauthapi' => [
+        	'class' => 'common\vendor\SecAuthClient',
+        ],
         'user' => [
             'class' => 'common\components\ExtendedUser',
         ],
