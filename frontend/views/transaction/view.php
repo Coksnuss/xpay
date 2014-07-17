@@ -38,6 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ['attribute'=>'amount','format'=>'raw',
 				'value'=>Html::tag('div',$model->getAmountString(false),['class'=>'amount-string']),
 			],
+			[
+                'attribute' => 'reference',
+                'label' => 'Reference',
+            ],
             //'foreign_currency_id',
             'created_at',
             //'updated_at',

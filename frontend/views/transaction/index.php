@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			}],
             [
                 'attribute' => 'reference',
-                'label' => 'Referenz',
+                'label' => 'Reference',
             ],
             // 'foreign_currency_amount',
             // 'foreign_currency_id',
