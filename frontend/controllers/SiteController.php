@@ -156,19 +156,18 @@ class SiteController extends Controller
     	}
 
     	Yii::$app->secauthapi->init_client('secauth.wsp.lab.sit.cased.de');
-    	if(Yii::$app->secauthapi->_hasTicket()) {
-		$test = Yii::$app->secauthapi->getAttributes();
-		Yii::$app->secauthapi->_setTicket('');
-		return var_dump($test);
-    	}
-    	return $this->render('secauth-login'); 	
+    	if(isset($_GET['ticket'])) {
+//     		return $this->render('about');
+			var_dump(Yii::$app->secauthapi->getAttributes());
+    	} else {
+    		return $this->render('secauth-login', [
+    			'url' => Yii::$app->secauthapi->getServerLoginURL(),
+    		]);
+    	}    	
     }
 
     public function actionIndex()
     {
-	if(isset($_GET['ticket'])) {
-    		$this->redirect(['site/secauth-login', 'ticket' => $_GET['ticket']]);
-    	}
     	if(Yii::$app->user->isGuest) {
     		return $this->render('index');
     	} else {
