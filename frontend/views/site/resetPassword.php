@@ -13,7 +13,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="site-reset-password">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please choose your new password:</p>
+    <p>Please choose your new password:<br>It must contain at least ten characters with at least one lower case character, one capital, one special character (@,#,$,%) and one digit (0-9).</p>
+    
 
     <div class="row">
         <div class="col-lg-5">
