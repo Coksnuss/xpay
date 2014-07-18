@@ -118,21 +118,3 @@ a.desc:after {
 	float: right;
 	padding: 6px;
 }
-
-#secauthbutton {
-    background-color: #343838;
-    color: #FFF;
-    display: inline-block;
-    padding: 6px 12px;
-    font-size: 14px;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    border-radius: 4px;
-    font-weight: normal;
-    text-align: center;
-    cursor: pointer;
-    border: 1px solid transparent;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    margin: 10px 0px 20px;
-}

@@ -66,8 +66,7 @@ class SiteController extends Controller
      */
     public function beforeAction($action)
     {
-        if ($action->id === 'libre-id-login'
-				|| $action->id === 'secauth-login') {
+        if ($action->id === 'libre-id-login') {
             $this->enableCsrfValidation = false;
         }
 
@@ -146,25 +145,6 @@ class SiteController extends Controller
     	}
     }
     
-    /**
-     * TODO: DOC
-     */
-    public function actionSecauthLogin()
-    {
-    	if (!\Yii::$app->user->isGuest) {
-    		return $this->goHome();
-    	}
-
-    	Yii::$app->secauthapi->init_client('secauth.wsp.lab.sit.cased.de');
-    	if(isset($_GET['ticket'])) {
-//     		return $this->render('about');
-			var_dump(Yii::$app->secauthapi->getAttributes());
-    	} else {
-    		return $this->render('secauth-login', [
-    			'url' => Yii::$app->secauthapi->getServerLoginURL(),
-    		]);
-    	}    	
-    }
 
     public function actionIndex()
     {
